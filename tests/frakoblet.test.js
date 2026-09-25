@@ -9,7 +9,8 @@ const filer = [...sw.matchAll(/^\s+'([^']+)',$/gm)].map((m) => m[1]);
 test('service workeren lagrer alle filene appen trenger', () => {
   for (const f of filer) assert.ok(f === './' || existsSync(new URL(f, rot)), `${f} finnes ikke`);
   for (const mappe of ['js', 'fonts', 'ikoner', 'css']) {
-    for (const f of readdirSync(new URL(`${mappe}/`, rot))) {
+    // Lisensfilene til skriftene trengs ikke frakoblet.
+    for (const f of readdirSync(new URL(`${mappe}/`, rot)).filter((f) => !f.endsWith('.txt'))) {
       assert.ok(filer.includes(`${mappe}/${f}`), `${mappe}/${f} mangler i sw.js`);
     }
   }
