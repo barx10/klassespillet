@@ -1,0 +1,937 @@
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  src: url(../fonts/atkinson-next-latin.woff2) format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible Next';
+  src: url(../fonts/atkinson-next-latin-ext.woff2) format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1EFF, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url(../fonts/bricolage-latin.woff2) format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url(../fonts/bricolage-latin-ext.woff2) format('woff2');
+  font-weight: 200 800;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1EFF, U+A720-A7FF;
+}
+
+/* ---------- Farger: dagslys på fjellet ---------- */
+:root {
+  --fjord: #173B57;
+  --isbre: #E6F0F4;
+  --sol: #F4B63F;
+  --varde-rod: #C63B2F;
+
+  --bakgrunn: var(--isbre);
+  --tekst: var(--fjord);
+  --tekst-svak: #4A6377;
+  --flate: #FFFFFF;
+  --kant: #B9CDD8;
+
+  --himmel-topp: #6FA9D3;
+  --himmel-bunn: #DCEBF2;
+  --kveld: #F2A65E;
+  --fjell-fjern: #B4C8D5;
+  --fjell-midt: #8DA6B8;
+  --fjell: #5E7A8E;
+  --fjell-skygge: #4D677A;
+  --sno: #F4F8FA;
+  --mark: #4F6B45;
+  --tre: #3A5233;
+  --sti: #F4F8FA;
+  --stein: #FFFFFF;
+  --stein-tekst: var(--fjord);
+  --regler-bakgrunn: var(--fjord);
+  --regler-tekst: #F4F8FA;
+  --sky: #EDF2F5;
+  --sky-skygge: #B3C3CE;
+  --skydekke: #6F7F8B;
+  --stjerne: #F6D27A;
+
+  /* Diagramserier, validert for fargeblindhet og kontrast mot --flate. */
+  --serie-kartlegging: #2F6FA8;
+  --serie-spill: #B57A08;
+  --rutenett: #DCE6EC;
+
+  --skrift: 'Atkinson Hyperlegible Next', 'Atkinson Hyperlegible', system-ui, sans-serif;
+  /* Tall og titler: Atkinson har skråstrek i null, som ser rart ut på brettet. */
+  --visning: 'Bricolage Grotesque', var(--skrift);
+  color-scheme: light;
+}
+
+/* Kveld på fjellet: samme landskap, måneskinn i stedet for sol. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema='lys']) { --mork: 1; }
+}
+:root[data-tema='mork'], .spill-lag .brett { --mork: 1; }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema='lys']) {
+    color-scheme: dark;
+    --bakgrunn: #0F2233;
+    --tekst: #E6F0F4;
+    --tekst-svak: #A9BFCD;
+    --flate: #17304A;
+    --kant: #2F4D68;
+    --sol: #EFE6C4;
+    --himmel-topp: #0B1B2B;
+    --himmel-bunn: #294863;
+    --kveld: #6A5A8A;
+    --fjell-fjern: #2A4760;
+    --fjell-midt: #213A51;
+    --fjell: #1A2F43;
+    --fjell-skygge: #142638;
+    --sno: #BFD0DC;
+    --mark: #15261C;
+    --tre: #0E1B13;
+    --sti: #9FB6C6;
+    --stein: #E6EEF2;
+    --regler-bakgrunn: #0B1B2B;
+    --sky: #6E8396;
+    --sky-skygge: #465B6E;
+    --skydekke: #050D16;
+    --serie-kartlegging: #4F8FC9;
+    --serie-spill: #BE8A1A;
+    --rutenett: #26425D;
+  }
+}
+:root[data-tema='mork'],
+.spill-lag .brett {
+  color-scheme: dark;
+  --bakgrunn: #0F2233;
+  --tekst: #E6F0F4;
+  --tekst-svak: #A9BFCD;
+  --flate: #17304A;
+  --kant: #2F4D68;
+  --sol: #EFE6C4;
+  --himmel-topp: #0B1B2B;
+  --himmel-bunn: #294863;
+  --kveld: #6A5A8A;
+  --fjell-fjern: #2A4760;
+  --fjell-midt: #213A51;
+  --fjell: #1A2F43;
+  --fjell-skygge: #142638;
+  --sno: #BFD0DC;
+  --mark: #15261C;
+  --tre: #0E1B13;
+  --sti: #9FB6C6;
+  --stein: #E6EEF2;
+  --regler-bakgrunn: #0B1B2B;
+  --sky: #6E8396;
+  --sky-skygge: #465B6E;
+  --skydekke: #050D16;
+  --serie-kartlegging: #4F8FC9;
+  --serie-spill: #BE8A1A;
+  --rutenett: #26425D;
+}
+
+/* ---------- Grunnlag ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: var(--skrift);
+  background: var(--bakgrunn);
+  color: var(--tekst);
+  font-size: clamp(1.05rem, 0.9rem + 0.5vw, 1.35rem);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: balance; }
+:focus-visible { outline: 4px solid var(--sol); outline-offset: 3px; }
+
+.knapp {
+  font: inherit;
+  font-weight: 700;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.8em 1.6em;
+  cursor: pointer;
+}
+.knapp-hoved { background: var(--tekst); color: var(--bakgrunn); }
+.knapp-hoved:hover { background: color-mix(in srgb, var(--tekst) 85%, var(--sol)); }
+.knapp-stille { background: transparent; color: var(--tekst); box-shadow: inset 0 0 0 2px var(--kant); }
+.knapp-stille:hover { box-shadow: inset 0 0 0 2px var(--tekst); }
+.knapp:disabled { opacity: 0.55; cursor: default; }
+.hjem-knapper { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+
+/* ---------- Landskapet ---------- */
+.landskap { display: block; width: 100%; height: 100%; overflow: visible; }
+.landskap .kveldslys { opacity: calc(var(--kveld-styrke, 0) * 0.55); transition: opacity 1s linear; }
+.landskap .stjerner { fill: #FFFFFF; opacity: calc(var(--mork, 0) * 0.8); }
+.landskap .sol-skive { fill: var(--sol); }
+.landskap .sol { transition: transform 1s linear; }
+.landskap .fjell-fjern { fill: var(--fjell-fjern); }
+.landskap .fjell-midt { fill: var(--fjell-midt); }
+.landskap .fjell { fill: var(--fjell); }
+.landskap .fjell-skygge { fill: var(--fjell-skygge); }
+.landskap .sno { fill: var(--sno); }
+.landskap .mark { fill: var(--mark); }
+.landskap .tre { fill: var(--tre); }
+.landskap .hytte-vegg { fill: var(--varde-rod); }
+.landskap .hytte-tak { fill: var(--tre); }
+.landskap .hytte-dor { fill: #F4F8FA; }
+
+.landskap .sti {
+  fill: none;
+  stroke: var(--sti);
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-dasharray: 2 18;
+  opacity: 0.85;
+}
+.landskap .sti-gatt {
+  fill: none;
+  stroke: var(--sol);
+  stroke-width: 12;
+  stroke-linecap: round;
+  opacity: 0;
+  transition: opacity 1.4s ease 1.2s;
+}
+.landskap .sti-gatt.gatt { opacity: 1; }
+.landskap .start circle { fill: var(--sti); }
+
+.landskap .felt-skygge { fill: #000; opacity: 0.18; }
+.landskap .felt-stein {
+  fill: var(--stein);
+  stroke: var(--fjord);
+  stroke-width: 5;
+  transition: fill 0.8s ease 1.6s;
+}
+.landskap .felt.naadd .felt-stein { fill: var(--sol); }
+.landskap .felt-tall {
+  font-family: var(--visning);
+  font-weight: 800;
+  font-size: 42px;
+  fill: var(--fjord);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+.landskap .felt-maal .felt-stein { stroke: var(--varde-rod); stroke-width: 9; }
+.landskap .flagg path { fill: var(--varde-rod); }
+.landskap .flaggstang { fill: var(--fjord); }
+:root[data-tema='mork'] .landskap .flaggstang { fill: var(--stein); }
+
+.landskap .brikke-form { fill: var(--varde-rod); stroke: #FFFFFF; stroke-width: 5; }
+.landskap .brikke-glans { fill: #FFFFFF; opacity: 0.55; }
+.landskap .brikke-skygge { fill: #000; opacity: 0.25; }
+/* Bruddbrettet: skodde som legger seg over fjellet. */
+.landskap .skydekke { fill: var(--skydekke); opacity: calc(var(--skyandel, 0) * 0.32); transition: opacity 3s ease; }
+.landskap .sky {
+  opacity: 0;
+  transform: translate(calc(var(--x) - 360px), var(--y));
+  transition: transform 3.2s cubic-bezier(0.2, 0.7, 0.3, 1), opacity 2.4s ease;
+}
+.landskap .sky.kommet { opacity: 0.96; transform: translate(var(--x), var(--y)); }
+.landskap .sky-form { fill: var(--sky); }
+.landskap .sky-skygge { fill: var(--sky-skygge); }
+
+/* Lagspillet: ett stjernebilde per lag på nattehimmelen. */
+.landskap.natt .fjellene { transform: translateY(300px); }
+.landskap.natt .stjerner { opacity: 0.45; }
+.landskap .bilde-linje { stroke: var(--tekst); stroke-width: 2; opacity: 0.14; transition: opacity 1s ease; }
+.landskap .bilde-linje.tent { opacity: 0.6; }
+.landskap .vunnet .bilde-linje.tent { opacity: 0.95; stroke-width: 3; }
+.landskap .bilde-punkt > * { transition: opacity 0.8s ease; }
+.landskap .bilde-glod { fill: url(#stjerneglod); opacity: 0; }
+.landskap .bilde-ring { fill: none; stroke: var(--tekst); stroke-width: 3; opacity: 0; }
+.landskap .bilde-prikk { fill: var(--tekst); opacity: 0.4; }
+.landskap .bilde-stjerne { fill: var(--stjerne); opacity: 0; }
+.landskap .naa .bilde-ring { opacity: 0.9; }
+.landskap .naa .bilde-prikk { opacity: 0.9; }
+.landskap .fikk .bilde-stjerne, .landskap .fikk .bilde-glod { opacity: 1; }
+.landskap .fikk .bilde-prikk { opacity: 0; }
+.landskap .tapt .bilde-prikk { opacity: 0.18; }
+.landskap .bilde-etikett { fill: var(--tekst); font-family: var(--visning); font-size: 40px; font-weight: 700; text-anchor: middle; }
+.landskap .bilde-etikett .lag-tall { font-weight: 800; fill: var(--stjerne); }
+
+.landskap .brikke-kropp { transform: translate(0, -44px) scale(1.25); }
+
+/* ---------- Hjem ---------- */
+.hjem {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(20rem, 40rem) 1fr;
+  align-items: stretch;
+}
+.hjem-innhold {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+  padding: clamp(2rem, 5vw, 5rem);
+  position: relative;
+}
+.hjem-landskap {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 18%, #000 52%);
+  mask-image: linear-gradient(90deg, transparent 18%, #000 52%);
+}
+.hjem-landskap .landskap { position: absolute; inset: 0; height: 100%; }
+.hjem-klasse {
+  font-size: clamp(5rem, 14vw, 11rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+.hjem-mal { font-size: 1.25em; max-width: 26ch; margin: 1rem 0 1.5rem; }
+.hjem-regelsett { margin: 0 0 0.4rem; font-weight: 700; }
+.hjem-regler { padding-left: 1.3em; margin: 0; color: var(--tekst-svak); max-width: 34ch; }
+.hjem-regler li + li { margin-top: 0.3em; }
+.hjem-varsel { margin-top: 1.25rem; color: var(--tekst-svak); max-width: 32ch; }
+.paminn-valg { max-width: 36ch; padding: 0.9rem 1.1rem; border-radius: 16px; background: var(--flate); border-left: 6px solid var(--sol); color: var(--tekst); }
+.paminn-valg p { margin: 0; }
+.paminn-valg .hjem-lenker { margin-top: 0.6rem; gap: 1.25rem; flex-wrap: wrap; }
+
+/* Klassevalg */
+.klasse-liste { list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 0.75rem; }
+.klasse-valg {
+  font: inherit;
+  color: var(--tekst);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--kant);
+  cursor: pointer;
+  text-align: left;
+}
+.klasse-valg:hover { box-shadow: inset 0 0 0 2px var(--tekst); }
+.klasse-valg.aktiv { background: var(--flate); box-shadow: inset 0 0 0 2px var(--tekst); }
+.klasse-navn { font-family: var(--visning); font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
+
+/* Innstillinger er sjeldne; de ligger som lenker under hovedknappene. */
+.hjem-lenker { display: flex; gap: 1.5rem; margin-top: 2rem; }
+.lenke {
+  font: inherit;
+  font-size: 0.95em;
+  color: var(--tekst-svak);
+  background: none;
+  border: 0;
+  padding: 0.2em 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
+}
+.lenke:hover { color: var(--tekst); }
+
+/* ---------- Sjekkliste ---------- */
+.sjekkliste fieldset { border: 0; padding: 0; margin: 1.25rem 0 0; }
+.sjekkliste legend { padding: 0; margin-bottom: 1rem; max-width: 40ch; }
+.sjekkliste-tittel {
+  font-size: clamp(3rem, min(8vw, 9vh), 6.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+.sjekkpunkt {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.9rem;
+  align-items: start;
+  padding: clamp(0.55rem, 1.4vh, 0.85rem) 0;
+  border-top: 1px solid var(--kant);
+  cursor: pointer;
+  max-width: 36ch;
+}
+.sjekkpunkt:last-of-type { border-bottom: 1px solid var(--kant); }
+.sjekkpunkt input { width: 1.5em; height: 1.5em; margin: 0.05em 0 0; accent-color: var(--tekst); }
+.sjekkpunkt:has(input:checked) span { color: var(--tekst-svak); }
+.sjekkliste .hjem-mal { margin-bottom: 0; }
+.velg-regelsett .hjem-regler { margin-top: 0.9rem; }
+.velg-regelsett legend { margin-bottom: 0.6rem; }
+
+/* Regelsettene som en rad med valgknapper */
+.regelsett-valg { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.regelsett-valg label { position: relative; cursor: pointer; }
+.regelsett-valg input { position: absolute; opacity: 0; pointer-events: none; }
+.regelsett-valg span {
+  display: block;
+  padding: 0.55em 1em;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 2px var(--kant);
+  font-weight: 700;
+}
+.regelsett-valg label:hover span { box-shadow: inset 0 0 0 2px var(--tekst); }
+.regelsett-valg input:checked + span { background: var(--tekst); color: var(--bakgrunn); box-shadow: none; }
+.regelsett-valg input:focus-visible + span { outline: 4px solid var(--sol); outline-offset: 3px; }
+
+/* ---------- Oppsett ---------- */
+.oppsett { min-height: 100vh; padding: clamp(1.5rem, 5vw, 4rem); }
+.skjema { max-width: 38rem; margin: 0 auto; }
+.skjema h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; letter-spacing: -0.02em; }
+.skjema-ingress { color: var(--tekst-svak); max-width: 44ch; }
+.felt-gruppe { display: grid; gap: 0.5rem; border: 0; padding: 0; margin: 1.75rem 0 0; }
+.felt-gruppe > span, .felt-gruppe legend { font-weight: 700; padding: 0; }
+.felt-kort select { max-width: 7rem; }
+.hjelp { margin: 0; color: var(--tekst-svak); font-size: 0.9em; max-width: 56ch; }
+input:not([type]), input[type='text'], select, textarea {
+  font: inherit;
+  color: var(--tekst);
+  background: var(--flate);
+  border: 2px solid var(--kant);
+  border-radius: 12px;
+  padding: 0.6em 0.8em;
+  width: 100%;
+}
+input:focus-visible, select:focus-visible, textarea:focus-visible { border-color: var(--tekst); outline-offset: 1px; }
+textarea { resize: vertical; line-height: 1.5; }
+.avkrysning { display: flex; gap: 0.7rem; align-items: center; cursor: pointer; }
+.avkrysning input { width: 1.4em; height: 1.4em; accent-color: var(--tekst); }
+/* Regelsett i oppsettet */
+.regelsett-liste { display: grid; gap: 0.75rem; margin-top: 0.5rem; }
+.regelsett-kort {
+  padding: 1rem 1.1rem;
+  border-radius: 16px;
+  box-shadow: inset 0 0 0 2px var(--kant);
+}
+.regelsett-kort.valgt { background: var(--flate); box-shadow: inset 0 0 0 2px var(--tekst); }
+.regelsett-hode { display: flex; gap: 1rem; align-items: center; }
+.regelsett-hode .avkrysning { align-items: start; flex: 1; }
+.regelsett-hode .avkrysning input { margin-top: 0.1em; }
+.regelsett-hode .avkrysning > span { display: grid; gap: 0.1rem; }
+.regelsett-hode input:not([type]) { flex: 1; font-weight: 700; }
+.regelsett-kort details { margin-top: 0.6rem; }
+.regelsett-kort summary, .forslag summary, .forbehold summary {
+  cursor: pointer;
+  color: var(--tekst-svak);
+  font-size: 0.9em;
+  width: fit-content;
+}
+.regelsett-kort summary:hover, .forslag summary:hover, .forbehold summary:hover { color: var(--tekst); }
+.regelsett-merknad { margin-top: 0.75rem; }
+.regel-liste { margin: 0.75rem 0 0; padding-left: 1.4em; display: grid; gap: 0.9rem; }
+.regel-liste li { display: grid; gap: 0.35rem; }
+.regel-liste li::marker { font-family: var(--visning); font-weight: 700; }
+.regel-liste [data-brudd] { font-size: 0.9em; color: var(--tekst-svak); field-sizing: content; min-height: 2.6em; }
+.felt-navn { font-weight: 700; }
+
+/* Spillform */
+.variant-liste { display: grid; gap: 0.75rem; margin-top: 0.5rem; }
+.variant-kort:has([name=variant]:checked) { background: var(--flate); box-shadow: inset 0 0 0 2px var(--tekst); }
+.variant-kort > .avkrysning { align-items: start; }
+.variant-kort > .avkrysning input { margin-top: 0.1em; }
+.variant-kort > .avkrysning > span { display: grid; gap: 0.1rem; }
+.variant-felt { display: grid; gap: 0.5rem; margin: 0.9rem 0 0.2rem 2.1rem; }
+.variant-kort:not(:has([name=variant]:checked)) .variant-felt { display: none; }
+.felt-rader { display: flex; flex-wrap: wrap; gap: 0.75rem 1.75rem; }
+.felt-rad { display: flex; align-items: center; gap: 0.75rem; font-weight: 700; }
+.felt-rad select { width: auto; min-width: 5rem; }
+.slett-klasse { margin-top: 3rem; padding-top: 1.25rem; border-top: 1px solid var(--kant); display: grid; gap: 0.3rem; }
+
+.forslag-liste { list-style: none; margin: 0.75rem 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.forslag-knapp {
+  font: inherit;
+  font-size: 0.9em;
+  color: var(--tekst);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.45em 0.9em;
+  box-shadow: inset 0 0 0 2px var(--kant);
+  cursor: pointer;
+  text-align: left;
+}
+.forslag-knapp:hover { box-shadow: inset 0 0 0 2px var(--tekst); }
+.forslag-knapp:disabled { cursor: default; color: var(--tekst-svak); box-shadow: none; background: var(--flate); }
+.skjema-feil { color: var(--varde-rod); font-weight: 700; margin: 1.25rem 0 0; }
+
+/* ---------- Spill ---------- */
+.spill {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  overflow: hidden;
+  background: var(--regler-bakgrunn);
+}
+.brett {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--himmel-topp);
+}
+.brett-topp {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: clamp(1rem, 2.5vw, 2.5rem) clamp(1.25rem, 3vw, 3rem);
+  pointer-events: none;
+  color: var(--fjord);
+}
+:root[data-tema='mork'] .brett-topp, .spill-lag .brett-topp { color: var(--tekst); }
+@media (prefers-color-scheme: dark) { :root:not([data-tema='lys']) .brett-topp { color: var(--tekst); } }
+.brett-klasse { font-size: clamp(2.5rem, 6vw, 6rem); font-weight: 800; letter-spacing: -0.03em; }
+.brett-tid {
+  margin: 0;
+  font-family: var(--visning);
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.nedtelling {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--visning);
+  font-size: clamp(10rem, 30vw, 26rem);
+  font-weight: 800;
+  color: var(--fjord);
+  background: color-mix(in srgb, var(--himmel-bunn) 55%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.nedtelling[hidden] { display: none; }
+
+.pause-lag {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--himmel-topp) 50%, transparent);
+  -webkit-backdrop-filter: blur(8px) saturate(0.6);
+  backdrop-filter: blur(8px) saturate(0.6);
+}
+.pause-lag[hidden] { display: none; }
+.pause-lag p {
+  margin: 0;
+  font-family: var(--visning);
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 800;
+  color: var(--fjord);
+}
+
+.regler {
+  padding: clamp(0.7rem, 1.4vw, 1.2rem) clamp(1.25rem, 3vw, 3rem) clamp(0.9rem, 1.8vw, 1.6rem);
+  background: var(--regler-bakgrunn);
+  color: var(--regler-tekst);
+}
+.regler-navn {
+  margin: 0 0 0.5em;
+  font-size: clamp(0.95rem, 1.3vw, 1.35rem);
+  font-weight: 700;
+  opacity: 0.75;
+}
+.regler ol {
+  list-style: none;
+  counter-reset: regel;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--antall, 3), 1fr);
+  gap: clamp(1rem, 3vw, 3rem);
+  font-size: clamp(1.25rem, 2.2vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+.regler li {
+  counter-increment: regel;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.6em;
+  align-items: start;
+}
+.regler li::before {
+  content: counter(regel);
+  display: grid;
+  place-items: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  background: var(--sol);
+  color: var(--fjord);
+  font-family: var(--visning);
+  font-weight: 800;
+}
+
+/* Lærerens knapper: tydelige for læreren, rolige for klassen. */
+.styring {
+  position: absolute;
+  right: clamp(0.75rem, 1.5vw, 1.5rem);
+  bottom: clamp(0.75rem, 1.5vw, 1.5rem);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.styring[hidden] { display: none; }
+.markering {
+  min-width: 3ch;
+  text-align: right;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  color: var(--sti);
+  opacity: 0.7;
+}
+.knapp-brudd, .knapp-liten {
+  font: inherit;
+  font-weight: 700;
+  border: 0;
+  cursor: pointer;
+  color: var(--sno);
+  background: color-mix(in srgb, var(--fjord) 55%, transparent);
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--sno) 25%, transparent);
+}
+.knapp-brudd:hover, .knapp-liten:hover { background: color-mix(in srgb, var(--fjord) 75%, transparent); }
+.knapp-brudd {
+  font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+  padding: 1.1em 2.2em;
+  border-radius: 999px;
+}
+.knapp-liten { font-size: 0.85rem; padding: 0.7em 1.1em; border-radius: 999px; opacity: 0.8; }
+.knapp-brudd:active { transform: scale(0.97); }
+
+/* Påminnelse om ros: bare for læreren, ved knappene. */
+.ros {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.75rem);
+  width: min(24rem, 80vw);
+  margin: 0;
+  padding: 0.8rem 1rem;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  color: var(--tekst);
+  background: color-mix(in srgb, var(--flate) 90%, transparent);
+  box-shadow: inset 4px 0 0 var(--sol);
+  animation: opp 0.5s ease-out;
+}
+.ros[hidden] { display: none; }
+.ros strong { display: block; }
+
+/* ---------- Bruddbrett og lagspill ---------- */
+/* Tellingen står øverst i midten, mellom klassenavnet og klokka. */
+.maaler {
+  position: absolute;
+  left: 50%;
+  top: clamp(1rem, 2.5vw, 2.5rem);
+  translate: -50% 0;
+  display: grid;
+  justify-items: center;
+  max-width: min(46%, 40rem);
+  color: var(--tekst);
+  text-align: center;
+}
+.ferdig .maaler { display: none; }
+.maaler-tekst { margin: 0.5rem 0 0; font-size: clamp(1rem, 1.5vw, 1.4rem); color: var(--tekst-svak); text-wrap: balance; }
+.maaler-brudd {
+  padding: clamp(0.8rem, 1.6vw, 1.4rem) clamp(1.2rem, 2.4vw, 2.2rem);
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--flate) 80%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.maaler-tall {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.3rem, 2.2vw, 2rem);
+  font-weight: 700;
+  line-height: 1;
+}
+.maaler-n {
+  font-family: var(--visning);
+  font-size: 2em;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  margin-right: 0.12em;
+}
+.brudd-rekke {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(0.25rem, 0.5vw, 0.45rem);
+}
+.brudd-rekke li {
+  width: clamp(0.9rem, 1.6vw, 1.5rem);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px var(--kant);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+}
+.brudd-rekke li.brukt { background: var(--tekst-svak); box-shadow: none; }
+.brudd-rekke li.grense { box-shadow: inset 0 0 0 3px var(--tekst); }
+.brudd-rekke li.grense.brukt { background: var(--tekst); }
+.brudd-rekke li.over {
+  width: auto;
+  aspect-ratio: auto;
+  border-radius: 999px;
+  padding: 0 0.5em;
+  display: grid;
+  place-items: center;
+  box-shadow: none;
+  background: var(--tekst);
+  color: var(--flate);
+  font-family: var(--visning);
+  font-weight: 800;
+  font-size: clamp(0.8rem, 1.2vw, 1.1rem);
+}
+.brudd-rekke li.over[hidden] { display: none; }
+.paminnelse {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  margin: 0;
+  padding: 0.35em 0.9em;
+  border-radius: 999px;
+  background: var(--sol);
+  color: var(--fjord);
+  font-family: var(--visning);
+  font-size: clamp(1.4rem, 2.6vw, 2.4rem);
+  font-weight: 800;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.paminnelse.synlig { opacity: 1; }
+
+/* Lagspillet er alltid natt. Resultatet legger seg lavt og bredt, så stjernebildene synes. */
+.spill-lag .brett { color: var(--tekst); }
+.spill-lag .resultat {
+  top: auto;
+  bottom: clamp(1rem, 3vw, 2.5rem);
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: min(92%, 60rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 1.5rem;
+}
+.spill-lag .resultat > :is(h2, p) { grid-column: 1 / -1; }
+.spill-lag .resultat .knapp { justify-self: start; }
+
+/* ---------- Resultat ---------- */
+.resultat {
+  position: absolute;
+  left: clamp(1.25rem, 3vw, 3rem);
+  top: clamp(7rem, 17%, 11rem);
+  width: min(92%, 38rem, 36vw);
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+  border-radius: 28px;
+  background: color-mix(in srgb, var(--flate) 88%, transparent);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 30px 80px -30px rgba(23, 59, 87, 0.55);
+  animation: opp 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.resultat[hidden] { display: none; }
+.resultat h2 { font-size: clamp(2.2rem, 4.6vw, 4.4rem); font-weight: 800; letter-spacing: -0.03em; }
+.resultat p { font-size: clamp(1.3rem, 2.4vw, 2rem); margin: 0.75rem 0 0; }
+.resultat .knapp { margin-top: 1.75rem; font-size: clamp(1.1rem, 1.8vw, 1.5rem); }
+.trommel {
+  margin-top: 1.5rem;
+  min-height: 2.6em;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-family: var(--visning);
+  font-size: clamp(1.8rem, 4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  border-radius: 20px;
+  padding: 0.4em 0.8em;
+  background: var(--bakgrunn);
+}
+.trukket .trommel { background: var(--sol); color: var(--fjord); transition: background 0.6s ease; }
+@keyframes opp { from { opacity: 0; translate: 0 24px; } }
+
+.dialog {
+  border: 0;
+  border-radius: 24px;
+  padding: 2rem;
+  max-width: 30rem;
+  background: var(--flate);
+  color: var(--tekst);
+  font-size: 1.2rem;
+}
+.dialog::backdrop { background: rgba(11, 27, 43, 0.5); }
+.dialog p { margin: 0; }
+
+/* ---------- Kartlegging ---------- */
+.spill-kartlegging { grid-template-rows: 1fr; }
+.spill-kartlegging .brett-klasse { font-size: clamp(2rem, 4vw, 3.5rem); }
+.spill-kartlegging .brett-tid { font-size: clamp(1.5rem, 2.8vw, 2.6rem); opacity: 0.8; }
+.spill-kartlegging .markering { font-family: var(--visning); font-variant-numeric: tabular-nums; }
+
+/* ---------- Logg ---------- */
+.logg {
+  min-height: 100vh;
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 3rem);
+}
+.logg-topp {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1rem 2rem;
+}
+.logg-topp h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); font-weight: 800; letter-spacing: -0.03em; }
+.logg-topp .hjem-knapper { margin-top: 0; }
+.logg h2 { font-size: clamp(1.35rem, 2.2vw, 1.8rem); font-weight: 700; margin-bottom: 1rem; }
+.logg section { margin-top: clamp(2rem, 4vw, 3rem); }
+.logg-tom p { max-width: 44ch; }
+
+.vurdering {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: 24px;
+  background: var(--flate);
+  border-left: 8px solid var(--serie-kartlegging);
+}
+.vurdering p { max-width: 64ch; margin: 0.75rem 0 0; }
+.forbehold { margin-top: 1rem; }
+.forbehold ul { margin: 0.75rem 0 0; padding-left: 1.2em; max-width: 64ch; display: grid; gap: 0.4rem; }
+.vurdering-tall { display: flex; gap: clamp(1.5rem, 5vw, 4rem); margin: 0; }
+.vurdering-tall div { display: flex; flex-direction: column-reverse; }
+.vurdering-tall dt { color: var(--tekst-svak); font-size: 0.9em; }
+.vurdering-tall dd {
+  margin: 0;
+  font-family: var(--visning);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.logg-diagram .diagram { padding: 1.25rem 1rem 0.5rem; border-radius: 24px; background: var(--flate); }
+.diagram-forklaring { list-style: none; display: flex; gap: 1.5rem; margin: 0 0 0.5rem 2.5rem; padding: 0; font-size: 0.9em; }
+.diagram-forklaring li { display: flex; align-items: center; gap: 0.5rem; }
+.diagram-strek { display: inline-block; width: 1.25rem; height: 3px; border-radius: 2px; }
+.diagram-flate { position: relative; }
+.diagram-svg { display: block; overflow: visible; font-family: var(--visning); }
+.diagram-svg:focus-visible { outline-offset: 6px; border-radius: 8px; }
+.diagram-rute { stroke: var(--rutenett); stroke-width: 1; }
+.diagram-null { stroke: var(--kant); stroke-width: 1.5; }
+.diagram-ytall { fill: var(--tekst-svak); font-size: 14px; text-anchor: end; dominant-baseline: central; font-variant-numeric: tabular-nums; }
+.diagram-xtall { fill: var(--tekst-svak); font-size: 14px; text-anchor: middle; }
+.diagram-linje { fill: none; stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.diagram-punkt { stroke: var(--flate); stroke-width: 2; }
+.diagram-punkt.aktiv { r: 7; }
+.diagram-navn { fill: var(--tekst); font-size: 15px; font-weight: 700; dominant-baseline: central; }
+.diagram-trad { stroke: var(--tekst-svak); stroke-width: 1; stroke-dasharray: 3 3; }
+.diagram-tips {
+  position: absolute;
+  pointer-events: none;
+  display: grid;
+  gap: 0.15rem;
+  min-width: 11rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  background: var(--bakgrunn);
+  color: var(--tekst-svak);
+  box-shadow: 0 0 0 1px var(--kant), 0 12px 30px -12px rgba(11, 27, 43, 0.35);
+}
+.diagram-tips[hidden] { display: none; }
+.diagram-tips strong { color: var(--tekst); font-family: var(--visning); font-size: 1.35rem; }
+.diagram-tips-rad { display: flex; align-items: center; gap: 0.45rem; color: var(--tekst); }
+.diagram-tips span:last-child::first-letter { text-transform: uppercase; }
+
+.tabell-rull { overflow-x: auto; }
+.logg table { width: 100%; border-collapse: collapse; font-size: 0.95em; }
+.logg th { text-align: left; font-weight: 700; color: var(--tekst-svak); padding: 0.5rem 1rem 0.6rem 0; border-bottom: 2px solid var(--kant); white-space: nowrap; }
+.logg td { padding: 0.7rem 1rem 0.7rem 0; border-bottom: 1px solid var(--kant); }
+.logg td:first-child { white-space: nowrap; }
+.logg .tall { text-align: right; font-variant-numeric: tabular-nums; }
+.logg td.tall, .logg td.dato { font-family: var(--visning); }
+.tabell-under { display: block; font-size: 0.85em; color: var(--tekst-svak); }
+
+/* ---------- Veiledning ---------- */
+.veiledning {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 3rem) 6rem;
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 40rem);
+  gap: 0 clamp(2rem, 5vw, 4.5rem);
+}
+.veil-topp { grid-column: 1 / -1; margin-bottom: clamp(2rem, 4vw, 3rem); }
+.veil-topp h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 800; letter-spacing: -0.04em; }
+.veil-topp .skjema-ingress { font-size: 1.15em; max-width: 46ch; margin: 1rem 0 1.5rem; }
+.veil-innhold { align-self: start; position: sticky; top: 2rem; }
+.veil-innhold ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.1rem; border-left: 2px solid var(--kant); }
+.veil-innhold a {
+  display: block;
+  padding: 0.35em 0 0.35em 1em;
+  margin-left: -2px;
+  border-left: 2px solid transparent;
+  color: var(--tekst-svak);
+  text-decoration: none;
+  font-size: 0.95em;
+}
+.veil-innhold a:hover { color: var(--tekst); border-left-color: var(--tekst); }
+.veil-tekst section { padding-top: 2.25rem; margin-top: 2.25rem; border-top: 1px solid var(--kant); scroll-margin-top: 1rem; }
+.veil-tekst section:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.veil-tekst h2 { font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
+.veil-tekst h2:focus { outline: none; }
+.veil-tekst h3 { font-family: var(--visning); font-size: 1.2em; font-weight: 700; margin: 1.75rem 0 0.5rem; }
+.veil-tekst p, .veil-tekst li { max-width: 62ch; }
+.veil-tekst p { margin: 0.75rem 0 0; }
+.veil-tekst ul { margin: 0.75rem 0 0; padding-left: 1.2em; display: grid; gap: 0.5rem; }
+.veil-steg { margin: 0; padding-left: 1.4em; display: grid; gap: 0.9rem; }
+.veil-steg li::marker { font-family: var(--visning); font-weight: 800; }
+.veil-varianter { display: grid; gap: 0.75rem; margin-top: 1.5rem; }
+.veil-varianter > div { padding: 1.1rem 1.3rem; border-radius: 16px; background: var(--flate); }
+.veil-varianter h3 { margin-top: 0; }
+.veil-varianter p:first-of-type { margin-top: 0; }
+.veil-taster { margin: 1rem 0 0; display: grid; gap: 0; }
+.veil-taster > div { display: grid; grid-template-columns: minmax(0, 17rem) 1fr; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--kant); }
+.veil-taster dt { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: start; }
+.veil-taster dd { margin: 0; }
+kbd {
+  font-family: var(--skrift);
+  font-size: 0.85em;
+  font-weight: 700;
+  padding: 0.15em 0.55em;
+  border-radius: 6px;
+  background: var(--flate);
+  box-shadow: inset 0 0 0 1.5px var(--kant), 0 2px 0 var(--kant);
+  white-space: nowrap;
+}
+.veil-regelsett { margin-top: 1.5rem; }
+.veil-regelsett dl { margin: 0.5rem 0 0; }
+.veil-regelsett dl > div { padding: 0.7rem 0; border-top: 1px solid var(--kant); }
+.veil-regelsett dt { font-weight: 700; }
+.veil-regelsett dd { margin: 0.2rem 0 0; color: var(--tekst-svak); }
+.veil-kilder { font-size: 0.9em; color: var(--tekst-svak); }
+
+/* ---------- Mindre skjermer ---------- */
+@media (max-width: 760px) {
+  .hjem { grid-template-columns: 1fr; grid-template-rows: 40vh auto; }
+  .hjem-landskap { grid-row: 1; -webkit-mask-image: none; mask-image: none; }
+  .hjem-innhold { grid-row: 2; padding-top: 1rem; }
+  .regler ol { grid-template-columns: 1fr; gap: 0.5rem; }
+  .veiledning { grid-template-columns: 1fr; }
+  .veil-innhold { position: static; margin-bottom: 2.5rem; }
+  .veil-taster > div { grid-template-columns: 1fr; gap: 0.3rem; }
+  .resultat { width: auto; right: 1.25rem; }
+  .maaler { top: 5.5rem; max-width: 90%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
