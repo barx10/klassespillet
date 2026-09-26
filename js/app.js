@@ -62,7 +62,7 @@ function topplinje(tilbake) {
   linje.innerHTML = `
     ${tilbake
       ? '<button class="topp-tilbake" id="topp-tilbake"><span aria-hidden="true">‹</span> Tilbake</button>'
-      : '<p class="topp-merke">Klassespillet</p>'}
+      : '<button class="topp-merke" id="topp-merke" title="Til velkomstskjermen">Klassespillet</button>'}
     <nav class="topp-meny" aria-label="Meny">
       <button class="lenke" id="topp-laerer">Lærerveiledning</button>
       <button class="lenke" id="topp-elev">Elevveiledning</button>
@@ -70,6 +70,7 @@ function topplinje(tilbake) {
     </nav>`;
   app.prepend(linje);
   linje.querySelector('#topp-tilbake')?.addEventListener('click', () => forlat(() => vis(tilbake)));
+  linje.querySelector('#topp-merke')?.addEventListener('click', () => vis(velkomst));
   linje.querySelector('#topp-laerer').onclick = () => forlat(tilLaerer);
   linje.querySelector('#topp-elev').onclick = () => forlat(tilElev);
   linje.querySelector('#topp-tema').onclick = (e) => {
@@ -97,6 +98,7 @@ function bekreftForlat(videre) {
 }
 
 // Startsiden før første klasse. Her kan læreren se seg rundt uten å fylle ut noe.
+// Landskapet vises uten brett, siden spillbrett og målfelt ikke er valgt ennå.
 function tomHjem() {
   forHjem(`
         <h1 class="hjem-klasse tom-tittel">Velkommen</h1>
@@ -106,7 +108,7 @@ function tomHjem() {
           <button class="knapp knapp-stille" id="gjennomgang">Slik virker det</button>
         </div>
         <p class="hjem-varsel">Vil du lese først? Lærerveiledningen forklarer metoden og forskningen.
-          Elevveiledningen kan du vise på tavla når du introduserer spillet.</p>`);
+          Elevveiledningen kan du vise på tavla når du introduserer spillet.</p>`, { brett: false });
   topplinje(null);
   app.querySelector('#ny-klasse').onclick = () => vis(() => oppsett({ ny: true }));
   app.querySelector('#gjennomgang').onclick = opplaering;
@@ -367,7 +369,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
           <div class="variant-liste">
             <div class="regelsett-kort variant-kort">
               <label class="avkrysning"><input type="radio" name="variant" value="rolig" ${variant === 'rolig' ? 'checked' : ''} />
-                <span><strong>Rolig brett</strong><span class="hjelp">Brikken går ett felt for hvert minutt uten brudd. Lettest å gjennomføre alene.</span></span></label>
+                <span><strong>Fjelltur</strong><span class="hjelp">Hele klassen er ett lag. Brikken går ett felt for hvert minutt uten brudd. Lettest å gjennomføre alene.</span></span></label>
               <div class="variant-felt">
                 <label class="felt-rad"><span>Målfelt</span>
                   <select name="maalfelt">${tallValg(1, 10, inn.maalfelt)}</select></label>
@@ -376,7 +378,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
             </div>
             <div class="regelsett-kort variant-kort">
               <label class="avkrysning"><input type="radio" name="variant" value="brudd" ${variant === 'brudd' ? 'checked' : ''} />
-                <span><strong>Bruddbrett</strong><span class="hjelp">Hvert brudd teller, og en sky driver inn over fjellet. Klassen ser tellingen og får en felles påminnelse, «Husk reglene», uten at noen pekes ut.</span></span></label>
+                <span><strong>Skodde</strong><span class="hjelp">Hele klassen er ett lag. Hvert brudd teller, og en sky driver inn over fjellet. Klassen ser tellingen og får en felles påminnelse, «Husk reglene», uten at noen pekes ut.</span></span></label>
               <div class="variant-felt">
                 <label class="felt-rad"><span>Grense</span>
                   <select name="bruddgrense">${tallValg(3, 20, inn.bruddgrense)}</select></label>
@@ -385,7 +387,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
             </div>
             <div class="regelsett-kort variant-kort">
               <label class="avkrysning"><input type="radio" name="variant" value="lag" ${variant === 'lag' ? 'checked' : ''} />
-                <span><strong>Lagspill</strong><span class="hjelp">Hvert lag har sitt stjernebilde på nattehimmelen og får en stjerne for hvert minutt uten brudd. Krevende alene, fordi du må registrere brudd på riktig lag mens du underviser.</span></span></label>
+                <span><strong>Stjernehimmel</strong><span class="hjelp">To eller tre lag. Hvert lag har sitt stjernebilde og får en stjerne for hvert minutt uten brudd. Krevende alene, fordi du må registrere brudd på riktig lag mens du underviser.</span></span></label>
               <div class="variant-felt">
                 <div class="felt-rader">
                   <label class="felt-rad"><span>Antall lag</span>
@@ -1010,10 +1012,7 @@ function veiledningSide(tilbake) {
 }
 
 function elevSide(tilbake) {
-  const k = klasse();
-  app.innerHTML = elevveiledning(k && {
-    variant: k.variant ?? 'rolig', innstillinger: k.innstillinger, regler: regelsettFor(k).regler.map((r) => r.tekst),
-  });
+  app.innerHTML = elevveiledning();
   topplinje(tilbake);
   const hel = app.querySelector('#fullskjerm');
   if (!document.fullscreenEnabled) hel.hidden = true;

@@ -10,11 +10,11 @@ Appen er laget for læreren og tavla. Læreren registrerer brudd fra PC-en, med 
 
 | Spillform | Slik virker den | Klassen vinner når |
 |---|---|---|
-| Rolig brett | Hele klassen er ett lag. Brikken går ett felt for hvert minutt uten brudd. | Brikken når målfeltet, vanligvis felt 7 |
-| Bruddbrett | Hele klassen er ett lag. Hvert brudd teller, og en sky driver inn over fjellet. | Færre brudd enn grensen, vanligvis 10 |
-| Lagspill | To eller tre lag. Hvert lag får en stjerne for hvert minutt uten brudd. | Minst ett lag har 8 stjerner |
+| Fjelltur | Hele klassen er ett lag. Brikken går ett felt for hvert minutt uten brudd. | Brikken når målfeltet, vanligvis felt 7 |
+| Skodde | Hele klassen er ett lag. Hvert brudd teller, og en sky driver inn over fjellet. | Færre brudd enn grensen, vanligvis 10 |
+| Stjernehimmel | To eller tre lag. Hvert lag får en stjerne for hvert minutt uten brudd. | Minst ett lag har 8 stjerner |
 
-Rolig brett er lettest å gjennomføre alene og er standard.
+Fjelltur er lettest å gjennomføre alene og er standard.
 
 ## Funksjoner
 

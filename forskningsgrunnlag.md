@@ -35,11 +35,11 @@ Alle disse lenkes fra veiledningen, under «Studier omtalt i artiklene».
 
 | Appens navn | Forskningens navn | Lag | Hva registreres | Vinnerkriterium i studiene |
 |---|---|---|---|---|
-| Rolig brett | Modified Good Behavior Board Game (MGBBG) | Hele klassen | Minutter uten brudd. Brikken flyttes ett felt per minutt uten brudd. Ingen påminnelse ved brudd | Brikken når felt 7 i løpet av 10 minutter |
-| Bruddbrett | Good Behavior Board Game (GBBG) | Hele klassen | Hvert brudd. Kollektiv påminnelse ved brudd | Under 10 brudd på 10 minutter |
-| Lagspill | Caught Being Good Game (CBGG) | 2 eller 3 lag | Minutter uten brudd per lag. Én stjerne per minutt, maks 10 | Minst ett lag har 8 stjerner |
+| Fjelltur | Modified Good Behavior Board Game (MGBBG) | Hele klassen | Minutter uten brudd. Brikken flyttes ett felt per minutt uten brudd. Ingen påminnelse ved brudd | Brikken når felt 7 i løpet av 10 minutter |
+| Skodde | Good Behavior Board Game (GBBG) | Hele klassen | Hvert brudd. Kollektiv påminnelse ved brudd | Under 10 brudd på 10 minutter |
+| Stjernehimmel | Caught Being Good Game (CBGG) | 2 eller 3 lag | Minutter uten brudd per lag. Én stjerne per minutt, maks 10 | Minst ett lag har 8 stjerner |
 
-Merknad om bruddbrettet: Cipani (2010), gjengitt i Isaksen 2026, beskriver en utgave der målet gjelder hvert intervall, og brikken flyttes når klassen holder seg under målet i intervallet. I Isaksen 2026 og Stangjordet 2026 ble brikken i stedet flyttet for hvert brudd, og målet gjaldt hele økten. Appen følger de norske studiene.
+Merknad om Skodde (GBBG): Cipani (2010), gjengitt i Isaksen 2026, beskriver en utgave der målet gjelder hvert intervall, og brikken flyttes når klassen holder seg under målet i intervallet. I Isaksen 2026 og Stangjordet 2026 ble brikken i stedet flyttet for hvert brudd, og målet gjaldt hele økten. Appen følger de norske studiene.
 
 Felles for alle varianter i de norske studiene:
 
@@ -212,8 +212,8 @@ For at lærerens tall skal være mest mulig sammenlignbare:
 
 | Funn | Designvalg |
 |---|---|
-| Ingen tydelig forskjell mellom varianter | Standardvariant velges ut fra hva læreren klarer alene: Rolig brett |
-| Lagvarianten er krevende for læreren alene | Lagspill er tilvalg, med to lag som standard |
+| Ingen tydelig forskjell mellom varianter | Standardvariant velges ut fra hva læreren klarer alene: Fjelltur |
+| Lagvarianten er krevende for læreren alene | Stjernehimmel er tilvalg, med to lag som standard |
 | Effekten forsvinner når spillet tas bort | Appen støtter jevnlig bruk, ingen nedtrapping |
 | Halvparten av klassene trengte ikke tiltaket | Kartleggingsmodus |
 | Ingen fast grense for behov | Tolkningshjelp med referansetall og forbehold, læreren vurderer |

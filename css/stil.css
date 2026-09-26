@@ -326,7 +326,19 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
   position: relative;
   z-index: 1;
 }
-.topp-merke { margin: 0; font-family: var(--visning); font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
+.topp-merke {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--tekst);
+  cursor: pointer;
+  font-family: var(--visning);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.topp-merke:hover { text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 2px; }
 .topp-tilbake {
   font: inherit;
   font-weight: 700;
@@ -383,9 +395,26 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
 }
 .elev-steg h2 { font-size: 1.5em; font-weight: 800; letter-spacing: -0.02em; margin: 0.6rem 0 0.4rem; }
 .elev-steg p { margin: 0; }
-.elev-regler { margin: 0; padding-left: 1.2em; font-weight: 700; }
-.elev-regler li + li { margin-top: 0.3em; }
-.elev-merknad { margin-top: 2rem; max-width: 60ch; }
+.elev-under { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 800; letter-spacing: -0.03em; margin-top: clamp(2.5rem, 6vw, 4.5rem); }
+.elev-brett {
+  list-style: none;
+  margin: clamp(1rem, 3vw, 2rem) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  font-size: clamp(1.15rem, 1.7vw, 1.6rem);
+}
+.elev-brett > li {
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  border-radius: 24px;
+  border-top: 8px solid var(--sol);
+  background: var(--flate);
+}
+.elev-brett > li:nth-child(2) { border-top-color: var(--tekst-svak); }
+.elev-brett > li:nth-child(3) { border-top-color: var(--serie-kartlegging); }
+.elev-brett h3 { font-family: var(--visning); font-size: 1.4em; font-weight: 800; margin: 0 0 0.4rem; }
+.elev-brett p { margin: 0; }
 
 /* ---------- Velkomst ---------- */
 .velkomst { position: relative; min-height: 100vh; display: grid; overflow: hidden; }

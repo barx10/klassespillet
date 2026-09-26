@@ -101,19 +101,19 @@ export function veiledning(klasse) {
             Forskningen fant ingen tydelig forskjell mellom spillformene. Velg den du klarer å gjennomføre mens du underviser.</p>
           <div class="veil-varianter">
             <div>
-              <h3>Rolig brett</h3>
+              <h3>Fjelltur</h3>
               <p>Hele klassen er ett lag. Brikken går ett felt for hvert minutt uten brudd. Klassen ser ikke når du registrerer et brudd,
                 bare at brikken blir stående. Kommer brikken til målfeltet, vanligvis felt 7, har klassen vunnet.</p>
               <p class="hjelp">Lettest å gjennomføre alene. Anbefalt å starte med.</p>
             </div>
             <div>
-              <h3>Bruddbrett</h3>
+              <h3>Skodde</h3>
               <p>Hele klassen er ett lag. Hvert brudd teller, og klassen ser tellingen. For hvert brudd driver en sky inn over fjellet,
                 og ved grensen ligger toppen i skodde. Samtidig står «Husk reglene» på tavla, uten at noen pekes ut.
                 Klassen vinner med færre brudd enn grensen, vanligvis 10.</p>
             </div>
             <div>
-              <h3>Lagspill</h3>
+              <h3>Stjernehimmel</h3>
               <p>Klassen deles i to eller tre lag etter hvor elevene sitter. Hvert lag har sitt eget stjernebilde på nattehimmelen,
                 og får en stjerne for hvert minutt uten brudd på laget.
                 Når minst ett lag har 8 stjerner, trekker hele klassen.</p>
@@ -135,9 +135,9 @@ export function veiledning(klasse) {
           <h3>Fjernkontroll og tastatur</h3>
           <p>En presentasjonsfjernkontroll sender piltaster og Page Up og Page Down. Da kan du registrere fra hvor som helst i rommet.</p>
           <dl class="veil-taster">
-            <div><dt><kbd>Mellomrom</kbd> <kbd>Pil ned</kbd> <kbd>Page Down</kbd></dt><dd>Brudd. I lagspill: brudd på lag 1</dd></div>
-            <div><dt><kbd>Pil opp</kbd> <kbd>Page Up</kbd></dt><dd>Brudd på lag 2 i lagspill</dd></div>
-            <div><dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd>Brudd på lag 1, 2 eller 3 i lagspill</dd></div>
+            <div><dt><kbd>Mellomrom</kbd> <kbd>Pil ned</kbd> <kbd>Page Down</kbd></dt><dd>Brudd. På stjernehimmelen: brudd på lag 1</dd></div>
+            <div><dt><kbd>Pil opp</kbd> <kbd>Page Up</kbd></dt><dd>Brudd på lag 2 på stjernehimmelen</dd></div>
+            <div><dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd>Brudd på lag 1, 2 eller 3 på stjernehimmelen</dd></div>
             <div><dt><kbd>P</kbd></dt><dd>Pause og fortsett</dd></div>
             <div><dt><kbd>Esc</kbd></dt><dd>Avslutt, med bekreftelse</dd></div>
           </dl>
@@ -207,33 +207,24 @@ export function veiledning(klasse) {
     </main>`;
 }
 
-// Elevveiledningen vises på tavla når læreren introduserer spillet. Den
-// forklarer spillformen klassen har valgt, men ikke hva som teller som brudd:
-// det går læreren gjennom muntlig, med eksempler.
-// oppsett er null før første klasse. Da forklares rolig brett.
-export function elevveiledning(oppsett) {
-  const variant = oppsett?.variant ?? 'rolig';
-  const inn = oppsett?.innstillinger ?? { maalfelt: 7, bruddgrense: 10, antallLag: 2, stjernekrav: 8 };
-  const regler = oppsett?.regler;
-  const lag = variant === 'lag';
+// Elevveiledningen vises på tavla når læreren introduserer spillet. Den er
+// lik for alle klasser: reglene, målet og spillbrettet velger læreren, og
+// hva som teller som brudd, går læreren gjennom muntlig med eksempler.
+const ELEV_STEG = [
+  ['Reglene', 'Læreren velger reglene vi skal følge. De står nederst på tavla hele tiden, så alle kan se dem.'],
+  ['Ti minutter', 'Vi jobber som vanlig. Læreren følger med og holder telling.'],
+  ['Målet', 'Før vi starter, forteller læreren hva som skal til for å klare det.'],
+  ['Klassens valg', 'Klarer vi det, trekker vi noe fra listen dere har laget. Alle får være med på det som blir trukket.'],
+  ['Vi prøver igjen', 'Klarer vi det ikke, prøver vi igjen neste gang. Ingen blir pekt ut, og ingen får skylda.'],
+];
 
-  const steg = [
-    lag
-      ? ['Vi spiller i lag', `Klassen deles i ${inn.antallLag === 3 ? 'tre' : 'to'} lag etter hvor dere sitter. Hvert lag har sitt eget stjernebilde på himmelen.`]
-      : ['Vi er ett lag', 'Hele klassen spiller sammen. Enten klarer vi det sammen, eller så prøver vi igjen sammen.'],
-    ['Tre regler', regler
-      ? `<ol class="elev-regler">${regler.map((r) => `<li>${esc(r)}</li>`).join('')}</ol>`
-      : 'Reglene står nederst på tavla hele tiden. Læreren viser eksempler før vi starter.'],
-    ['Ti minutter', 'Vi jobber som vanlig. Læreren følger med og holder telling.'],
-    {
-      rolig: ['Brikken går mot toppen', `For hvert minutt alle følger reglene, går brikken ett steg opp mot fjellet. Når den kommer til felt ${inn.maalfelt}, har vi klart det.`],
-      brudd: ['Hold skyene unna', `Hver gang en regel blir brutt, driver en sky inn over fjellet. Har vi færre enn ${inn.bruddgrense} brudd når tiden er ute, har vi klart det.`],
-      lag: ['Tenn stjernene', `For hvert minutt laget følger reglene, tennes en stjerne. Når ett lag har ${inn.stjernekrav} stjerner, har hele klassen klart det.`],
-    }[variant],
-    ['Klassens valg', 'Klarer vi det, trekker vi noe fra listen dere har laget. Alle får være med på det som blir trukket.'],
-    ['Vi prøver igjen', 'Klarer vi det ikke, prøver vi igjen neste gang. Ingen blir pekt ut, og ingen får skylda.'],
-  ];
+const ELEV_BRETT = [
+  ['Fjelltur', 'Hele klassen er ett lag. For hvert minutt alle følger reglene, går brikken ett steg opp mot fjellet. Når brikken når flagget, har vi klart det.'],
+  ['Skodde', 'Hele klassen er ett lag. Hver gang en regel blir brutt, driver en sky inn over fjellet. Er toppen fortsatt fri for skodde når tiden er ute, har vi klart det.'],
+  ['Stjernehimmel', 'Klassen deles i lag. Hvert lag har sitt eget stjernebilde. For hvert minutt laget følger reglene, tennes en stjerne. Når ett lag har nok stjerner, har hele klassen klart det.'],
+];
 
+export function elevveiledning() {
   return `
     <main class="elev">
       <header class="elev-topp">
@@ -241,9 +232,11 @@ export function elevveiledning(oppsett) {
         <button class="knapp knapp-stille" id="fullskjerm">Fullskjerm</button>
       </header>
       <ol class="elev-steg">
-        ${steg.map(([tittel, tekst]) => `
-          <li><h2>${tittel}</h2>${tekst.startsWith('<') ? tekst : `<p>${tekst}</p>`}</li>`).join('')}
+        ${ELEV_STEG.map(([tittel, tekst]) => `<li><h2>${tittel}</h2><p>${tekst}</p></li>`).join('')}
       </ol>
-      <p class="hjelp elev-merknad">Til læreren: Vis siden på tavla før første økt. Gå gjennom hver regel med eksempler på hva som er brudd og hva som ikke er det.</p>
+      <h2 class="elev-under">Tre spillbrett</h2>
+      <ul class="elev-brett">
+        ${ELEV_BRETT.map(([tittel, tekst]) => `<li><h3>${tittel}</h3><p>${tekst}</p></li>`).join('')}
+      </ul>
     </main>`;
 }

@@ -33,6 +33,8 @@ Konsekvenser for designet:
 
 ## 4. Spillvarianter
 
+Navn i appen fra 26.09.2026: Rolig brett heter Fjelltur, Bruddbrett heter Skodde, og Lagspill heter Stjernehimmel. Navnene er de samme for lærer og elever. Den interne verdien `variant` er uendret (`rolig`, `brudd`, `lag`).
+
 Alle varianter: ti intervaller på ett minutt, tre regler, belønning trekkes når målet er nådd.
 
 ### 4.1 Rolig brett (standard, modifisert Good Behavior Board Game)
@@ -301,7 +303,7 @@ Status 26.09.2026: fase 1–4 er ferdige. Rolig brett, bruddbrett (skyer) og lag
 
 Status fase 5: opplæringen (`js/opplaering.js`), om-vinduet (`js/om.js`) og bunnteksten er på plass. Mobil og stående skjerm er sjekket, og knappene og tellingen er rettet for smale skjermer. Logoen ligger i `ikoner/logo.png` og vises i om-vinduet.
 
-Navigasjon etter fase 5: velkomstskjerm hver gang appen åpnes. Topplinje på alle sider utenom velkomst og spill, med Tilbake, Lærerveiledning, Elevveiledning og lys/mørk visning. Startsiden uten klasse lar læreren se seg rundt uten å fylle ut noe. Oppsettet spør før endringer forkastes. Elevveiledningen viser spillformen og reglene klassen har valgt, men ikke hva som er brudd.
+Navigasjon etter fase 5: velkomstskjerm hver gang appen åpnes. Topplinje på alle sider utenom velkomst og spill, med Tilbake, Lærerveiledning, Elevveiledning og lys/mørk visning. Startsiden uten klasse lar læreren se seg rundt uten å fylle ut noe. Oppsettet spør før endringer forkastes. Elevveiledningen er lik for alle klasser: fem steg og de tre spillbrettene, uten tall, regler eller hva som er brudd, siden læreren velger det.
 
 ## 10. Testkrav
 
