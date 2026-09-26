@@ -103,14 +103,14 @@ export function veiledning(klasse) {
             <div>
               <h3>Fjelltur</h3>
               <p>Hele klassen er ett lag. Brikken går ett felt for hvert minutt uten brudd. Klassen ser ikke når du registrerer et brudd,
-                bare at brikken blir stående. Kommer brikken til målfeltet, vanligvis felt 7, har klassen vunnet.</p>
+                bare at brikken blir stående. Kommer brikken til målfeltet du har valgt i oppsettet, har klassen vunnet. I studiene var målet felt 7.</p>
               <p class="hjelp">Lettest å gjennomføre alene. Anbefalt å starte med.</p>
             </div>
             <div>
               <h3>Skodde</h3>
               <p>Hele klassen er ett lag. Hvert brudd teller, og klassen ser tellingen. For hvert brudd driver en sky inn over fjellet,
                 og ved grensen ligger toppen i skodde. Samtidig står «Husk reglene» på tavla, uten at noen pekes ut.
-                Klassen vinner med færre brudd enn grensen, vanligvis 10.</p>
+                Klassen vinner med færre brudd enn grensen du har valgt i oppsettet. I studiene var grensen 10.</p>
             </div>
             <div>
               <h3>Stjernehimmel</h3>
