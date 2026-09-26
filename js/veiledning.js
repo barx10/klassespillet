@@ -97,6 +97,7 @@ export function veiledning(klasse) {
 
         <section id="spille">
           <h2>Slik spiller du</h2>
+          <div class="anim-plass"></div>
           <p>En økt varer ti minutter, delt i ti minutter som telles hver for seg. Start når klassen har kommet til ro.
             Forskningen fant ingen tydelig forskjell mellom spillformene. Velg den du klarer å gjennomføre mens du underviser.</p>
           <div class="veil-varianter">
@@ -231,6 +232,7 @@ export function elevveiledning() {
         <h1>Slik spiller vi</h1>
         <button class="knapp knapp-stille" id="fullskjerm">Fullskjerm</button>
       </header>
+      <div class="anim-plass"></div>
       <ol class="elev-steg">
         ${ELEV_STEG.map(([tittel, tekst]) => `<li><h2>${tittel}</h2><p>${tekst}</p></li>`).join('')}
       </ol>

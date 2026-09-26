@@ -416,6 +416,37 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
 .elev-brett h3 { font-family: var(--visning); font-size: 1.4em; font-weight: 800; margin: 0 0 0.4rem; }
 .elev-brett p { margin: 0; }
 
+/* ---------- Animasjonen i veiledningene ---------- */
+.anim { margin: 1.25rem 0 1.75rem; }
+.anim-bilde {
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--himmel-bunn);
+  box-shadow: inset 0 0 0 2px var(--kant);
+}
+.animasjon { display: block; width: 100%; height: 100%; }
+/* Tegningen styres bilde for bilde, så ingen overganger skal forsinke den. */
+.animasjon * { transition: none !important; }
+.anim-tekst { margin: 0.9rem 0 0; min-height: 3em; font-size: 1.1em; text-wrap: balance; }
+.anim-knapper { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.75rem; }
+.anim-knapper[hidden] { display: none; }
+.elev .anim { margin: clamp(1.5rem, 4vw, 3rem) 0 0; }
+.elev .anim-tekst { font-size: clamp(1.2rem, 2vw, 1.8rem); }
+.animasjon .regler-band { fill: var(--regler-bakgrunn); }
+.animasjon .regel-sirkel { fill: var(--sol); }
+.animasjon .regel-tall { fill: var(--fjord); font-family: var(--visning); font-size: 34px; font-weight: 800; text-anchor: middle; dominant-baseline: central; }
+.animasjon .regel-strek { fill: none; stroke: var(--regler-tekst); stroke-width: 7; stroke-linecap: round; opacity: 0.85; }
+.animasjon .anim-konfetti .rod { fill: var(--varde-rod); }
+.animasjon .anim-konfetti .gul { fill: var(--sol); }
+.animasjon .anim-konfetti .hvit { fill: #FFFFFF; }
+.animasjon .krukke-glass { fill: #FFFFFF; fill-opacity: 0.55; stroke: var(--fjord); stroke-width: 6; }
+.animasjon .krukke-kant { fill: var(--fjord); }
+.animasjon .krukke-lapp { fill: #FFFFFF; stroke: var(--fjord); stroke-width: 3; }
+.animasjon .lapp-ark { fill: #FFFFFF; stroke: var(--fjord); stroke-width: 5; }
+.animasjon .lapp-linje { stroke: var(--kant); stroke-width: 8; stroke-linecap: round; }
+.animasjon .anim-sky circle { fill: var(--sky); }
+
 /* ---------- Velkomst ---------- */
 .velkomst { position: relative; min-height: 100vh; display: grid; overflow: hidden; }
 .velkomst-landskap { position: absolute; inset: 0; }

@@ -8,6 +8,7 @@ const FILER = [
   'index.html',
   'manifest.webmanifest',
   'css/stil.css',
+  'js/animasjon.js',
   'js/app.js',
   'js/diagram.js',
   'js/lager.js',
