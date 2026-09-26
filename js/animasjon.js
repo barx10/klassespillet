@@ -7,7 +7,7 @@ import { lagLandskap, punkt } from './landskap.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 export const VARIGHET = 30000;
-const MAALFELT = 7;
+const MAALFELT = 10;
 
 // Teksten under animasjonen i appen. Samme tekst som fortellerstemmen i manuset.
 export const TEKSTER = [
@@ -18,9 +18,10 @@ export const TEKSTER = [
   [25000, 'Klarer vi det ikke, prøver vi igjen neste gang. Ingen blir pekt ut.'],
 ];
 
-// Når brikken hopper til hvert felt, i millisekunder.
-const HOPP = [13000, 14000, 15000, 16000, 17000, 18000, 20300];
-const HOPPTID = 600;
+// Når brikken hopper til hvert felt, i millisekunder. Det siste hoppet, til
+// flagget på toppen, kommer etter at flagget er reist.
+const HOPP = [...Array.from({ length: 9 }, (_, i) => 13000 + i * 700), 20300];
+const HOPPTID = 550;
 
 const klem = (x) => Math.max(0, Math.min(1, x));
 const andel = (t, fra, til) => klem((t - fra) / (til - fra));
@@ -43,7 +44,8 @@ export function lagAnimasjon() {
   const land = lagLandskap(MAALFELT);
   land.removeAttribute('role');
   land.removeAttribute('aria-label');
-  for (const [k, v] of Object.entries({ x: 0, y: 0, width: 1600, height: 760, preserveAspectRatio: 'xMidYMax slice' })) land.setAttribute(k, v);
+  // Litt mer himmel enn i spillet, så flagget og brikken på toppen får plass.
+  for (const [k, v] of Object.entries({ x: 0, y: 0, width: 1600, height: 760, viewBox: '-105 40 1810 860', preserveAspectRatio: 'xMidYMid meet' })) land.setAttribute(k, v);
   Object.assign(land.style, { width: '1600px', height: '760px', overflow: 'hidden' });
   svg.append(land);
 
@@ -68,7 +70,7 @@ export function lagAnimasjon() {
   const biter = Array.from({ length: 18 }, (_, i) => {
     const v = (i / 18) * Math.PI * 2 + (i % 3) * 0.2;
     const r = el('rect', { width: 14, height: 8, rx: 2, class: i % 3 === 0 ? 'rod' : i % 3 === 1 ? 'gul' : 'hvit' }, konfetti);
-    return { r, dx: Math.cos(v), dy: Math.sin(v) - 0.6, fart: 120 + (i % 4) * 35 };
+    return { r, dx: Math.cos(v), dy: Math.sin(v) * 0.7 - 0.1, fart: 120 + (i % 4) * 35 };
   });
 
   // Krukka med lapper, til venstre på himmelen.
