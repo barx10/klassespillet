@@ -98,6 +98,7 @@ function bekreftForlat(videre) {
 }
 
 // Startsiden før første klasse. Her kan læreren se seg rundt uten å fylle ut noe.
+// Landskapet vises uten brett, siden spillbrett og målfelt ikke er valgt ennå.
 function tomHjem() {
   forHjem(`
         <h1 class="hjem-klasse tom-tittel">Velkommen</h1>
@@ -107,7 +108,7 @@ function tomHjem() {
           <button class="knapp knapp-stille" id="gjennomgang">Slik virker det</button>
         </div>
         <p class="hjem-varsel">Vil du lese først? Lærerveiledningen forklarer metoden og forskningen.
-          Elevveiledningen kan du vise på tavla når du introduserer spillet.</p>`);
+          Elevveiledningen kan du vise på tavla når du introduserer spillet.</p>`, { brett: false });
   topplinje(null);
   app.querySelector('#ny-klasse').onclick = () => vis(() => oppsett({ ny: true }));
   app.querySelector('#gjennomgang').onclick = opplaering;
