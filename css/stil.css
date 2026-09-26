@@ -140,8 +140,12 @@
 
 /* ---------- Grunnlag ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html, body { height: 100%; margin: 0; }
+html { height: 100%; }
 body {
+  margin: 0;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
   font-family: var(--skrift);
   background: var(--bakgrunn);
   color: var(--tekst);
@@ -151,6 +155,17 @@ body {
 }
 h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: balance; }
 :focus-visible { outline: 4px solid var(--sol); outline-offset: 3px; }
+
+/* Sidene fyller skjermen, og bunnteksten står under dem. */
+#app { flex: 1; display: flex; flex-direction: column; }
+#app > main { flex: 1 0 auto; }
+.bunntekst {
+  padding: 1rem clamp(1.25rem, 4vw, 3rem);
+  font-size: 0.85em;
+  color: var(--tekst-svak);
+}
+.bunntekst .lenke { font-size: 1em; margin-left: 1rem; }
+.uten-bunntekst .bunntekst { display: none; }
 
 .knapp {
   font: inherit;
@@ -261,7 +276,6 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
 
 /* ---------- Hjem ---------- */
 .hjem {
-  min-height: 100vh;
   display: grid;
   grid-template-columns: minmax(20rem, 40rem) 1fr;
   align-items: stretch;
@@ -320,7 +334,7 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
 .klasse-navn { font-family: var(--visning); font-size: 2rem; font-weight: 800; letter-spacing: -0.02em; }
 
 /* Innstillinger er sjeldne; de ligger som lenker under hovedknappene. */
-.hjem-lenker { display: flex; gap: 1.5rem; margin-top: 2rem; }
+.hjem-lenker { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin-top: 2rem; }
 .lenke {
   font: inherit;
   font-size: 0.95em;
@@ -376,7 +390,7 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
 .regelsett-valg input:focus-visible + span { outline: 4px solid var(--sol); outline-offset: 3px; }
 
 /* ---------- Oppsett ---------- */
-.oppsett { min-height: 100vh; padding: clamp(1.5rem, 5vw, 4rem); }
+.oppsett { padding: clamp(1.5rem, 5vw, 4rem); }
 .skjema { max-width: 38rem; margin: 0 auto; }
 .skjema h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 800; letter-spacing: -0.02em; }
 .skjema-ingress { color: var(--tekst-svak); max-width: 44ch; }
@@ -770,6 +784,22 @@ textarea { resize: vertical; line-height: 1.5; }
 .dialog::backdrop { background: rgba(11, 27, 43, 0.5); }
 .dialog p { margin: 0; }
 
+/* Om */
+.om { max-width: 34rem; width: calc(100% - 2rem); }
+.om h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
+.om-person { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--kant); display: grid; gap: 0.5rem; }
+.om-person h3 { margin: 0; }
+/* Logoen har hvit bakgrunn, så den får en hvit flate også i mørk visning. */
+.om-logo { width: min(16rem, 100%); height: auto; aspect-ratio: 2.05; object-fit: cover; object-position: 50% 30%; padding: 0.4rem; border-radius: 12px; background: #FFFFFF; }
+.om a { color: var(--tekst); }
+
+/* Opplæring */
+.opplaering { max-width: 34rem; width: calc(100% - 2rem); }
+.opplaering-steg { color: var(--tekst-svak); font-size: 0.85em; }
+.opplaering h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; margin-top: 0.4rem; }
+.opplaering-tekst { display: grid; gap: 0.75rem; margin-top: 1rem; }
+.opplaering .hjem-lenker { margin-top: 1rem; }
+
 /* ---------- Kartlegging ---------- */
 .spill-kartlegging { grid-template-rows: 1fr; }
 .spill-kartlegging .brett-klasse { font-size: clamp(2rem, 4vw, 3.5rem); }
@@ -778,7 +808,6 @@ textarea { resize: vertical; line-height: 1.5; }
 
 /* ---------- Logg ---------- */
 .logg {
-  min-height: 100vh;
   max-width: 68rem;
   margin: 0 auto;
   padding: clamp(1.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 3rem);
@@ -931,7 +960,9 @@ kbd {
   .veil-innhold { position: static; margin-bottom: 2.5rem; }
   .veil-taster > div { grid-template-columns: 1fr; gap: 0.3rem; }
   .resultat { width: auto; right: 1.25rem; }
-  .maaler { top: 5.5rem; max-width: 90%; }
+  .maaler { top: 5.5rem; left: 1rem; right: 1rem; translate: none; width: fit-content; max-width: none; margin: 0 auto; }
+  .styring { left: 0.75rem; flex-wrap: wrap; justify-content: flex-end; }
+  .styring .knapp-brudd { padding: 0.9em 1.3em; }
 }
 
 @media (prefers-reduced-motion: reduce) {

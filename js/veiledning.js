@@ -71,7 +71,10 @@ export function veiledning(klasse) {
         <h1>Veiledning</h1>
         <p class="skjema-ingress">Klassespillet bygger på Good Behavior Game. Klassen spiller sammen om å følge tre regler i ti minutter.
           Når de klarer det, trekker dere noe fra en liste elevene selv har foreslått.</p>
-        <button class="knapp knapp-hoved" id="tilbake">Tilbake</button>
+        <div class="hjem-knapper">
+          <button class="knapp knapp-hoved" id="tilbake">Tilbake</button>
+          <button class="knapp knapp-stille" id="vis-opplaering">Vis kort gjennomgang</button>
+        </div>
       </header>
 
       <nav class="veil-innhold" aria-label="Innhold">

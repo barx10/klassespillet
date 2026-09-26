@@ -14,6 +14,8 @@ const FILER = [
   'js/landskap.js',
   'js/logg.js',
   'js/okt.js',
+  'js/om.js',
+  'js/opplaering.js',
   'js/regler.js',
   'js/veiledning.js',
   'fonts/atkinson-next-latin.woff2',
@@ -24,6 +26,7 @@ const FILER = [
   'ikoner/ikon-180.png',
   'ikoner/ikon-192.png',
   'ikoner/ikon-512.png',
+  'ikoner/logo.png',
 ];
 
 self.addEventListener('install', (e) => {

@@ -299,6 +299,8 @@ Status 26.09.2026: fase 1–4 er ferdige. Rolig brett, bruddbrett (skyer) og lag
 - Sjekk mobil og stående skjerm for bruddbrett og lagspill. Det er ikke gjort ennå.
 - Nye filer, for eksempel logoen, må legges inn i `sw.js`. Testen i `tests/frakoblet.test.js` fanger det opp.
 
+Status fase 5: opplæringen (`js/opplaering.js`), om-vinduet (`js/om.js`) og bunnteksten er på plass. Mobil og stående skjerm er sjekket, og knappene og tellingen er rettet for smale skjermer. Logoen ligger i `ikoner/logo.png` og vises i om-vinduet.
+
 ## 10. Testkrav
 
 - Tidtaker holder riktig tid når fanen er i bakgrunnen i ti minutter.
