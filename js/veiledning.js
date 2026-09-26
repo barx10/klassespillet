@@ -5,6 +5,38 @@ import { BIBLIOTEK } from './regler.js';
 
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 
+// Kildene i forskningsgrunnlag.md, med lenke til fulltekst. KILDER er de to artiklene
+// tallene er hentet fra. OMTALTE er studier som bare er gjengitt i dem.
+const KILDER = [
+  ['Stangjordet, P., Isaksen, J. og Strømgren, B. (2026). Effektforskjeller mellom Caught Being Good Game, Good Behavior Board Game og en modifisert versjon av Good Behavior Board Game på elever i grunnskolen.',
+    'Norsk Tidsskrift for Atferdsanalyse', '53, 43–57.', 'https://nta.atferd.no/getFile.ashx?IdFile=3100'],
+  ['Isaksen, J., Stangjordet, P., Johannessen, T. M., Majkic, K., Ottersen, K. O. og Viken, K. (2026). Hvilken effekt har Caught Being Good Game og Good Behavior Board Game på forstyrrende atferd og arbeidsro på sjette trinn i barneskolen?',
+    'Norsk Tidsskrift for Atferdsanalyse', '53, 31–42.', 'https://nta.atferd.no/getFile.ashx?IdFile=3099'],
+];
+
+const OMTALTE = [
+  ['Viken, K., Johannessen, T. M., Fredheim, O. R., Vorum, I., Ottersen, K.-O. og Isaksen, J. (2024). Hvilken effekt har Caught Being Good Game på forstyrrende atferd i klasserommet?',
+    'Norsk Tidsskrift for Atferdsanalyse', '51, 205–222.', 'https://nta.atferd.no/getFile.ashx?IdFile=2920'],
+  ['Strømgren, B. og Sørheim, D. G. (2015). Evaluering av the Good Behavior Board Game, en variant av the Good Behavior Game.',
+    'Norsk Tidsskrift for Atferdsanalyse', '42, 1–19.', 'https://nta.atferd.no/getFile.ashx?IdFile=1270'],
+  ['Berge, V. R. og Ødegård, E. P. (2024). Good Behavior Game med elementer fra PAX: Et tilpasset klasseromstiltak.',
+    'Norsk Tidsskrift for Atferdsanalyse', '51, 57–69.', 'https://nta.atferd.no/getFile.ashx?IdFile=2910'],
+  ['Barrish, H. H., Saunders, M. og Wolf, M. M. (1969). Good Behavior Game: Effects of individual contingencies for group consequences on disruptive behavior in a classroom.',
+    'Journal of Applied Behavior Analysis', '2, 119–124.', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC1311049/'],
+  ['Cipani, E. (2010). The Class-wide Good Behavior Board Game.', 'ERIC', 'ED512078.', 'https://files.eric.ed.gov/fulltext/ED512078.pdf'],
+  ['Ford, W. B., Radley, K. C., Tingstrom, D. H. og Dufrene, B. A. (2020). Efficacy of a no-team version of the Good Behavior Game in high school classrooms.',
+    'Journal of Positive Behavior Interventions', '22(3), 181–190.', 'https://doi.org/10.1177/1098300719890059'],
+  ['Bowman-Perrott, L., Burke, M. D., Zaini, S., Zhang, N. og Vannest, K. (2016). Promoting positive behavior using the Good Behavior Game: A meta-analysis of single-case research.',
+    'Journal of Positive Behavior Interventions', '18(3), 180–190.', 'https://doi.org/10.1177/1098300715592355'],
+  ['Kellam, S. G., Mackenzie, A. C., Brown, C. H., Poduska, J. M., Wang, W., Petras, H. og Wilcox, H. C. (2011). The Good Behavior Game and the future of prevention and treatment.',
+    'Addiction Science & Clinical Practice', '6(1), 73–84.', 'https://pmc.ncbi.nlm.nih.gov/articles/PMC3188824/'],
+  ['Kellam, S. G., Wang, W., Mackenzie, A. C. L., Brown, C. H., Ompad, D. C., Or, F., Ialongo, N. S., Poduska, J. M. og Windham, A. (2014). The impact of the Good Behavior Game, a universal classroom-based preventive intervention in first and second grades, on high-risk sexual behaviors and drug abuse and dependence disorders into young adulthood.',
+    'Prevention Science', '15(1), 6–18.', 'https://doi.org/10.1007/s11121-012-0296-z'],
+];
+
+const kilde = ([ref, tidsskrift, rest, url]) =>
+  `<li>${esc(ref)} <cite>${esc(tidsskrift)}</cite>, ${esc(rest)} <a href="${url}" target="_blank" rel="noopener">Les artikkelen</a></li>`;
+
 export const AVSNITT = [
   ['for-start', 'Før første økt'],
   ['spille', 'Slik spiller du'],
@@ -152,12 +184,12 @@ export function veiledning(klasse) {
           </ul>
           <p class="hjelp">Grunnlaget er fire klasser. Klassen på 6. trinn er med i begge artiklene, så de er ikke to uavhengige bekreftelser.</p>
           <h3>Kilder</h3>
-          <ul class="veil-kilder">
-            <li>Stangjordet, P., Isaksen, J. og Strømgren, B. (2026). Effektforskjeller mellom Caught Being Good Game, Good Behavior Board Game og en modifisert versjon av Good Behavior Board Game på elever i grunnskolen. <cite>Norsk Tidsskrift for Atferdsanalyse</cite>, 53, 43–57.</li>
-            <li>Isaksen, J., Stangjordet, P., Johannessen, T. M., Majkic, K., Ottersen, K. O. og Viken, K. (2026). Hvilken effekt har Caught Being Good Game og Good Behavior Board Game på forstyrrende atferd og arbeidsro på sjette trinn i barneskolen? <cite>Norsk Tidsskrift for Atferdsanalyse</cite>, 53, 31–42.</li>
-            <li>Barrish, H. H., Saunders, M. og Wolf, M. M. (1969). Good Behavior Game. <cite>Journal of Applied Behavior Analysis</cite>, 2, 119–124.</li>
-            <li>Funnene om lærerens ros er fra Strømgren og Sørheim (2015) og Viken mfl. (2024), slik de er gjengitt i Stangjordet mfl. (2026).</li>
-          </ul>
+          <p class="hjelp">Tallene i veiledningen er hentet fra disse to artiklene. Begge er gratis PDF-er fra Norsk Tidsskrift for Atferdsanalyse.</p>
+          <ul class="veil-kilder">${KILDER.map(kilde).join('')}</ul>
+          <h3>Studier omtalt i artiklene</h3>
+          <p class="hjelp">Disse studiene er gjengitt i de to artiklene over. Funnene om lærerens ros er fra Strømgren og Sørheim (2015) og Viken mfl. (2024).
+            Langtidsstudiene til Kellam mfl. gjelder 1. og 2. trinn i USA og sier ikke noe om hva spillet gir i norske klasser.</p>
+          <ul class="veil-kilder">${OMTALTE.map(kilde).join('')}</ul>
         </section>
 
         <section id="personvern">

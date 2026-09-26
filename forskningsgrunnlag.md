@@ -20,12 +20,16 @@ Dette dokumentet samler det forskningen sier, og det den ikke sier. Det er skrev
 
 Studier som bare er omtalt i de to norske artiklene, og ikke lest i fulltekst:
 
-- Viken mfl. (2024): lagvarianten (CBGG) på tre trinn i barneskolen, med registrering av læreratferd.
-- Strømgren og Sørheim (2015): bruddbrettet (GBBG) på 1., 4. og 7. trinn, med opplæring av lærerne.
-- Ford mfl. (2020): helklassevariant på videregående skole.
-- Bowman-Perrott mfl. (2016): metaanalyse av 21 studier.
-- Kellam mfl. (2011, 2014): langtidsstudier fra 1. og 2. trinn i USA.
-- Cipani (2010): beskrivelse av bruddbrettet (GBBG).
+- Viken, K., Johannessen, T. M., Fredheim, O. R., Vorum, I., Ottersen, K.-O. og Isaksen, J. (2024). Hvilken effekt har Caught Being Good Game på forstyrrende atferd i klasserommet? *Norsk Tidsskrift for Atferdsanalyse*, 51, 205–222. https://nta.atferd.no/getFile.ashx?IdFile=2920. Lagvarianten (CBGG) på tre trinn i barneskolen, med registrering av læreratferd.
+- Strømgren, B. og Sørheim, D. G. (2015). Evaluering av the Good Behavior Board Game, en variant av the Good Behavior Game. *Norsk Tidsskrift for Atferdsanalyse*, 42, 1–19. https://nta.atferd.no/getFile.ashx?IdFile=1270. Bruddbrettet (GBBG) på 1., 4. og 7. trinn, med opplæring av lærerne.
+- Berge, V. R. og Ødegård, E. P. (2024). Good Behavior Game med elementer fra PAX: Et tilpasset klasseromstiltak. *Norsk Tidsskrift for Atferdsanalyse*, 51, 57–69. https://nta.atferd.no/getFile.ashx?IdFile=2910. 1. og 2. trinn.
+- Ford, W. B., Radley, K. C., Tingstrom, D. H. og Dufrene, B. A. (2020). Efficacy of a no-team version of the Good Behavior Game in high school classrooms. *Journal of Positive Behavior Interventions*, 22(3), 181–190. https://doi.org/10.1177/1098300719890059. Helklassevariant på videregående skole.
+- Bowman-Perrott, L., Burke, M. D., Zaini, S., Zhang, N. og Vannest, K. (2016). Promoting positive behavior using the Good Behavior Game: A meta-analysis of single-case research. *Journal of Positive Behavior Interventions*, 18(3), 180–190. https://doi.org/10.1177/1098300715592355. Metaanalyse av 21 studier.
+- Kellam, S. G. mfl. (2011). The Good Behavior Game and the future of prevention and treatment. *Addiction Science & Clinical Practice*, 6(1), 73–84. https://pmc.ncbi.nlm.nih.gov/articles/PMC3188824/
+- Kellam, S. G. mfl. (2014). The impact of the Good Behavior Game, a universal classroom-based preventive intervention in first and second grades, on high-risk sexual behaviors and drug abuse and dependence disorders into young adulthood. *Prevention Science*, 15(1), 6–18. https://doi.org/10.1007/s11121-012-0296-z. Langtidsstudier fra 1. og 2. trinn i USA.
+- Cipani, E. (2010). *The Class-wide Good Behavior Board Game* (ERIC ED512078). https://files.eric.ed.gov/fulltext/ED512078.pdf. Beskrivelse av bruddbrettet (GBBG).
+
+Alle disse lenkes fra veiledningen, under «Studier omtalt i artiklene».
 
 ## 2. Variantene
 
