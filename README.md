@@ -23,12 +23,13 @@ Rolig brett er lettest å gjennomføre alene og er standard.
 - Kartlegging uten spill, så læreren ser om klassen trenger tiltaket.
 - Logg med diagram og nedlasting som CSV.
 - Påminnelse om å rose, og om å samle nye forslag til klassens valg.
-- Veiledning med forskningsgrunnlag og lenker til studiene.
+- Lærerveiledning med forskningsgrunnlag og lenker til studiene.
+- Elevveiledning som vises på tavla når spillet introduseres.
 - Virker uten nett etter første besøk, og kan installeres som app.
 
 ## Forskning
 
-Appen bygger på to norske studier fra 2026 i *Norsk Tidsskrift for Atferdsanalyse* og studiene de viser til. Hva forskningen sier, og hva den ikke sier, står i [forskningsgrunnlag.md](forskningsgrunnlag.md). Veiledningen i appen lenker til alle studiene.
+Appen bygger på to norske studier fra 2026 i *Norsk Tidsskrift for Atferdsanalyse* og studiene de viser til. Hva forskningen sier, og hva den ikke sier, står i [forskningsgrunnlag.md](forskningsgrunnlag.md). Lærerveiledningen i appen lenker til alle studiene.
 
 ## Personvern
 
@@ -52,7 +53,7 @@ npm test    # testene, med Node sin innebygde testløper
 | `js/regler.js` | Regelbiblioteket og forslag til klassens valg |
 | `js/landskap.js` | Landskapet, brettet, skyene og stjernebildene |
 | `js/logg.js`, `js/diagram.js` | Loggen, CSV og diagrammet |
-| `js/veiledning.js`, `js/opplaering.js`, `js/om.js` | Veiledning, kort gjennomgang og om-vinduet |
+| `js/veiledning.js`, `js/opplaering.js`, `js/om.js` | Lærer- og elevveiledning, kort gjennomgang og om-vinduet |
 | `sw.js` | Frakoblet bruk. Nye filer må legges inn her |
 | `tests/` | Testene |
 | `plan-klassespillet.md` | Planen og byggerekkefølgen |

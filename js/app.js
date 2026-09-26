@@ -4,8 +4,8 @@ import * as Okt from './okt.js';
 import { lagLandskap, punkt } from './landskap.js';
 import * as Logg from './logg.js';
 import { lagDiagram } from './diagram.js';
-import { veiledning } from './veiledning.js';
-import { visOpplaering, erSett } from './opplaering.js';
+import { veiledning, elevveiledning } from './veiledning.js';
+import { visOpplaering } from './opplaering.js';
 import { visOm } from './om.js';
 
 const app = document.getElementById('app');
@@ -35,19 +35,87 @@ function erMorkt() {
 
 // ---------- Visninger ----------
 
+// naa er visningen som vises, så veiledningene vet hvor Tilbake skal gå.
+// forlat spør først når oppsettet har endringer som ikke er lagret.
+let naa = null;
+let forlat = (videre) => videre();
+
 function vis(visning) {
   stopp();
   stopp = () => {};
+  forlat = (videre) => videre();
+  naa = visning;
   app.innerHTML = '';
   document.body.classList.remove('uten-bunntekst');
   visning();
 }
 
-const opplaering = () => visOpplaering({ tilVeiledning: () => vis(() => veiledningSide(hjem)) });
+const tilLaerer = () => { const fra = naa; vis(() => veiledningSide(fra)); };
+const tilElev = () => { const fra = naa; vis(() => elevSide(fra)); };
+const opplaering = () => visOpplaering({ tilVeiledning: () => forlat(tilLaerer) });
+
+// Topplinja står på alle sider utenom velkomst og spill. Uten tilbake er
+// dette hjem, og da står navnet på appen der Tilbake ellers står.
+function topplinje(tilbake) {
+  const linje = document.createElement('header');
+  linje.className = 'topplinje';
+  linje.innerHTML = `
+    ${tilbake
+      ? '<button class="topp-tilbake" id="topp-tilbake"><span aria-hidden="true">‹</span> Tilbake</button>'
+      : '<p class="topp-merke">Klassespillet</p>'}
+    <nav class="topp-meny" aria-label="Meny">
+      <button class="lenke" id="topp-laerer">Lærerveiledning</button>
+      <button class="lenke" id="topp-elev">Elevveiledning</button>
+      <button class="lenke" id="topp-tema">${erMorkt() ? 'Lys visning' : 'Mørk visning'}</button>
+    </nav>`;
+  app.prepend(linje);
+  linje.querySelector('#topp-tilbake')?.addEventListener('click', () => forlat(() => vis(tilbake)));
+  linje.querySelector('#topp-laerer').onclick = () => forlat(tilLaerer);
+  linje.querySelector('#topp-elev').onclick = () => forlat(tilElev);
+  linje.querySelector('#topp-tema').onclick = (e) => {
+    settTema(erMorkt() ? 'lys' : 'mork');
+    e.currentTarget.textContent = erMorkt() ? 'Lys visning' : 'Mørk visning';
+  };
+}
+
+// Spør før endringer i oppsettet forkastes.
+function bekreftForlat(videre) {
+  const d = document.createElement('dialog');
+  d.className = 'dialog';
+  d.innerHTML = `
+    <p>Du har endringer som ikke er lagret.</p>
+    <form method="dialog" class="hjem-knapper">
+      <button class="knapp knapp-hoved" value="bli">Fortsett å redigere</button>
+      <button class="knapp knapp-stille" value="forkast">Forkast endringene</button>
+    </form>`;
+  document.body.append(d);
+  d.addEventListener('close', () => {
+    d.remove();
+    if (d.returnValue === 'forkast') videre();
+  });
+  d.showModal();
+}
+
+// Startsiden før første klasse. Her kan læreren se seg rundt uten å fylle ut noe.
+function tomHjem() {
+  forHjem(`
+        <h1 class="hjem-klasse tom-tittel">Velkommen</h1>
+        <p class="hjem-mal">Klassen spiller sammen om å følge tre regler i ti minutter. Klarer de det, trekker dere noe elevene selv har foreslått.</p>
+        <div class="hjem-knapper">
+          <button class="knapp knapp-hoved" id="ny-klasse">Sett opp klassen</button>
+          <button class="knapp knapp-stille" id="gjennomgang">Slik virker det</button>
+        </div>
+        <p class="hjem-varsel">Vil du lese først? Lærerveiledningen forklarer metoden og forskningen.
+          Elevveiledningen kan du vise på tavla når du introduserer spillet.</p>`);
+  topplinje(null);
+  app.querySelector('#ny-klasse').onclick = () => vis(() => oppsett({ ny: true }));
+  app.querySelector('#gjennomgang').onclick = opplaering;
+  app.querySelector('#ny-klasse').focus();
+}
 
 function hjem() {
   const k = klasse();
-  if (!k) return vis(oppsett);
+  if (!k) return tomHjem();
   if (tilstand.pagaende) return vis(spill);
 
   const rs = regelsettFor(k);
@@ -80,13 +148,11 @@ function hjem() {
               <button class="lenke" id="valg-ok">Listen er fortsatt riktig</button>
             </div>
           </div>` : ''}
-        <nav class="hjem-lenker" aria-label="Innstillinger">
-          <button class="lenke" id="veiledning">Veiledning</button>
-          <button class="lenke" id="opplaering">Kom i gang</button>
+        <nav class="hjem-lenker" aria-label="Klassen">
           <button class="lenke" id="endre">Endre oppsett</button>
           <button class="lenke" id="klasser">${tilstand.klasser.length > 1 ? 'Bytt klasse' : 'Ny klasse'}</button>
-          <button class="lenke" id="tema">${erMorkt() ? 'Lys visning' : 'Mørk visning'}</button>
         </nav>`, { brett: variant === 'rolig' });
+  topplinje(null);
   app.querySelector('#start').onclick = () => vis(sjekkliste);
   app.querySelector('#klasser').onclick = () => vis(tilstand.klasser.length > 1 ? klasser : () => oppsett({ ny: true }));
   app.querySelector('#nye-valg')?.addEventListener('click', () => vis(() => oppsett({ fokus: 'klassensValg' })));
@@ -98,12 +164,6 @@ function hjem() {
   app.querySelector('#kartlegg').onclick = () => vis(kartleggingStart);
   app.querySelector('#logg').onclick = () => vis(logg);
   app.querySelector('#endre').onclick = () => vis(oppsett);
-  app.querySelector('#veiledning').onclick = () => vis(() => veiledningSide(hjem));
-  app.querySelector('#opplaering').onclick = opplaering;
-  app.querySelector('#tema').onclick = () => {
-    settTema(erMorkt() ? 'lys' : 'mork');
-    vis(hjem);
-  };
   app.querySelector('#start').focus();
 }
 
@@ -123,10 +183,7 @@ function velkomst() {
   const bilde = lagLandskap(7, { brett: false });
   bilde.setAttribute('preserveAspectRatio', 'xMidYMax slice');
   app.querySelector('.velkomst-landskap').append(bilde);
-  app.querySelector('#videre').onclick = () => {
-    vis(hjem);
-    if (!erSett()) opplaering();
-  };
+  app.querySelector('#videre').onclick = () => vis(hjem);
   app.querySelector('#videre').focus();
 }
 
@@ -144,7 +201,6 @@ function klasser() {
         </ul>
         <div class="hjem-knapper">
           <button class="knapp knapp-stille" id="ny">Ny klasse</button>
-          <button class="knapp knapp-stille" id="tilbake">Tilbake</button>
         </div>
       </div>
     </main>`;
@@ -154,7 +210,7 @@ function klasser() {
     vis(hjem);
   }));
   app.querySelector('#ny').onclick = () => vis(() => oppsett({ ny: true }));
-  app.querySelector('#tilbake').onclick = () => vis(hjem);
+  topplinje(hjem);
   app.querySelector('.klasse-valg.aktiv').focus();
 }
 
@@ -167,7 +223,7 @@ function forHjem(innhold, { brett = true } = {}) {
       <div class="hjem-landskap" aria-hidden="true"></div>
       <section class="hjem-innhold">${innhold}</section>
     </main>`;
-  const bilde = lagLandskap(k.innstillinger.maalfelt, { brett });
+  const bilde = lagLandskap(k?.innstillinger.maalfelt ?? 7, { brett });
   bilde.setAttribute('preserveAspectRatio', 'xMaxYMid slice');
   app.querySelector('.hjem-landskap').append(bilde);
 }
@@ -234,6 +290,7 @@ function sjekkliste() {
     vis(spill);
   };
   form.querySelector('#tilbake').onclick = () => vis(hjem);
+  topplinje(hjem);
   (form.querySelector('[name=regelsett]:checked') ?? form.querySelector('[name=s0]')).focus();
 }
 
@@ -262,6 +319,7 @@ function kartleggingStart() {
     vis(spill);
   };
   form.querySelector('#tilbake').onclick = () => vis(hjem);
+  topplinje(hjem);
   form.querySelector('[type=submit]').focus();
 }
 
@@ -274,7 +332,6 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
   const k = ny ? nyKlasse() : klasse();
   const inn = k.innstillinger;
   const variant = k.variant ?? 'rolig';
-  const forste = tilstand.klasser.length === 0;
 
   let rader = [
     ...BIBLIOTEK.map((b) => {
@@ -289,7 +346,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
       <form class="skjema" novalidate>
         <h1>${ny ? 'Sett opp klassen' : 'Oppsett'}</h1>
         <p class="skjema-ingress">Skriv aldri elevnavn her. Appen lagrer bare det som står på denne siden, og bare på denne maskinen.
-          ${forste ? '<button class="lenke" type="button" id="les-veiledning">Les veiledningen først</button>' : ''}</p>
+</p>
 
         <label class="felt-gruppe">
           <span>Klassenavn</span>
@@ -368,7 +425,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
         <p class="skjema-feil" role="alert" hidden></p>
         <div class="hjem-knapper">
           <button class="knapp knapp-hoved" type="submit">Lagre</button>
-          ${forste ? '' : '<button class="knapp knapp-stille" type="button" id="avbryt">Avbryt</button>'}
+          <button class="knapp knapp-stille" type="button" id="avbryt">Avbryt</button>
         </div>
         ${ny ? '' : `
           <div class="slett-klasse">
@@ -473,8 +530,14 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
     merkForslag();
   });
 
-  form.querySelector('#avbryt')?.addEventListener('click', () => vis(hjem));
-  form.querySelector('#les-veiledning')?.addEventListener('click', () => vis(() => veiledningSide(oppsett)));
+  // Endringer i feltene eller regelsettene gjør at Tilbake spør før de forkastes.
+  let endret = false;
+  form.addEventListener('input', () => { endret = true; });
+  form.addEventListener('change', () => { endret = true; });
+  form.addEventListener('click', (e) => { if (e.target.closest('#nytt-regelsett, [data-fjern], .forslag-knapp')) endret = true; });
+  forlat = (videre) => (endret ? bekreftForlat(videre) : videre());
+  topplinje(hjem);
+  form.querySelector('#avbryt').addEventListener('click', () => forlat(() => vis(hjem)));
   const slett = app.querySelector('#bekreft-slett');
   form.querySelector('#slett')?.addEventListener('click', () => slett.showModal());
   slett.addEventListener('close', () => {
@@ -929,8 +992,9 @@ function spill() {
 
 function veiledningSide(tilbake) {
   app.innerHTML = veiledning(klasse());
-  app.querySelector('#tilbake').onclick = () => vis(tilbake);
+  topplinje(tilbake);
   app.querySelector('#vis-opplaering').onclick = opplaering;
+  app.querySelector('#til-elev').onclick = tilElev;
   // Lenkene i innholdslista ruller innenfor siden uten å endre adressen.
   app.querySelector('.veil-innhold').addEventListener('click', (e) => {
     const a = e.target.closest('a');
@@ -942,7 +1006,20 @@ function veiledningSide(tilbake) {
   });
   app.querySelectorAll('.veil-tekst h2').forEach((h) => { h.tabIndex = -1; });
   window.scrollTo(0, 0);
-  app.querySelector('#tilbake').focus();
+  app.querySelector('#topp-tilbake').focus();
+}
+
+function elevSide(tilbake) {
+  const k = klasse();
+  app.innerHTML = elevveiledning(k && {
+    variant: k.variant ?? 'rolig', innstillinger: k.innstillinger, regler: regelsettFor(k).regler.map((r) => r.tekst),
+  });
+  topplinje(tilbake);
+  const hel = app.querySelector('#fullskjerm');
+  if (!document.fullscreenEnabled) hel.hidden = true;
+  hel.onclick = () => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen());
+  window.scrollTo(0, 0);
+  app.querySelector('#topp-tilbake').focus();
 }
 
 // ---------- Logg ----------
@@ -1008,7 +1085,6 @@ function logg() {
         <h1>Logg for ${esc(k.navn)}</h1>
         <div class="hjem-knapper">
           ${okter.length ? '<button class="knapp knapp-stille" id="csv">Last ned CSV</button>' : ''}
-          <button class="knapp knapp-hoved" id="tilbake">Tilbake</button>
         </div>
       </header>
       ${okter.length === 0 ? `
@@ -1046,13 +1122,13 @@ function logg() {
         </section>`}
     </main>`;
 
-  app.querySelector('#tilbake').onclick = () => vis(hjem);
+  topplinje(hjem);
   app.querySelector('#kartlegg')?.addEventListener('click', () => vis(kartleggingStart));
   app.querySelector('#csv')?.addEventListener('click', () =>
     lastNed(`klassespillet-${k.navn.replace(/[^\p{L}\p{N}]+/gu, '')}-${Logg.dato(new Date())}.csv`, Logg.tilCsv(k)));
   const beholder = app.querySelector('.diagram');
   if (beholder) stopp = lagDiagram(beholder, okter);
-  app.querySelector('#tilbake').focus();
+  app.querySelector('#topp-tilbake').focus();
 }
 
 document.querySelector('#om').onclick = visOm;

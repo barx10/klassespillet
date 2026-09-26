@@ -69,12 +69,12 @@ export function veiledning(klasse) {
   return `
     <main class="veiledning">
       <header class="veil-topp">
-        <h1>Veiledning</h1>
+        <h1>Lærerveiledning</h1>
         <p class="skjema-ingress">Klassespillet bygger på Good Behavior Game. Klassen spiller sammen om å følge tre regler i ti minutter.
           Når de klarer det, trekker dere noe fra en liste elevene selv har foreslått.</p>
         <div class="hjem-knapper">
-          <button class="knapp knapp-hoved" id="tilbake">Tilbake</button>
-          <button class="knapp knapp-stille" id="vis-opplaering">Vis kort gjennomgang</button>
+          <button class="knapp knapp-stille" id="vis-opplaering">Kort gjennomgang</button>
+          <button class="knapp knapp-stille" id="til-elev">Elevveiledning til tavla</button>
         </div>
       </header>
 
@@ -204,5 +204,46 @@ export function veiledning(klasse) {
           <p>Tømmer du nettleserdataene, forsvinner loggen. Last ned CSV fra loggen om du vil ta vare på tallene. Klasser slettes fra oppsettet.</p>
         </section>
       </div>
+    </main>`;
+}
+
+// Elevveiledningen vises på tavla når læreren introduserer spillet. Den
+// forklarer spillformen klassen har valgt, men ikke hva som teller som brudd:
+// det går læreren gjennom muntlig, med eksempler.
+// oppsett er null før første klasse. Da forklares rolig brett.
+export function elevveiledning(oppsett) {
+  const variant = oppsett?.variant ?? 'rolig';
+  const inn = oppsett?.innstillinger ?? { maalfelt: 7, bruddgrense: 10, antallLag: 2, stjernekrav: 8 };
+  const regler = oppsett?.regler;
+  const lag = variant === 'lag';
+
+  const steg = [
+    lag
+      ? ['Vi spiller i lag', `Klassen deles i ${inn.antallLag === 3 ? 'tre' : 'to'} lag etter hvor dere sitter. Hvert lag har sitt eget stjernebilde på himmelen.`]
+      : ['Vi er ett lag', 'Hele klassen spiller sammen. Enten klarer vi det sammen, eller så prøver vi igjen sammen.'],
+    ['Tre regler', regler
+      ? `<ol class="elev-regler">${regler.map((r) => `<li>${esc(r)}</li>`).join('')}</ol>`
+      : 'Reglene står nederst på tavla hele tiden. Læreren viser eksempler før vi starter.'],
+    ['Ti minutter', 'Vi jobber som vanlig. Læreren følger med og holder telling.'],
+    {
+      rolig: ['Brikken går mot toppen', `For hvert minutt alle følger reglene, går brikken ett steg opp mot fjellet. Når den kommer til felt ${inn.maalfelt}, har vi klart det.`],
+      brudd: ['Hold skyene unna', `Hver gang en regel blir brutt, driver en sky inn over fjellet. Har vi færre enn ${inn.bruddgrense} brudd når tiden er ute, har vi klart det.`],
+      lag: ['Tenn stjernene', `For hvert minutt laget følger reglene, tennes en stjerne. Når ett lag har ${inn.stjernekrav} stjerner, har hele klassen klart det.`],
+    }[variant],
+    ['Klassens valg', 'Klarer vi det, trekker vi noe fra listen dere har laget. Alle får være med på det som blir trukket.'],
+    ['Vi prøver igjen', 'Klarer vi det ikke, prøver vi igjen neste gang. Ingen blir pekt ut, og ingen får skylda.'],
+  ];
+
+  return `
+    <main class="elev">
+      <header class="elev-topp">
+        <h1>Slik spiller vi</h1>
+        <button class="knapp knapp-stille" id="fullskjerm">Fullskjerm</button>
+      </header>
+      <ol class="elev-steg">
+        ${steg.map(([tittel, tekst]) => `
+          <li><h2>${tittel}</h2>${tekst.startsWith('<') ? tekst : `<p>${tekst}</p>`}</li>`).join('')}
+      </ol>
+      <p class="hjelp elev-merknad">Til læreren: Vis siden på tavla før første økt. Gå gjennom hver regel med eksempler på hva som er brudd og hva som ikke er det.</p>
     </main>`;
 }

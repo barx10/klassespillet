@@ -1,7 +1,5 @@
-// Kort gjennomgang for læreren. Vises første gang appen åpnes, og kan åpnes
-// igjen fra hjem og veiledningen. Detaljene står i veiledningen.
-
-const SETT = 'klassespillet-opplaering';
+// Kort gjennomgang for læreren. Åpnes fra startsiden før første klasse og
+// fra lærerveiledningen. Detaljene står i veiledningen.
 
 export const STEG = [
   ['Sett opp klassen', `
@@ -20,10 +18,6 @@ export const STEG = [
       Klarer de det ikke, står det «Vi prøver igjen neste gang».</p>
     <p class="hjelp">Ros det som går bra underveis. Veiledningen forklarer hvordan.</p>`],
 ];
-
-export function erSett() {
-  return localStorage.getItem(SETT) === 'ja';
-}
 
 // tilVeiledning kalles når læreren velger å lese mer. Dialogen lukkes først.
 export function visOpplaering({ tilVeiledning } = {}) {
@@ -47,7 +41,7 @@ export function visOpplaering({ tilVeiledning } = {}) {
         ${steg > 0 ? '<button class="knapp knapp-stille" id="opplaering-forrige">Forrige</button>' : ''}
       </div>
       <div class="hjem-lenker">
-        ${tilVeiledning ? '<button class="lenke" id="opplaering-veiledning">Les veiledningen</button>' : ''}
+        ${tilVeiledning ? '<button class="lenke" id="opplaering-veiledning">Les lærerveiledningen</button>' : ''}
         ${siste ? '' : '<button class="lenke" id="opplaering-lukk">Hopp over</button>'}
       </div>`;
     dialog.querySelector('#opplaering-neste').onclick = () => {
@@ -67,9 +61,8 @@ export function visOpplaering({ tilVeiledning } = {}) {
     dialog.querySelector('#opplaering-neste').focus();
   }
 
-  // Esc lukker dialogen av seg selv. Lukket er lukket, uansett hvordan.
+  // Esc lukker dialogen av seg selv.
   dialog.addEventListener('close', () => {
-    localStorage.setItem(SETT, 'ja');
     dialog.remove();
     if (tilbakeFokus?.isConnected) tilbakeFokus.focus();
   });

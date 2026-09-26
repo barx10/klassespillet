@@ -284,7 +284,7 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
   grid-column: 1;
   grid-row: 1;
   align-self: center;
-  padding: clamp(2rem, 5vw, 5rem);
+  padding: clamp(1.5rem, 5vh, 4rem) clamp(2rem, 5vw, 5rem);
   position: relative;
 }
 .hjem-landskap {
@@ -292,8 +292,8 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
   grid-row: 1;
   position: relative;
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent 18%, #000 52%);
-  mask-image: linear-gradient(90deg, transparent 18%, #000 52%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 24%, #000 58%);
+  mask-image: linear-gradient(90deg, transparent 24%, #000 58%);
 }
 .hjem-landskap .landskap { position: absolute; inset: 0; height: 100%; }
 .hjem-klasse {
@@ -309,7 +309,83 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
 .hjem-varsel { margin-top: 1.25rem; color: var(--tekst-svak); max-width: 32ch; }
 .paminn-valg { max-width: 36ch; padding: 0.9rem 1.1rem; border-radius: 16px; background: var(--flate); border-left: 6px solid var(--sol); color: var(--tekst); }
 .paminn-valg p { margin: 0; }
+/* Knappene skal være lesbare også der brettet skinner gjennom. */
+.hjem-innhold .knapp-stille { background: var(--bakgrunn); }
 .paminn-valg .hjem-lenker { margin-top: 0.6rem; gap: 1.25rem; flex-wrap: wrap; }
+
+/* ---------- Topplinje ---------- */
+.topplinje {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding: 0.9rem clamp(1.25rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--kant);
+  background: var(--bakgrunn);
+  position: relative;
+  z-index: 1;
+}
+.topp-merke { margin: 0; font-family: var(--visning); font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
+.topp-tilbake {
+  font: inherit;
+  font-weight: 700;
+  color: var(--tekst);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.45em 1.1em 0.45em 0.8em;
+  box-shadow: inset 0 0 0 2px var(--kant);
+  cursor: pointer;
+}
+.topp-tilbake:hover { box-shadow: inset 0 0 0 2px var(--tekst); }
+.topp-tilbake span { font-size: 1.3em; line-height: 0; margin-right: 0.15em; }
+.topp-meny { display: flex; flex-wrap: wrap; gap: 0.25rem 1.5rem; }
+.topp-meny .lenke { font-size: 0.9em; }
+.tom-tittel { font-size: clamp(3.5rem, 9vw, 7rem); }
+
+/* ---------- Elevveiledning: laget for tavla ---------- */
+.elev {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1.25rem, 4vw, 3rem) 4rem;
+}
+.elev-topp { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1rem; }
+.elev-topp h1 { font-size: clamp(3rem, 8vw, 6.5rem); font-weight: 800; letter-spacing: -0.04em; }
+.elev-steg {
+  list-style: none;
+  margin: clamp(1.5rem, 4vw, 3rem) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  counter-reset: steg;
+}
+.elev-steg > li {
+  counter-increment: steg;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  border-radius: 24px;
+  background: var(--flate);
+  box-shadow: inset 0 0 0 2px var(--kant);
+  font-size: clamp(1.15rem, 1.7vw, 1.6rem);
+}
+.elev-steg > li::before {
+  content: counter(steg);
+  display: grid;
+  place-items: center;
+  width: 2.2em;
+  height: 2.2em;
+  border-radius: 50%;
+  background: var(--sol);
+  color: var(--fjord);
+  font-family: var(--visning);
+  font-weight: 800;
+}
+.elev-steg h2 { font-size: 1.5em; font-weight: 800; letter-spacing: -0.02em; margin: 0.6rem 0 0.4rem; }
+.elev-steg p { margin: 0; }
+.elev-regler { margin: 0; padding-left: 1.2em; font-weight: 700; }
+.elev-regler li + li { margin-top: 0.3em; }
+.elev-merknad { margin-top: 2rem; max-width: 60ch; }
 
 /* ---------- Velkomst ---------- */
 .velkomst { position: relative; min-height: 100vh; display: grid; overflow: hidden; }
