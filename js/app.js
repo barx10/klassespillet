@@ -5,6 +5,8 @@ import { lagLandskap, punkt } from './landskap.js';
 import * as Logg from './logg.js';
 import { lagDiagram } from './diagram.js';
 import { veiledning } from './veiledning.js';
+import { visOpplaering, erSett } from './opplaering.js';
+import { visOm } from './om.js';
 
 const app = document.getElementById('app');
 let tilstand = les();
@@ -37,8 +39,11 @@ function vis(visning) {
   stopp();
   stopp = () => {};
   app.innerHTML = '';
+  document.body.classList.remove('uten-bunntekst');
   visning();
 }
+
+const opplaering = () => visOpplaering({ tilVeiledning: () => vis(() => veiledningSide(hjem)) });
 
 function hjem() {
   const k = klasse();
@@ -77,6 +82,7 @@ function hjem() {
           </div>` : ''}
         <nav class="hjem-lenker" aria-label="Innstillinger">
           <button class="lenke" id="veiledning">Veiledning</button>
+          <button class="lenke" id="opplaering">Kom i gang</button>
           <button class="lenke" id="endre">Endre oppsett</button>
           <button class="lenke" id="klasser">${tilstand.klasser.length > 1 ? 'Bytt klasse' : 'Ny klasse'}</button>
           <button class="lenke" id="tema">${erMorkt() ? 'Lys visning' : 'Mørk visning'}</button>
@@ -93,6 +99,7 @@ function hjem() {
   app.querySelector('#logg').onclick = () => vis(logg);
   app.querySelector('#endre').onclick = () => vis(oppsett);
   app.querySelector('#veiledning').onclick = () => vis(() => veiledningSide(hjem));
+  app.querySelector('#opplaering').onclick = opplaering;
   app.querySelector('#tema').onclick = () => {
     settTema(erMorkt() ? 'lys' : 'mork');
     vis(hjem);
@@ -542,6 +549,8 @@ function spill() {
   // Økter startet før versjon 2 har ikke regelsettet med seg.
   const rs = okt.regelsett ?? (({ navn, regler }) => ({ navn, regler: regler.map((r) => r.tekst) }))(regelsettFor(k));
   const ros = k.innstillinger.rospaaminnelse && !kartlegging;
+  // Brettet trenger hele skjermen, så bunnteksten skjules under økta.
+  document.body.classList.add('uten-bunntekst');
 
   app.innerHTML = `
     <main class="spill${kartlegging ? ' spill-kartlegging' : ` spill-${variant}`}">
@@ -892,6 +901,7 @@ function spill() {
 function veiledningSide(tilbake) {
   app.innerHTML = veiledning(klasse());
   app.querySelector('#tilbake').onclick = () => vis(tilbake);
+  app.querySelector('#vis-opplaering').onclick = opplaering;
   // Lenkene i innholdslista ruller innenfor siden uten å endre adressen.
   app.querySelector('.veil-innhold').addEventListener('click', (e) => {
     const a = e.target.closest('a');
@@ -1016,7 +1026,9 @@ function logg() {
   app.querySelector('#tilbake').focus();
 }
 
+document.querySelector('#om').onclick = visOm;
 vis(hjem);
+if (!erSett() && !tilstand.pagaende) opplaering();
 
 // Frakoblet bruk. Ikke på localhost, så endringer under utvikling vises med en gang.
 if ('serviceWorker' in navigator && location.hostname !== 'localhost') {

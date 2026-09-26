@@ -14,6 +14,8 @@ const FILER = [
   'js/landskap.js',
   'js/logg.js',
   'js/okt.js',
+  'js/om.js',
+  'js/opplaering.js',
   'js/regler.js',
   'js/veiledning.js',
   'fonts/atkinson-next-latin.woff2',
