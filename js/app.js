@@ -1010,10 +1010,7 @@ function veiledningSide(tilbake) {
 }
 
 function elevSide(tilbake) {
-  const k = klasse();
-  app.innerHTML = elevveiledning(k && {
-    variant: k.variant ?? 'rolig', innstillinger: k.innstillinger, regler: regelsettFor(k).regler.map((r) => r.tekst),
-  });
+  app.innerHTML = elevveiledning();
   topplinje(tilbake);
   const hel = app.querySelector('#fullskjerm');
   if (!document.fullscreenEnabled) hel.hidden = true;
