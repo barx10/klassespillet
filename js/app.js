@@ -62,7 +62,7 @@ function topplinje(tilbake) {
   linje.innerHTML = `
     ${tilbake
       ? '<button class="topp-tilbake" id="topp-tilbake"><span aria-hidden="true">‹</span> Tilbake</button>'
-      : '<p class="topp-merke">Klassespillet</p>'}
+      : '<button class="topp-merke" id="topp-merke" title="Til velkomstskjermen">Klassespillet</button>'}
     <nav class="topp-meny" aria-label="Meny">
       <button class="lenke" id="topp-laerer">Lærerveiledning</button>
       <button class="lenke" id="topp-elev">Elevveiledning</button>
@@ -70,6 +70,7 @@ function topplinje(tilbake) {
     </nav>`;
   app.prepend(linje);
   linje.querySelector('#topp-tilbake')?.addEventListener('click', () => forlat(() => vis(tilbake)));
+  linje.querySelector('#topp-merke')?.addEventListener('click', () => vis(velkomst));
   linje.querySelector('#topp-laerer').onclick = () => forlat(tilLaerer);
   linje.querySelector('#topp-elev').onclick = () => forlat(tilElev);
   linje.querySelector('#topp-tema').onclick = (e) => {

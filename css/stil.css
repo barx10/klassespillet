@@ -326,7 +326,19 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
   position: relative;
   z-index: 1;
 }
-.topp-merke { margin: 0; font-family: var(--visning); font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
+.topp-merke {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--tekst);
+  cursor: pointer;
+  font-family: var(--visning);
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.topp-merke:hover { text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 2px; }
 .topp-tilbake {
   font: inherit;
   font-weight: 700;
