@@ -384,10 +384,12 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
             <ol class="regel-liste">
               ${plasser.map((p, j) => `
                 <li>
-                  <input data-regel="${i}.${j}" value="${esc(p.tekst)}" aria-label="Regel ${j + 1}"
-                    placeholder="${j === 3 ? 'Fjerde regel, valgfri' : 'Skriv det elevene skal gjøre'}" />
-                  <textarea data-brudd="${i}.${j}" rows="1" aria-label="Hva som teller som brudd på regel ${j + 1}"
-                    placeholder="Brudd: det du registrerer">${esc(p.brudd)}</textarea>
+                  <label class="regel-felt"><span>Regel</span>
+                    <input data-regel="${i}.${j}" value="${esc(p.tekst)}" aria-label="Regel ${j + 1}"
+                      placeholder="${j === 3 ? 'Fjerde regel, valgfri' : 'Skriv det elevene skal gjøre'}" /></label>
+                  <label class="regel-felt brudd-felt"><span>Brudd</span>
+                    <textarea data-brudd="${i}.${j}" rows="1" aria-label="Hva som teller som brudd på regel ${j + 1}"
+                      placeholder="Det du registrerer">${esc(p.brudd)}</textarea></label>
                 </li>`).join('')}
             </ol>
           </details>

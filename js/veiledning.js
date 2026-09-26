@@ -53,9 +53,10 @@ function regelsett(liste) {
     <div class="veil-regelsett">
       <h3>${esc(rs.navn)}</h3>
       ${rs.merknad ? `<p class="hjelp">${esc(rs.merknad)}</p>` : ''}
-      <dl>${rs.regler.map((r) => `
-        <div><dt>${esc(r.tekst)}</dt><dd>${r.brudd ? esc(r.brudd) : '<span class="hjelp">Ingen definisjon ennå. Skriv den i oppsettet.</span>'}</dd></div>`).join('')}
-      </dl>
+      <ol>${rs.regler.map((r) => `
+        <li><strong>${esc(r.tekst)}</strong>
+          <span class="veil-brudd">${r.brudd ? `Brudd: ${esc(r.brudd)}` : 'Ingen definisjon ennå. Skriv den i oppsettet.'}</span></li>`).join('')}
+      </ol>
     </div>`).join('');
 }
 

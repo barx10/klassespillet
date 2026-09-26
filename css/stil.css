@@ -433,10 +433,33 @@ textarea { resize: vertical; line-height: 1.5; }
 }
 .regelsett-kort summary:hover, .forslag summary:hover, .forbehold summary:hover { color: var(--tekst); }
 .regelsett-merknad { margin-top: 0.75rem; }
-.regel-liste { margin: 0.75rem 0 0; padding-left: 1.4em; display: grid; gap: 0.9rem; }
-.regel-liste li { display: grid; gap: 0.35rem; }
-.regel-liste li::marker { font-family: var(--visning); font-weight: 700; }
-.regel-liste [data-brudd] { color: var(--tekst-svak); field-sizing: content; min-height: 2.6em; }
+/* Hver regel er en nummerert gruppe: regelen først, bruddet under i kursiv. */
+.regel-liste { margin: 0.75rem 0 0; padding: 0; list-style: none; display: grid; gap: 1.1rem; counter-reset: regel; }
+.regel-liste li {
+  counter-increment: regel;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.35rem 0.75rem;
+}
+.regel-liste li::before {
+  content: counter(regel);
+  grid-row: span 2;
+  width: 2rem;
+  height: 2rem;
+  margin-top: 0.45rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sol);
+  color: var(--fjord);
+  font-family: var(--visning);
+  font-weight: 800;
+}
+.regel-felt { display: grid; grid-template-columns: 4rem 1fr; align-items: center; gap: 0.6rem; }
+.regel-felt > span { font-size: 0.8em; font-weight: 700; color: var(--tekst-svak); }
+.regel-felt input { font-weight: 700; }
+.brudd-felt > span { font-style: italic; font-weight: 400; }
+.regel-liste [data-brudd] { font-style: italic; color: var(--tekst-svak); field-sizing: content; min-height: 2.6em; border-style: dashed; }
 .felt-navn { font-weight: 700; }
 
 /* Spillform */
@@ -942,10 +965,29 @@ kbd {
   white-space: nowrap;
 }
 .veil-regelsett { margin-top: 1.5rem; }
-.veil-regelsett dl { margin: 0.5rem 0 0; }
-.veil-regelsett dl > div { padding: 0.7rem 0; border-top: 1px solid var(--kant); }
-.veil-regelsett dt { font-weight: 700; }
-.veil-regelsett dd { margin: 0.2rem 0 0; color: var(--tekst-svak); }
+.veil-regelsett ol { margin: 0.5rem 0 0; padding: 0; list-style: none; counter-reset: regel; }
+.veil-regelsett li {
+  counter-increment: regel;
+  display: grid;
+  grid-template-columns: 1.8rem 1fr;
+  gap: 0.2rem 0.75rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--kant);
+}
+.veil-regelsett li::before {
+  content: counter(regel);
+  grid-row: span 2;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--sol);
+  color: var(--fjord);
+  font-family: var(--visning);
+  font-weight: 800;
+}
+.veil-brudd { font-style: italic; color: var(--tekst-svak); }
 .veil-kilder { font-size: 0.9em; color: var(--tekst-svak); }
 .veil-kilder li + li { margin-top: 0.5rem; }
 .veil-kilder a { color: var(--tekst); white-space: nowrap; }
@@ -963,6 +1005,8 @@ kbd {
   .maaler { top: 5.5rem; left: 1rem; right: 1rem; translate: none; width: fit-content; max-width: none; margin: 0 auto; }
   .styring { left: 0.75rem; flex-wrap: wrap; justify-content: flex-end; }
   .styring .knapp-brudd { padding: 0.9em 1.3em; }
+  .regel-felt { grid-template-columns: 1fr; gap: 0.2rem; }
+  .regel-liste li::before { margin-top: 1.9rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
