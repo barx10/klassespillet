@@ -107,6 +107,29 @@ function hjem() {
   app.querySelector('#start').focus();
 }
 
+// Velkomstskjermen vises hver gang appen åpnes, men ikke midt i en økt.
+function velkomst() {
+  document.body.classList.add('uten-bunntekst');
+  app.innerHTML = `
+    <main class="velkomst">
+      <div class="velkomst-landskap" aria-hidden="true"></div>
+      <section class="velkomst-innhold">
+        <h1>Klassespillet</h1>
+        <p class="velkomst-ingress">Good Behavior Game på tavla. Ti minutter, tre regler, hele klassen sammen.</p>
+        <button class="knapp knapp-hoved" id="videre">Start</button>
+        <p class="velkomst-fra">© Lærerliv 2026</p>
+      </section>
+    </main>`;
+  const bilde = lagLandskap(7, { brett: false });
+  bilde.setAttribute('preserveAspectRatio', 'xMidYMax slice');
+  app.querySelector('.velkomst-landskap').append(bilde);
+  app.querySelector('#videre').onclick = () => {
+    vis(hjem);
+    if (!erSett()) opplaering();
+  };
+  app.querySelector('#videre').focus();
+}
+
 function klasser() {
   app.innerHTML = `
     <main class="oppsett">
@@ -384,10 +407,12 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
             <ol class="regel-liste">
               ${plasser.map((p, j) => `
                 <li>
-                  <input data-regel="${i}.${j}" value="${esc(p.tekst)}" aria-label="Regel ${j + 1}"
-                    placeholder="${j === 3 ? 'Fjerde regel, valgfri' : 'Skriv det elevene skal gjøre'}" />
-                  <textarea data-brudd="${i}.${j}" rows="1" aria-label="Hva som teller som brudd på regel ${j + 1}"
-                    placeholder="Brudd: det du registrerer">${esc(p.brudd)}</textarea>
+                  <label class="regel-felt"><span>Regel</span>
+                    <textarea data-regel="${i}.${j}" rows="1" aria-label="Regel ${j + 1}"
+                      placeholder="${j === 3 ? 'Fjerde regel, valgfri' : 'Skriv det elevene skal gjøre'}">${esc(p.tekst)}</textarea></label>
+                  <label class="regel-felt brudd-felt"><span>Brudd</span>
+                    <textarea data-brudd="${i}.${j}" rows="1" aria-label="Hva som teller som brudd på regel ${j + 1}"
+                      placeholder="Det du registrerer">${esc(p.brudd)}</textarea></label>
                 </li>`).join('')}
             </ol>
           </details>
@@ -412,6 +437,10 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
   }
 
   tegnRegelsett();
+  // Feltene vokser med teksten, men en regel og et brudd er én linje hver.
+  liste.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target.matches('textarea')) e.preventDefault();
+  });
   liste.addEventListener('change', (e) => {
     if (e.target.dataset.bruk) e.target.closest('.regelsett-kort').classList.toggle('valgt', e.target.checked);
   });
@@ -1027,8 +1056,7 @@ function logg() {
 }
 
 document.querySelector('#om').onclick = visOm;
-vis(hjem);
-if (!erSett() && !tilstand.pagaende) opplaering();
+vis(tilstand.pagaende ? spill : velkomst);
 
 // Frakoblet bruk. Ikke på localhost, så endringer under utvikling vises med en gang.
 if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
