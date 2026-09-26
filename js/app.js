@@ -367,7 +367,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
           <div class="variant-liste">
             <div class="regelsett-kort variant-kort">
               <label class="avkrysning"><input type="radio" name="variant" value="rolig" ${variant === 'rolig' ? 'checked' : ''} />
-                <span><strong>Rolig brett</strong><span class="hjelp">Brikken går ett felt for hvert minutt uten brudd. Lettest å gjennomføre alene.</span></span></label>
+                <span><strong>Fjelltur</strong><span class="hjelp">Hele klassen er ett lag. Brikken går ett felt for hvert minutt uten brudd. Lettest å gjennomføre alene.</span></span></label>
               <div class="variant-felt">
                 <label class="felt-rad"><span>Målfelt</span>
                   <select name="maalfelt">${tallValg(1, 10, inn.maalfelt)}</select></label>
@@ -376,7 +376,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
             </div>
             <div class="regelsett-kort variant-kort">
               <label class="avkrysning"><input type="radio" name="variant" value="brudd" ${variant === 'brudd' ? 'checked' : ''} />
-                <span><strong>Bruddbrett</strong><span class="hjelp">Hvert brudd teller, og en sky driver inn over fjellet. Klassen ser tellingen og får en felles påminnelse, «Husk reglene», uten at noen pekes ut.</span></span></label>
+                <span><strong>Skodde</strong><span class="hjelp">Hele klassen er ett lag. Hvert brudd teller, og en sky driver inn over fjellet. Klassen ser tellingen og får en felles påminnelse, «Husk reglene», uten at noen pekes ut.</span></span></label>
               <div class="variant-felt">
                 <label class="felt-rad"><span>Grense</span>
                   <select name="bruddgrense">${tallValg(3, 20, inn.bruddgrense)}</select></label>
@@ -385,7 +385,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
             </div>
             <div class="regelsett-kort variant-kort">
               <label class="avkrysning"><input type="radio" name="variant" value="lag" ${variant === 'lag' ? 'checked' : ''} />
-                <span><strong>Lagspill</strong><span class="hjelp">Hvert lag har sitt stjernebilde på nattehimmelen og får en stjerne for hvert minutt uten brudd. Krevende alene, fordi du må registrere brudd på riktig lag mens du underviser.</span></span></label>
+                <span><strong>Stjernehimmel</strong><span class="hjelp">To eller tre lag. Hvert lag har sitt stjernebilde og får en stjerne for hvert minutt uten brudd. Krevende alene, fordi du må registrere brudd på riktig lag mens du underviser.</span></span></label>
               <div class="variant-felt">
                 <div class="felt-rader">
                   <label class="felt-rad"><span>Antall lag</span>

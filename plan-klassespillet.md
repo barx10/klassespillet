@@ -33,6 +33,8 @@ Konsekvenser for designet:
 
 ## 4. Spillvarianter
 
+Navn i appen fra 26.09.2026: Rolig brett heter Fjelltur, Bruddbrett heter Skodde, og Lagspill heter Stjernehimmel. Navnene er de samme for lærer og elever. Den interne verdien `variant` er uendret (`rolig`, `brudd`, `lag`).
+
 Alle varianter: ti intervaller på ett minutt, tre regler, belønning trekkes når målet er nådd.
 
 ### 4.1 Rolig brett (standard, modifisert Good Behavior Board Game)

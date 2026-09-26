@@ -101,19 +101,19 @@ export function veiledning(klasse) {
             Forskningen fant ingen tydelig forskjell mellom spillformene. Velg den du klarer å gjennomføre mens du underviser.</p>
           <div class="veil-varianter">
             <div>
-              <h3>Rolig brett</h3>
+              <h3>Fjelltur</h3>
               <p>Hele klassen er ett lag. Brikken går ett felt for hvert minutt uten brudd. Klassen ser ikke når du registrerer et brudd,
                 bare at brikken blir stående. Kommer brikken til målfeltet, vanligvis felt 7, har klassen vunnet.</p>
               <p class="hjelp">Lettest å gjennomføre alene. Anbefalt å starte med.</p>
             </div>
             <div>
-              <h3>Bruddbrett</h3>
+              <h3>Skodde</h3>
               <p>Hele klassen er ett lag. Hvert brudd teller, og klassen ser tellingen. For hvert brudd driver en sky inn over fjellet,
                 og ved grensen ligger toppen i skodde. Samtidig står «Husk reglene» på tavla, uten at noen pekes ut.
                 Klassen vinner med færre brudd enn grensen, vanligvis 10.</p>
             </div>
             <div>
-              <h3>Lagspill</h3>
+              <h3>Stjernehimmel</h3>
               <p>Klassen deles i to eller tre lag etter hvor elevene sitter. Hvert lag har sitt eget stjernebilde på nattehimmelen,
                 og får en stjerne for hvert minutt uten brudd på laget.
                 Når minst ett lag har 8 stjerner, trekker hele klassen.</p>
@@ -135,9 +135,9 @@ export function veiledning(klasse) {
           <h3>Fjernkontroll og tastatur</h3>
           <p>En presentasjonsfjernkontroll sender piltaster og Page Up og Page Down. Da kan du registrere fra hvor som helst i rommet.</p>
           <dl class="veil-taster">
-            <div><dt><kbd>Mellomrom</kbd> <kbd>Pil ned</kbd> <kbd>Page Down</kbd></dt><dd>Brudd. I lagspill: brudd på lag 1</dd></div>
-            <div><dt><kbd>Pil opp</kbd> <kbd>Page Up</kbd></dt><dd>Brudd på lag 2 i lagspill</dd></div>
-            <div><dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd>Brudd på lag 1, 2 eller 3 i lagspill</dd></div>
+            <div><dt><kbd>Mellomrom</kbd> <kbd>Pil ned</kbd> <kbd>Page Down</kbd></dt><dd>Brudd. På stjernehimmelen: brudd på lag 1</dd></div>
+            <div><dt><kbd>Pil opp</kbd> <kbd>Page Up</kbd></dt><dd>Brudd på lag 2 på stjernehimmelen</dd></div>
+            <div><dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd>Brudd på lag 1, 2 eller 3 på stjernehimmelen</dd></div>
             <div><dt><kbd>P</kbd></dt><dd>Pause og fortsett</dd></div>
             <div><dt><kbd>Esc</kbd></dt><dd>Avslutt, med bekreftelse</dd></div>
           </dl>
@@ -219,9 +219,9 @@ const ELEV_STEG = [
 ];
 
 const ELEV_BRETT = [
-  ['Fjellturen', 'Hele klassen er ett lag. For hvert minutt alle følger reglene, går brikken ett steg opp mot fjellet. Når brikken når flagget, har vi klart det.'],
-  ['Skyene', 'Hele klassen er ett lag. Hver gang en regel blir brutt, driver en sky inn over fjellet. Er toppen fortsatt fri for skodde når tiden er ute, har vi klart det.'],
-  ['Stjernehimmelen', 'Klassen deles i lag. Hvert lag har sitt eget stjernebilde. For hvert minutt laget følger reglene, tennes en stjerne. Når ett lag har nok stjerner, har hele klassen klart det.'],
+  ['Fjelltur', 'Hele klassen er ett lag. For hvert minutt alle følger reglene, går brikken ett steg opp mot fjellet. Når brikken når flagget, har vi klart det.'],
+  ['Skodde', 'Hele klassen er ett lag. Hver gang en regel blir brutt, driver en sky inn over fjellet. Er toppen fortsatt fri for skodde når tiden er ute, har vi klart det.'],
+  ['Stjernehimmel', 'Klassen deles i lag. Hvert lag har sitt eget stjernebilde. For hvert minutt laget følger reglene, tennes en stjerne. Når ett lag har nok stjerner, har hele klassen klart det.'],
 ];
 
 export function elevveiledning() {
