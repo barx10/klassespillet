@@ -107,6 +107,29 @@ function hjem() {
   app.querySelector('#start').focus();
 }
 
+// Velkomstskjermen vises hver gang appen åpnes, men ikke midt i en økt.
+function velkomst() {
+  document.body.classList.add('uten-bunntekst');
+  app.innerHTML = `
+    <main class="velkomst">
+      <div class="velkomst-landskap" aria-hidden="true"></div>
+      <section class="velkomst-innhold">
+        <h1>Klassespillet</h1>
+        <p class="velkomst-ingress">Good Behavior Game på tavla. Ti minutter, tre regler, hele klassen sammen.</p>
+        <button class="knapp knapp-hoved" id="videre">Start</button>
+        <p class="velkomst-fra">© Lærerliv 2026</p>
+      </section>
+    </main>`;
+  const bilde = lagLandskap(7, { brett: false });
+  bilde.setAttribute('preserveAspectRatio', 'xMidYMax slice');
+  app.querySelector('.velkomst-landskap').append(bilde);
+  app.querySelector('#videre').onclick = () => {
+    vis(hjem);
+    if (!erSett()) opplaering();
+  };
+  app.querySelector('#videre').focus();
+}
+
 function klasser() {
   app.innerHTML = `
     <main class="oppsett">
@@ -1033,8 +1056,7 @@ function logg() {
 }
 
 document.querySelector('#om').onclick = visOm;
-vis(hjem);
-if (!erSett() && !tilstand.pagaende) opplaering();
+vis(tilstand.pagaende ? spill : velkomst);
 
 // Frakoblet bruk. Ikke på localhost, så endringer under utvikling vises med en gang.
 if ('serviceWorker' in navigator && location.hostname !== 'localhost') {
