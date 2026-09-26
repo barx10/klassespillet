@@ -385,8 +385,8 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
               ${plasser.map((p, j) => `
                 <li>
                   <label class="regel-felt"><span>Regel</span>
-                    <input data-regel="${i}.${j}" value="${esc(p.tekst)}" aria-label="Regel ${j + 1}"
-                      placeholder="${j === 3 ? 'Fjerde regel, valgfri' : 'Skriv det elevene skal gjøre'}" /></label>
+                    <textarea data-regel="${i}.${j}" rows="1" aria-label="Regel ${j + 1}"
+                      placeholder="${j === 3 ? 'Fjerde regel, valgfri' : 'Skriv det elevene skal gjøre'}">${esc(p.tekst)}</textarea></label>
                   <label class="regel-felt brudd-felt"><span>Brudd</span>
                     <textarea data-brudd="${i}.${j}" rows="1" aria-label="Hva som teller som brudd på regel ${j + 1}"
                       placeholder="Det du registrerer">${esc(p.brudd)}</textarea></label>
@@ -414,6 +414,10 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
   }
 
   tegnRegelsett();
+  // Feltene vokser med teksten, men en regel og et brudd er én linje hver.
+  liste.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target.matches('textarea')) e.preventDefault();
+  });
   liste.addEventListener('change', (e) => {
     if (e.target.dataset.bruk) e.target.closest('.regelsett-kort').classList.toggle('valgt', e.target.checked);
   });

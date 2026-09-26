@@ -457,9 +457,9 @@ textarea { resize: vertical; line-height: 1.5; }
 }
 .regel-felt { display: grid; grid-template-columns: 4rem 1fr; align-items: center; gap: 0.6rem; }
 .regel-felt > span { font-size: 0.8em; font-weight: 700; color: var(--tekst-svak); }
-.regel-felt input { font-weight: 700; }
+.regel-felt [data-regel] { font-weight: 700; field-sizing: content; min-height: 2.6em; resize: none; }
 .brudd-felt > span { font-style: italic; font-weight: 400; }
-.regel-liste [data-brudd] { font-style: italic; color: var(--tekst-svak); field-sizing: content; min-height: 2.6em; border-style: dashed; }
+.regel-liste [data-brudd] { font-style: italic; color: var(--tekst-svak); field-sizing: content; min-height: 2.6em; resize: none; border-style: dashed; }
 .felt-navn { font-weight: 700; }
 
 /* Spillform */
