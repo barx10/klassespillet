@@ -789,6 +789,8 @@ textarea { resize: vertical; line-height: 1.5; }
 .om h2 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
 .om-person { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--kant); display: grid; gap: 0.5rem; }
 .om-person h3 { margin: 0; }
+/* Logoen har hvit bakgrunn, så den får en hvit flate også i mørk visning. */
+.om-logo { width: min(16rem, 100%); height: auto; aspect-ratio: 2.05; object-fit: cover; object-position: 50% 30%; padding: 0.4rem; border-radius: 12px; background: #FFFFFF; }
 .om a { color: var(--tekst); }
 
 /* Opplæring */

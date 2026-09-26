@@ -11,6 +11,7 @@ export function visOm() {
     <p>Klassespillet er et digitalt brett for Good Behavior Game. Klassen spiller sammen om å følge tre regler i ti minutter.
       Klarer de det, trekker dere noe fra en liste elevene selv har foreslått. Alt lagres bare i nettleseren på denne maskinen.</p>
     <div class="om-person">
+      <img class="om-logo" src="ikoner/logo.png" alt="Lærerliv. Fra klasserom til storsamfunn." width="2560" height="1449" />
       <h3>Kenneth Bareksten</h3>
       <p>Lærer og hobbyprogrammerer som lager digitale verktøy for å gjøre hverdagen litt enklere og mer kreativ.</p>
       <p><a href="https://www.laererliv.no" target="_blank" rel="noopener">www.laererliv.no</a><br />
