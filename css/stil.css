@@ -422,7 +422,7 @@ textarea { resize: vertical; line-height: 1.5; }
 .regel-liste { margin: 0.75rem 0 0; padding-left: 1.4em; display: grid; gap: 0.9rem; }
 .regel-liste li { display: grid; gap: 0.35rem; }
 .regel-liste li::marker { font-family: var(--visning); font-weight: 700; }
-.regel-liste [data-brudd] { font-size: 0.9em; color: var(--tekst-svak); field-sizing: content; min-height: 2.6em; }
+.regel-liste [data-brudd] { color: var(--tekst-svak); field-sizing: content; min-height: 2.6em; }
 .felt-navn { font-weight: 700; }
 
 /* Spillform */
@@ -918,6 +918,8 @@ kbd {
 .veil-regelsett dt { font-weight: 700; }
 .veil-regelsett dd { margin: 0.2rem 0 0; color: var(--tekst-svak); }
 .veil-kilder { font-size: 0.9em; color: var(--tekst-svak); }
+.veil-kilder li + li { margin-top: 0.5rem; }
+.veil-kilder a { color: var(--tekst); white-space: nowrap; }
 
 /* ---------- Mindre skjermer ---------- */
 @media (max-width: 760px) {

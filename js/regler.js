@@ -8,9 +8,9 @@ export const BIBLIOTEK = [
     navn: 'Tavleundervisning',
     om: 'Læreren eller en elev har ordet.',
     regler: [
-      { tekst: 'Jeg er stille når noen har ordet.', brudd: 'All prat, hvisking eller lyd med gjenstander mens læreren eller en medelev har ordet.' },
-      { tekst: 'Jeg rekker opp hånden når jeg vil si noe.', brudd: 'Å snakke uten å ha fått ordet, også faglig.' },
-      { tekst: 'Jeg sitter vendt mot tavla.', brudd: 'Å snu seg mot sidemann eller eleven bak for å prate, eller å sitte med ryggen til tavla.' },
+      { tekst: 'Jeg er stille når noen har ordet.', brudd: 'Prat, hvisking eller lyd når andre har ordet.' },
+      { tekst: 'Jeg rekker opp hånden når jeg vil si noe.', brudd: 'Å snakke uten ordet, også om fag.' },
+      { tekst: 'Jeg sitter vendt mot tavla.', brudd: 'Å snu seg for å prate, eller sitte med ryggen til.' },
     ],
   },
   {
@@ -19,9 +19,9 @@ export const BIBLIOTEK = [
     om: 'Elevene jobber alene på egen PC.',
     merknad: 'Studiene målte bare atferd som synes fra der læreren står, ikke skjermbruk. Reglene virker bare om du faktisk ser skjermene, for eksempel når du går rundt bak elevene. Er du usikker, registrerer du ikke brudd.',
     regler: [
-      { tekst: 'Jeg har bare skolearbeidet åpent.', brudd: 'Spill, sosiale medier, video eller nettsider som ikke hører til oppgaven.' },
-      { tekst: 'Chat og meldinger er lukket.', brudd: 'Å skrive eller lese meldinger i Teams eller andre kanaler.' },
-      { tekst: 'Jeg sitter på plassen min.', brudd: 'Å forlate plassen uten tillatelse.' },
+      { tekst: 'Jeg har bare skolearbeidet åpent.', brudd: 'Spill, video, sosiale medier eller andre sider.' },
+      { tekst: 'Chat og meldinger er lukket.', brudd: 'Å skrive eller lese meldinger.' },
+      { tekst: 'Jeg sitter på plassen min.', brudd: 'Å forlate plassen uten lov.' },
     ],
   },
   {
@@ -29,9 +29,9 @@ export const BIBLIOTEK = [
     navn: 'Selvstendig arbeid uten PC',
     om: 'Elevene jobber alene med bok eller ark.',
     regler: [
-      { tekst: 'Jeg jobber stille. Jeg hvisker bare om oppgaven.', brudd: 'Prat som er hørbar for andre enn sidemann, eller prat om annet enn oppgaven.' },
-      { tekst: 'Jeg rekker opp hånden når jeg trenger hjelp.', brudd: 'Å rope på læreren eller gå til læreren uten tillatelse.' },
-      { tekst: 'Jeg sitter på plassen min.', brudd: 'Å forlate plassen uten tillatelse.' },
+      { tekst: 'Jeg jobber stille. Jeg hvisker bare om oppgaven.', brudd: 'Prat som flere enn sidemann hører, eller om annet.' },
+      { tekst: 'Jeg rekker opp hånden når jeg trenger hjelp.', brudd: 'Å rope på eller gå til læreren uten lov.' },
+      { tekst: 'Jeg sitter på plassen min.', brudd: 'Å forlate plassen uten lov.' },
     ],
   },
   {
@@ -39,7 +39,7 @@ export const BIBLIOTEK = [
     navn: 'Oppstart av time',
     om: 'De første minuttene av timen.',
     regler: [
-      { tekst: 'Jeg sitter på plassen min når timen starter.', brudd: 'Å ikke sitte på plassen når læreren starter timen.' },
+      { tekst: 'Jeg sitter på plassen min når timen starter.', brudd: 'Å ikke sitte på plassen når timen starter.' },
       { tekst: 'PC-en er lukket til læreren sier noe annet.', brudd: 'Åpen skjerm.' },
       { tekst: 'Jeg er stille når læreren gir beskjed.', brudd: 'Prat eller lyd mens læreren gir beskjed.' },
     ],
