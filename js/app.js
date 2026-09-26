@@ -7,6 +7,7 @@ import { lagDiagram } from './diagram.js';
 import { veiledning, elevveiledning } from './veiledning.js';
 import { visOpplaering } from './opplaering.js';
 import { visOm } from './om.js';
+import { lagSpiller } from './animasjon.js';
 
 const app = document.getElementById('app');
 let tilstand = les();
@@ -17,7 +18,7 @@ const lagre = () => skriv(tilstand);
 const klasse = () => tilstand.klasser.find((k) => k.id === tilstand.aktivKlasseId) ?? tilstand.klasser[0];
 const regelsettFor = (k) => k.regelsett.find((r) => r.id === k.sisteRegelsettId) ?? k.regelsett[0];
 const redusertBevegelse = () =>
-  matchMedia('(prefers-reduced-motion: reduce)').matches || !klasse()?.innstillinger.animasjon;
+  matchMedia('(prefers-reduced-motion: reduce)').matches || klasse()?.innstillinger.animasjon === false;
 
 // ---------- Tema ----------
 
@@ -997,6 +998,7 @@ function veiledningSide(tilbake) {
   topplinje(tilbake);
   app.querySelector('#vis-opplaering').onclick = opplaering;
   app.querySelector('#til-elev').onclick = tilElev;
+  stopp = lagSpiller(app.querySelector('.anim-plass'), { redusert: redusertBevegelse() });
   // Lenkene i innholdslista ruller innenfor siden uten å endre adressen.
   app.querySelector('.veil-innhold').addEventListener('click', (e) => {
     const a = e.target.closest('a');
@@ -1017,6 +1019,7 @@ function elevSide(tilbake) {
   const hel = app.querySelector('#fullskjerm');
   if (!document.fullscreenEnabled) hel.hidden = true;
   hel.onclick = () => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen());
+  stopp = lagSpiller(app.querySelector('.anim-plass'), { redusert: redusertBevegelse() });
   window.scrollTo(0, 0);
   app.querySelector('#topp-tilbake').focus();
 }
