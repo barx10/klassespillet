@@ -14,7 +14,7 @@ const REGLER = ['Jeg jobber stille.', 'Jeg rekker opp hånden.', 'Jeg sitter på
 
 // Teksten under animasjonen i appen. Samme tekst som fortellerstemmen i manuset.
 export const TEKSTER = [
-  [0, 'Klassespillet spiller hele klassen sammen.'],
+  [0, 'Klassespillet hele klassen spiller sammen.'],
   [6000, 'Læreren velger tre regler. De står på tavla hele tiden.'],
   [12000, 'I ti minutter jobber vi som vanlig. For hvert minutt alle følger reglene, går brikken ett steg opp.'],
   [19000, 'Når brikken når flagget, trekker vi noe fra listen vi har laget sammen.'],
