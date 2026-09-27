@@ -72,15 +72,15 @@ export const FORSLAG = [
   'Neste økt holdes ute',
 ];
 
-// Gjør en regel om til konkret ros: «Jeg sitter på plassen min.» blir
-// «Nå sitter mange på plassen sin.» Regler som ikke starter med «Jeg»,
-// får et generelt forslag.
+// Gjør en regel om til en setning læreren kan si: «Jeg sitter på plassen min.»
+// blir «Jeg ser at mange sitter på plassen sin. Flott!» Regler som ikke starter
+// med «Jeg», roses som de står.
 export function rosForslag(regel) {
   const forste = regel.split('.')[0].trim();
   const m = forste.match(/^Jeg (\S+)(.*)$/);
-  if (!m) return `Si det når du ser at klassen følger regelen: ${regel}`;
+  if (!m) return `Flott! ${forste}.`;
   const resten = m[2]
     .replace(/\bmin\b/g, 'sin').replace(/\bmitt\b/g, 'sitt').replace(/\bmine\b/g, 'sine')
     .replace(/\bmeg\b/g, 'seg').replace(/\bjeg\b/g, 'de');
-  return `Nå ${m[1]} mange${resten}.`;
+  return `Jeg ser at mange ${m[1]}${resten}. Flott!`;
 }

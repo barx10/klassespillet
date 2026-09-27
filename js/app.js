@@ -326,6 +326,9 @@ function kartleggingStart() {
   form.querySelector('[type=submit]').focus();
 }
 
+// Hva målfeltet betyr: brikken går bare i minutter helt uten brudd.
+const maalfeltHjelp = (felt, minutter) =>
+  `Klassen må ha ${felt} av ${minutter} minutter helt uten brudd. Et minutt med ett brudd teller like mye som et minutt med mange.`;
 const tallValg = (fra, til, valgt) => Array.from({ length: til - fra + 1 }, (_, i) => fra + i)
   .map((n) => `<option ${n === valgt ? 'selected' : ''}>${n}</option>`).join('');
 
@@ -374,7 +377,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
               <div class="variant-felt">
                 <label class="felt-rad"><span>Målfelt</span>
                   <select name="maalfelt">${tallValg(1, 10, inn.maalfelt)}</select></label>
-                <p class="hjelp">Felt 7 betyr at klassen tåler tre minutter med brudd.</p>
+                <p class="hjelp maalfelt-hjelp">${maalfeltHjelp(inn.maalfelt, inn.intervaller)}</p>
               </div>
             </div>
             <div class="regelsett-kort variant-kort">
@@ -422,7 +425,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
           <label class="avkrysning"><input type="checkbox" name="visTidtaker" ${inn.visTidtaker ? 'checked' : ''} /> Vis tiden for elevene</label>
           <label class="avkrysning"><input type="checkbox" name="animasjon" ${inn.animasjon ? 'checked' : ''} /> Animer brikken og sola</label>
           <label class="avkrysning"><input type="checkbox" name="rospaaminnelse" ${inn.rospaaminnelse ? 'checked' : ''} /> Minn meg på å rose klassen</label>
-          <p class="hjelp">Hvert andre minutt står det en liten påminnelse ved knappene dine, med forslag til ros ut fra reglene. Ros det klassen gjør riktig.</p>
+          <p class="hjelp">Hvert andre minutt står det en liten, dempet setning ved knappene dine, med ros ut fra reglene. Si den bare når den stemmer.</p>
         </fieldset>
 
         <p class="skjema-feil" role="alert" hidden></p>
@@ -526,6 +529,9 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
   };
   merkForslag();
   valgFelt.addEventListener('input', merkForslag);
+  form.elements.maalfelt.addEventListener('change', (e) => {
+    form.querySelector('.maalfelt-hjelp').textContent = maalfeltHjelp(Number(e.target.value), inn.intervaller);
+  });
   form.querySelector('.forslag-liste').addEventListener('click', (e) => {
     const b = e.target.closest('.forslag-knapp');
     if (!b) return;
@@ -666,6 +672,7 @@ function spill() {
               <button class="knapp-brudd" data-lag="${l}" title="${['Mellomrom, pil ned eller 1', 'Pil opp eller 2', '3'][l]}">Brudd lag ${l + 1}</button>`).join('')
             : '<button class="knapp-brudd" data-lag="0" title="Mellomrom, pil ned eller Page Down">Brudd</button>'}
           <button class="knapp-liten" id="pause" title="P">Pause</button>
+          <button class="knapp-liten" id="fullskjerm" title="F" hidden>Fullskjerm</button>
           <button class="knapp-liten" id="avslutt" title="Esc">Avslutt</button>
         </aside>
       </div>
@@ -786,7 +793,7 @@ function spill() {
       const vis = okt.pauseFra === null && t >= ROS_START && t < varighet && (t - ROS_START) % ROS_HVERT < ROS_VARER;
       if (vis && rosEl.hidden) {
         const regel = rs.regler[Math.floor((t - ROS_START) / ROS_HVERT) % rs.regler.length];
-        rosEl.innerHTML = `<strong>Hvem følger reglene nå? Si det.</strong> ${esc(rosForslag(regel))}`;
+        rosEl.innerHTML = `<span class="ros-merke">Ros</span> «${esc(rosForslag(regel))}»`;
       }
       rosEl.hidden = !vis;
     }
@@ -953,6 +960,15 @@ function spill() {
     b.onclick = () => { oppdater(Okt.registrerBrudd(okt, Date.now(), Number(b.dataset.lag))); b.blur(); };
   });
   app.querySelector('#pause').onclick = (e) => { veksle(); e.currentTarget.blur(); };
+
+  // Fullskjerm skjuler nettleserens menyer, så brettet fyller tavla.
+  const hel = app.querySelector('#fullskjerm');
+  const vekslHel = () => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(() => {});
+  const visHel = () => { hel.textContent = document.fullscreenElement ? 'Lukk fullskjerm' : 'Fullskjerm'; };
+  hel.hidden = !document.fullscreenEnabled;
+  hel.onclick = (e) => { vekslHel(); e.currentTarget.blur(); };
+  document.addEventListener('fullscreenchange', visHel);
+  visHel();
   app.querySelector('#avslutt').onclick = spor;
 
   const taster = (e) => {
@@ -963,6 +979,8 @@ function spill() {
       if (l < lag) oppdater(Okt.registrerBrudd(okt, Date.now(), l));
     } else if (e.key === 'p' || e.key === 'P') {
       veksle();
+    } else if ((e.key === 'f' || e.key === 'F') && document.fullscreenEnabled) {
+      vekslHel();
     } else if (e.key === 'Escape') {
       e.preventDefault();
       spor();
@@ -987,6 +1005,8 @@ function spill() {
     cancelAnimationFrame(flytting);
     document.removeEventListener('keydown', taster);
     document.removeEventListener('visibilitychange', synlig);
+    document.removeEventListener('fullscreenchange', visHel);
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
     vaaken?.release().catch(() => {});
   };
 }

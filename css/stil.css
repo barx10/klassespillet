@@ -807,19 +807,22 @@ textarea { resize: vertical; line-height: 1.5; }
 .ros {
   position: absolute;
   right: 0;
-  bottom: calc(100% + 0.75rem);
-  width: min(24rem, 80vw);
+  bottom: calc(100% + 0.5rem);
+  width: max-content;
+  max-width: min(26rem, 80vw);
   margin: 0;
-  padding: 0.8rem 1rem;
-  border-radius: 16px;
-  font-size: 0.95rem;
-  color: var(--tekst);
-  background: color-mix(in srgb, var(--flate) 90%, transparent);
-  box-shadow: inset 4px 0 0 var(--sol);
+  padding: 0.45rem 0.8rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  text-align: right;
+  color: var(--sno);
+  background: color-mix(in srgb, var(--fjord) 55%, transparent);
+  opacity: 0.75;
   animation: opp 0.5s ease-out;
 }
 .ros[hidden] { display: none; }
-.ros strong { display: block; }
+.ros-merke { font-weight: 700; margin-right: 0.35em; color: var(--sol); }
 
 /* ---------- Bruddbrett og lagspill ---------- */
 /* Tellingen står øverst i midten, mellom klassenavnet og klokka. */

@@ -140,6 +140,7 @@ export function veiledning(klasse) {
             <div><dt><kbd>Pil opp</kbd> <kbd>Page Up</kbd></dt><dd>Brudd på lag 2 på stjernehimmelen</dd></div>
             <div><dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd>Brudd på lag 1, 2 eller 3 på stjernehimmelen</dd></div>
             <div><dt><kbd>P</kbd></dt><dd>Pause og fortsett</dd></div>
+            <div><dt><kbd>F</kbd></dt><dd>Fullskjerm av og på</dd></div>
             <div><dt><kbd>Esc</kbd></dt><dd>Avslutt, med bekreftelse</dd></div>
           </dl>
           <p class="hjelp">Prikkene ved bruddknappen viser hvor mange brudd du har registrert i minuttet som pågår. De er små, så klassen legger ikke merke til dem.</p>
@@ -155,7 +156,7 @@ export function veiledning(klasse) {
             <li><strong>Ros oftere enn du retter.</strong> Småting som ikke er brudd, trenger ingen kommentar.</li>
             <li><strong>Ros rett etter.</strong> Jo nærmere det skjer, jo tydeligere er koblingen.</li>
           </ul>
-          <p>Slå på påminnelsen i oppsettet om du vil. Hvert andre minutt står det da en liten boks ved knappene dine, med et forslag ut fra reglene.</p>
+          <p>Slå på påminnelsen i oppsettet om du vil. Hvert andre minutt står det da en liten, dempet tekst ved knappene dine, med en setning du kan si ut fra reglene. Si den bare når den stemmer.</p>
         </section>
 
         <section id="valg">
