@@ -326,6 +326,9 @@ function kartleggingStart() {
   form.querySelector('[type=submit]').focus();
 }
 
+// Hva målfeltet betyr: brikken går bare i minutter helt uten brudd.
+const maalfeltHjelp = (felt, minutter) =>
+  `Klassen må ha ${felt} av ${minutter} minutter helt uten brudd. Et minutt med ett brudd teller like mye som et minutt med mange.`;
 const tallValg = (fra, til, valgt) => Array.from({ length: til - fra + 1 }, (_, i) => fra + i)
   .map((n) => `<option ${n === valgt ? 'selected' : ''}>${n}</option>`).join('');
 
@@ -374,7 +377,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
               <div class="variant-felt">
                 <label class="felt-rad"><span>Målfelt</span>
                   <select name="maalfelt">${tallValg(1, 10, inn.maalfelt)}</select></label>
-                <p class="hjelp">Felt 7 betyr at klassen tåler tre minutter med brudd.</p>
+                <p class="hjelp maalfelt-hjelp">${maalfeltHjelp(inn.maalfelt, inn.intervaller)}</p>
               </div>
             </div>
             <div class="regelsett-kort variant-kort">
@@ -526,6 +529,9 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
   };
   merkForslag();
   valgFelt.addEventListener('input', merkForslag);
+  form.elements.maalfelt.addEventListener('change', (e) => {
+    form.querySelector('.maalfelt-hjelp').textContent = maalfeltHjelp(Number(e.target.value), inn.intervaller);
+  });
   form.querySelector('.forslag-liste').addEventListener('click', (e) => {
     const b = e.target.closest('.forslag-knapp');
     if (!b) return;
