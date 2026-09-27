@@ -436,7 +436,12 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
 .animasjon .regler-band { fill: var(--regler-bakgrunn); }
 .animasjon .regel-sirkel { fill: var(--sol); }
 .animasjon .regel-tall { fill: var(--fjord); font-family: var(--visning); font-size: 34px; font-weight: 800; text-anchor: middle; dominant-baseline: central; }
-.animasjon .regel-strek { fill: none; stroke: var(--regler-tekst); stroke-width: 7; stroke-linecap: round; opacity: 0.85; }
+.animasjon .regel-tekst { fill: var(--regler-tekst); font-family: var(--skrift); font-size: 30px; font-weight: 700; dominant-baseline: central; }
+.animasjon .blyant-skaft { fill: var(--sol); stroke: #8A5A00; stroke-width: 2; }
+.animasjon .blyant-tre { fill: #E8C49A; stroke: #8A5A00; stroke-width: 2; stroke-linejoin: round; }
+.animasjon .blyant-bly { fill: #2B2B2B; }
+.animasjon .blyant-ring { fill: #B8C2C9; stroke: #6B767D; stroke-width: 2; }
+.animasjon .blyant-viskelaer { fill: #E88A95; stroke: #A2505A; stroke-width: 2; }
 .animasjon .anim-konfetti .rod { fill: var(--varde-rod); }
 .animasjon .anim-konfetti .gul { fill: var(--sol); }
 .animasjon .anim-konfetti .hvit { fill: #FFFFFF; }

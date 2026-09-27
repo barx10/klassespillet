@@ -4,14 +4,17 @@
 // Derfor kan den både spilles i appen og tas opp bilde for bilde til video.
 
 import { lagLandskap, punkt } from './landskap.js';
+import { lagLyd } from './lyd.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 export const VARIGHET = 30000;
 const MAALFELT = 10;
+// Reglene på tavla i animasjonen. Korte, så de får plass på én linje.
+const REGLER = ['Jeg jobber stille.', 'Jeg rekker opp hånden.', 'Jeg sitter på plassen min.'];
 
 // Teksten under animasjonen i appen. Samme tekst som fortellerstemmen i manuset.
 export const TEKSTER = [
-  [0, 'Klassespillet spiller hele klassen sammen.'],
+  [0, 'Klassespillet som hele klassen spiller sammen.'],
   [6000, 'Læreren velger tre regler. De står på tavla hele tiden.'],
   [12000, 'I ti minutter jobber vi som vanlig. For hvert minutt alle følger reglene, går brikken ett steg opp.'],
   [19000, 'Når brikken når flagget, trekker vi noe fra listen vi har laget sammen.'],
@@ -92,19 +95,30 @@ export function lagAnimasjon() {
     return { g, x, y, s };
   });
 
-  // Reglene nederst: tre gule sirkler og streker som ikke kan leses.
+  // Reglene nederst: tre gule sirkler og regler som skrives av en blyant.
   const regler = el('g', { class: 'anim-regler' }, svg);
   el('rect', { x: 0, y: 760, width: 1600, height: 140, class: 'regler-band' }, regler);
-  const regel = [0, 1, 2].map((i) => {
-    const x = 90 + i * 510;
+  const regel = REGLER.map((tekst, i) => {
+    const x = 70 + i * 520;
     const g = el('g', {}, regler);
-    el('circle', { cx: x, cy: 830, r: 30, class: 'regel-sirkel' }, g);
+    el('circle', { cx: x, cy: 830, r: 28, class: 'regel-sirkel' }, g);
     const tall = el('text', { x, y: 831, class: 'regel-tall' }, g);
     tall.textContent = i + 1;
-    const strek = el('path', { d: `M${x + 60} 830 c 25 -18 50 18 75 0 s 50 -18 75 0 s 50 18 75 0 s 50 -18 75 0 s 50 18 75 0`,
-      class: 'regel-strek', pathLength: 1, 'stroke-dasharray': '1 1' }, g);
-    return { g, x, strek };
+    const klipp = el('clipPath', { id: `regel-klipp-${i}` }, svg);
+    const vindu = el('rect', { x: x + 44, y: 780, width: 0, height: 100 }, klipp);
+    const skrift = el('text', { x: x + 48, y: 832, class: 'regel-tekst', 'clip-path': `url(#regel-klipp-${i})` }, g);
+    skrift.textContent = tekst;
+    return { g, x, vindu, skrift, bredde: tekst.length * 15 };
   });
+
+  // Blyanten. Spissen står i origo, og skaftet peker opp mot høyre.
+  const blyant = el('g', { class: 'anim-blyant' }, svg);
+  const skaft = el('g', { transform: 'rotate(-38)' }, blyant);
+  el('path', { d: 'M0 0 L24 -9 L24 9 Z', class: 'blyant-tre' }, skaft);
+  el('path', { d: 'M0 0 L8 -3 L8 3 Z', class: 'blyant-bly' }, skaft);
+  el('rect', { x: 24, y: -9, width: 88, height: 18, class: 'blyant-skaft' }, skaft);
+  el('rect', { x: 112, y: -9, width: 12, height: 18, class: 'blyant-ring' }, skaft);
+  el('rect', { x: 124, y: -9, width: 18, height: 18, rx: 5, class: 'blyant-viskelaer' }, skaft);
 
   // Tegner bildet for tiden t, i millisekunder fra start.
   function tegn(t) {
@@ -156,16 +170,31 @@ export function lagAnimasjon() {
     }
 
     regler.setAttribute('transform', `translate(0 ${(1 - myk(andel(t, 6000, 6800))) * 160})`);
+    let penn = null;
     for (const [i, r] of regel.entries()) {
       const fra = 6900 + i * 1300;
       r.g.setAttribute('transform', skaler(r.x, 830, sprett(andel(t, fra, fra + 450))));
-      r.strek.setAttribute('stroke-dashoffset', 1 - myk(andel(t, fra + 350, fra + 1150)));
+      // Bredden måles når tegningen står på siden, ellers brukes et anslag.
+      r.bredde = (r.skrift.isConnected && r.skrift.getComputedTextLength()) || r.bredde;
+      const p = andel(t, fra + 350, fra + 1450);
+      r.vindu.setAttribute('width', 4 + p * (r.bredde + 8));
+      if (p > 0 && p < 1) penn = [r.x + 48 + p * r.bredde, p];
+    }
+    blyant.style.opacity = penn ? 1 : 0;
+    if (penn) {
+      // Spissen hopper litt opp og ned, som når en bokstav skrives.
+      const hopp = Math.sin(t / 45) * 9 + Math.sin(t / 17) * 4;
+      blyant.setAttribute('transform', `translate(${penn[0]} ${834 + hopp})`);
     }
   }
 
   tegn(0);
   return { svg, tegn };
 }
+
+// Når lappen trekkes, i millisekunder fra start. Lydene til brikken kommer
+// når den lander på hvert felt.
+const LAPP_OPP = 23000;
 
 // Avspilleren i veiledningene: tegningen, teksten under og knappene.
 // Returnerer en funksjon som stopper animasjonen når siden byttes.
@@ -177,13 +206,13 @@ export function lagSpiller(beholder, { redusert = false } = {}) {
       <figcaption class="anim-tekst" aria-live="polite"></figcaption>
       <div class="anim-knapper">
         <button class="knapp knapp-hoved" type="button" data-anim="spill">Spill av</button>
-        <button class="knapp knapp-stille" type="button" data-anim="igjen" hidden>Start på nytt</button>
+        <button class="knapp knapp-stille" type="button" data-anim="lyd" aria-pressed="false">Lyd av</button>
       </div>
     </figure>`;
   beholder.querySelector('.anim-bilde').append(svg);
   const tekst = beholder.querySelector('.anim-tekst');
   const spill = beholder.querySelector('[data-anim=spill]');
-  const igjen = beholder.querySelector('[data-anim=igjen]');
+  const lydKnapp = beholder.querySelector('[data-anim=lyd]');
 
   let t = 0, fra = null, ramme = 0, gaar = false;
   const visTekst = () => { tekst.textContent = TEKSTER.findLast(([s]) => s <= t)[1]; };
@@ -196,9 +225,27 @@ export function lagSpiller(beholder, { redusert = false } = {}) {
     return () => {};
   }
 
+  const lyd = lagLyd(VARIGHET);
+  const hendelser = [...HOPP.map((h, k) => [h + HOPPTID, k + 1 === MAALFELT ? lyd.maal : () => lyd.hopp(k)]), [LAPP_OPP, lyd.lapp]];
+  let dempet = false;
+  try { dempet = localStorage.getItem('klassespillet-lyd') === 'av'; } catch {}
+  const visLyd = () => {
+    lydKnapp.textContent = dempet ? 'Lyd på' : 'Lyd av';
+    lydKnapp.setAttribute('aria-pressed', String(dempet));
+  };
+  visLyd();
+  lydKnapp.onclick = () => {
+    dempet = !dempet;
+    lyd.demp(dempet);
+    visLyd();
+    try { localStorage.setItem('klassespillet-lyd', dempet ? 'av' : 'på'); } catch {}
+  };
+
   function steg(naa) {
     if (fra === null) fra = naa - t;
+    const forrige = t;
     t = Math.min(VARIGHET, naa - fra);
+    for (const [n, lag] of hendelser) if (forrige < n && n <= t) lag();
     tegn(t);
     visTekst();
     if (t < VARIGHET) ramme = requestAnimationFrame(steg);
@@ -209,16 +256,17 @@ export function lagSpiller(beholder, { redusert = false } = {}) {
     gaar = true;
     fra = null;
     spill.textContent = 'Pause';
-    igjen.hidden = false;
+    lyd.demp(dempet);
+    lyd.spill(t);
     ramme = requestAnimationFrame(steg);
   }
   function stans() {
     gaar = false;
     cancelAnimationFrame(ramme);
+    lyd.pause();
     spill.textContent = t >= VARIGHET ? 'Spill av igjen' : 'Fortsett';
   }
   spill.onclick = () => (gaar ? stans() : start());
-  igjen.onclick = () => { stans(); t = 0; tegn(0); visTekst(); start(); };
   visTekst();
-  return () => cancelAnimationFrame(ramme);
+  return () => { cancelAnimationFrame(ramme); lyd.pause(); };
 }

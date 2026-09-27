@@ -14,6 +14,7 @@ const FILER = [
   'js/lager.js',
   'js/landskap.js',
   'js/logg.js',
+  'js/lyd.js',
   'js/okt.js',
   'js/om.js',
   'js/opplaering.js',
@@ -28,6 +29,7 @@ const FILER = [
   'ikoner/ikon-192.png',
   'ikoner/ikon-512.png',
   'ikoner/logo.png',
+  'lyd/musikk.mp3',
 ];
 
 self.addEventListener('install', (e) => {
