@@ -425,7 +425,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
           <label class="avkrysning"><input type="checkbox" name="visTidtaker" ${inn.visTidtaker ? 'checked' : ''} /> Vis tiden for elevene</label>
           <label class="avkrysning"><input type="checkbox" name="animasjon" ${inn.animasjon ? 'checked' : ''} /> Animer brikken og sola</label>
           <label class="avkrysning"><input type="checkbox" name="rospaaminnelse" ${inn.rospaaminnelse ? 'checked' : ''} /> Minn meg på å rose klassen</label>
-          <p class="hjelp">Hvert andre minutt står det en liten påminnelse ved knappene dine, med forslag til ros ut fra reglene. Ros det klassen gjør riktig.</p>
+          <p class="hjelp">Hvert andre minutt står det en liten, dempet setning ved knappene dine, med ros ut fra reglene. Si den bare når den stemmer.</p>
         </fieldset>
 
         <p class="skjema-feil" role="alert" hidden></p>
@@ -793,7 +793,7 @@ function spill() {
       const vis = okt.pauseFra === null && t >= ROS_START && t < varighet && (t - ROS_START) % ROS_HVERT < ROS_VARER;
       if (vis && rosEl.hidden) {
         const regel = rs.regler[Math.floor((t - ROS_START) / ROS_HVERT) % rs.regler.length];
-        rosEl.innerHTML = `<strong>Hvem følger reglene nå? Si det.</strong> ${esc(rosForslag(regel))}`;
+        rosEl.innerHTML = `<span class="ros-merke">Ros</span> «${esc(rosForslag(regel))}»`;
       }
       rosEl.hidden = !vis;
     }

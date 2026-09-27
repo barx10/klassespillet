@@ -156,7 +156,7 @@ export function veiledning(klasse) {
             <li><strong>Ros oftere enn du retter.</strong> Småting som ikke er brudd, trenger ingen kommentar.</li>
             <li><strong>Ros rett etter.</strong> Jo nærmere det skjer, jo tydeligere er koblingen.</li>
           </ul>
-          <p>Slå på påminnelsen i oppsettet om du vil. Hvert andre minutt står det da en liten boks ved knappene dine, med et forslag ut fra reglene.</p>
+          <p>Slå på påminnelsen i oppsettet om du vil. Hvert andre minutt står det da en liten, dempet tekst ved knappene dine, med en setning du kan si ut fra reglene. Si den bare når den stemmer.</p>
         </section>
 
         <section id="valg">

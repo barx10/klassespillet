@@ -23,8 +23,8 @@ test('ingen påminnelse uten liste', () => {
 });
 
 test('ros bygges fra regelen', () => {
-  assert.equal(rosForslag('Jeg sitter på plassen min.'), 'Nå sitter mange på plassen sin.');
-  assert.equal(rosForslag('Jeg rekker opp hånden når jeg vil si noe.'), 'Nå rekker mange opp hånden når de vil si noe.');
-  assert.equal(rosForslag('Jeg jobber stille. Jeg hvisker bare om oppgaven.'), 'Nå jobber mange stille.');
-  assert.match(rosForslag('Chat og meldinger er lukket.'), /Chat og meldinger er lukket\./);
+  assert.equal(rosForslag('Jeg sitter på plassen min.'), 'Jeg ser at mange sitter på plassen sin. Flott!');
+  assert.equal(rosForslag('Jeg rekker opp hånden når jeg vil si noe.'), 'Jeg ser at mange rekker opp hånden når de vil si noe. Flott!');
+  assert.equal(rosForslag('Jeg jobber stille. Jeg hvisker bare om oppgaven.'), 'Jeg ser at mange jobber stille. Flott!');
+  assert.equal(rosForslag('Chat og meldinger er lukket.'), 'Flott! Chat og meldinger er lukket.');
 });
