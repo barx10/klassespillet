@@ -837,7 +837,8 @@ function spill() {
       bilde.querySelectorAll('.bilde-punkt').forEach((p, i) => {
         p.setAttribute('class', `bilde-punkt ${fikk(i) ? 'fikk' : telling[i] && i <= Math.max(fullfort - 1, naavaerende) ? 'tapt' : i === naavaerende ? 'naa' : 'kommer'}`);
       });
-      bilde.querySelectorAll('.bilde-linje').forEach((linje, i) => linje.classList.toggle('tent', fikk(i) && fikk(i + 1)));
+      bilde.querySelectorAll('.bilde-linje').forEach((linje) =>
+        linje.classList.toggle('tent', fikk(Number(linje.dataset.a)) && fikk(Number(linje.dataset.b))));
       const vunnet = stjerner >= okt.stjernekrav;
       bilde.classList.toggle('vunnet', vunnet);
       bilde.querySelector('.bilde-navn').textContent = `Lag ${l + 1}${vunnet ? ' ✓' : ''}`;

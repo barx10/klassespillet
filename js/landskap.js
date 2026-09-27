@@ -80,21 +80,42 @@ function skyer(grense) {
   }).join('');
 }
 
-// Lagspillet: hvert lag har sitt stjernebilde, med én stjerne per minutt.
-// Formene er ulike, så lagene skilles uten å bruke farge.
+// Lagspillet: hvert lag har et kjent stjernebilde, med én stjerne per minutt.
+// Stjernene står i den rekkefølgen de tennes, så de kjente delene kommer først:
+// vogna i Karlsvogna, beltet i Orion og korset i Svanen. Linjene tegner
+// figuren slik den ser ut på himmelen, med nord opp.
 const BILDER = [
-  [[-150, 50], [-110, 18], [-64, 30], [-24, 4], [20, -12], [34, -62], [88, -84], [142, -58], [124, -6], [66, 2]],
-  [[-150, -40], [-112, 42], [-72, -8], [-34, 62], [6, 2], [46, 70], [86, 8], [118, -52], [150, 10], [128, 82]],
-  [[-140, 72], [-122, 12], [-82, -40], [-22, -80], [40, -72], [92, -30], [124, 22], [84, 72], [22, 86], [-40, 58]],
+  {
+    navn: 'Karlsvogna',
+    om: 'En del av Store bjørn',
+    // Alkaid, Mizar, Alioth, Megrez, Dubhe, Merak, Phecda, så bjørnens hode og forbein.
+    stjerner: [[-150, 20], [-100, -5], [-55, -10], [-10, 0], [70, -5], [68, 48], [2, 45], [118, -22], [155, -48], [118, 88]],
+    linjer: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3], [4, 7], [7, 8], [5, 9]],
+  },
+  {
+    navn: 'Orion',
+    om: 'Jegeren med de tre beltestjernene',
+    // Alnitak, Alnilam, Mintaka, Betelgeuse, Bellatrix, Rigel, Saiph, Meissa og sverdet.
+    stjerner: [[-41, 2], [0, -6], [41, -14], [-102, -68], [90, -62], [104, 70], [-80, 76], [-3, -98], [-9, 28], [-6, 50]],
+    linjer: [[0, 1], [1, 2], [3, 0], [4, 2], [2, 5], [0, 6], [7, 3], [7, 4], [1, 8], [8, 9]],
+  },
+  {
+    navn: 'Svanen',
+    om: 'Også kalt Nordkorset',
+    // Deneb, Sadr, Delta, Gienah, Eta, Phi, Albireo, så vingespissene.
+    stjerner: [[0, -95], [0, -30], [58, -40], [-58, -18], [8, 18], [14, 52], [20, 88], [108, -58], [-112, -2], [148, -82]],
+    linjer: [[0, 1], [1, 2], [1, 3], [1, 4], [4, 5], [5, 6], [2, 7], [3, 8], [7, 9]],
+  },
 ];
-const MIDTER = { 2: [[500, 330], [1060, 300]], 3: [[330, 340], [790, 300], [1240, 320]] };
+const MIDTER = { 2: [[500, 330], [1060, 300]], 3: [[330, 340], [790, 300], [1210, 285]] };
 const STJERNE = 'M0 -1 L0.2245 -0.309 L0.951 -0.309 L0.363 0.118 L0.588 0.809 L0 0.382 L-0.588 0.809 L-0.363 0.118 L-0.951 -0.309 L-0.2245 -0.309 Z';
 
 function stjernebilder(antall, intervaller) {
   return MIDTER[antall].map(([cx, cy], l) => {
-    const p = BILDER[l].slice(0, intervaller).map(([x, y]) => [cx + x, cy + y]);
-    const linjer = p.slice(0, -1).map((a, i) =>
-      `<line class="bilde-linje" data-i="${i}" x1="${a[0]}" y1="${a[1]}" x2="${p[i + 1][0]}" y2="${p[i + 1][1]}" />`).join('');
+    const bilde = BILDER[l];
+    const p = bilde.stjerner.slice(0, intervaller).map(([x, y]) => [cx + x, cy + y]);
+    const linjer = bilde.linjer.filter(([a, b]) => a < p.length && b < p.length).map(([a, b]) =>
+      `<line class="bilde-linje" data-a="${a}" data-b="${b}" x1="${p[a][0]}" y1="${p[a][1]}" x2="${p[b][0]}" y2="${p[b][1]}" />`).join('');
     const punkter = p.map(([x, y], i) => `
       <g class="bilde-punkt kommer" data-i="${i}" transform="translate(${x} ${y})">
         <circle class="bilde-glod" r="30" />
@@ -106,6 +127,7 @@ function stjernebilder(antall, intervaller) {
       ${linjer}${punkter}
       <text class="bilde-etikett bilde-navn" x="${cx}" y="${cy - 160}">Lag ${l + 1}</text>
       <text class="bilde-etikett lag-tall" x="${cx}" y="${cy - 118}">0</text>
+      <text class="bilde-om" x="${cx}" y="${cy + 128}"><tspan class="bilde-om-navn">${bilde.navn}</tspan><tspan x="${cx}" dy="28">${bilde.om}</tspan></text>
     </g>`;
   }).join('');
 }
