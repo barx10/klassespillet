@@ -104,7 +104,8 @@ function stjernebilder(antall, intervaller) {
       </g>`).join('');
     return `<g class="stjernebilde" data-lag="${l}">
       ${linjer}${punkter}
-      <text class="bilde-etikett" x="${cx}" y="${cy - 128}"><tspan class="bilde-navn">Lag ${l + 1}</tspan> <tspan class="lag-tall">0</tspan></text>
+      <text class="bilde-etikett bilde-navn" x="${cx}" y="${cy - 160}">Lag ${l + 1}</text>
+      <text class="bilde-etikett lag-tall" x="${cx}" y="${cy - 118}">0</text>
     </g>`;
   }).join('');
 }

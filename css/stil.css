@@ -256,21 +256,23 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
 /* Lagspillet: ett stjernebilde per lag på nattehimmelen. */
 .landskap.natt .fjellene { transform: translateY(300px); }
 .landskap.natt .stjerner { opacity: 0.45; }
-.landskap .bilde-linje { stroke: var(--tekst); stroke-width: 2; opacity: 0.14; transition: opacity 1s ease; }
+.landskap .bilde-linje { stroke: var(--tekst); stroke-width: 2; opacity: 0.25; transition: opacity 1s ease; }
 .landskap .bilde-linje.tent { opacity: 0.6; }
 .landskap .vunnet .bilde-linje.tent { opacity: 0.95; stroke-width: 3; }
 .landskap .bilde-punkt > * { transition: opacity 0.8s ease; }
 .landskap .bilde-glod { fill: url(#stjerneglod); opacity: 0; }
 .landskap .bilde-ring { fill: none; stroke: var(--tekst); stroke-width: 3; opacity: 0; }
-.landskap .bilde-prikk { fill: var(--tekst); opacity: 0.4; }
-.landskap .bilde-stjerne { fill: var(--stjerne); opacity: 0; }
+/* Minuttene som gjenstår, står som tomme stjerner, så klassen ser hvor mange som er igjen.
+   Et tapt minutt blir nesten borte, og et vunnet fylles med gull. */
+.landskap .bilde-prikk { opacity: 0; }
+.landskap .bilde-stjerne { fill: color-mix(in srgb, var(--tekst) 12%, transparent); stroke: var(--tekst); stroke-width: 0.09; stroke-linejoin: round; opacity: 0.6; }
 .landskap .naa .bilde-ring { opacity: 0.9; }
-.landskap .naa .bilde-prikk { opacity: 0.9; }
-.landskap .fikk .bilde-stjerne, .landskap .fikk .bilde-glod { opacity: 1; }
-.landskap .fikk .bilde-prikk { opacity: 0; }
-.landskap .tapt .bilde-prikk { opacity: 0.18; }
+.landskap .naa .bilde-stjerne { opacity: 1; }
+.landskap .fikk .bilde-stjerne { fill: var(--stjerne); stroke: none; opacity: 1; }
+.landskap .fikk .bilde-glod { opacity: 1; }
+.landskap .tapt .bilde-stjerne { fill: none; opacity: 0.15; }
 .landskap .bilde-etikett { fill: var(--tekst); font-family: var(--visning); font-size: 40px; font-weight: 700; text-anchor: middle; }
-.landskap .bilde-etikett .lag-tall { font-weight: 800; fill: var(--stjerne); }
+.landskap .lag-tall { font-size: 32px; font-weight: 800; fill: var(--stjerne); }
 
 .landskap .brikke-kropp { transform: translate(0, -44px) scale(1.25); }
 
