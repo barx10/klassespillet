@@ -64,6 +64,10 @@ Push til `main` publiserer appen på nytt via GitHub Pages.
 
 Kenneth Bareksten, [Lærerliv](https://www.laererliv.no). © Lærerliv 2026.
 
+## Lisens
+
+Koden er lisensiert under MIT, se [LICENSE](LICENSE). Du kan fritt bruke, endre og dele den, så lenge opphavsmerknaden følger med. Skriftene og musikken er unntatt og har egne lisenser, se under.
+
 Skriftene Atkinson Hyperlegible Next og Bricolage Grotesque er lisensiert under SIL Open Font License. Lisensene ligger i `fonts/`.
 
 Musikken i animasjonen (`lyd/musikk.mp3`) er et utdrag av «Motivation» fra Pixabay, brukt under Pixabay Content License: <https://pixabay.com/music/build-up-scenes-motivation-motivation-music-573993/>.
