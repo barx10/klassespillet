@@ -672,6 +672,7 @@ function spill() {
               <button class="knapp-brudd" data-lag="${l}" title="${['Mellomrom, pil ned eller 1', 'Pil opp eller 2', '3'][l]}">Brudd lag ${l + 1}</button>`).join('')
             : '<button class="knapp-brudd" data-lag="0" title="Mellomrom, pil ned eller Page Down">Brudd</button>'}
           <button class="knapp-liten" id="pause" title="P">Pause</button>
+          <button class="knapp-liten" id="fullskjerm" title="F" hidden>Fullskjerm</button>
           <button class="knapp-liten" id="avslutt" title="Esc">Avslutt</button>
         </aside>
       </div>
@@ -959,6 +960,15 @@ function spill() {
     b.onclick = () => { oppdater(Okt.registrerBrudd(okt, Date.now(), Number(b.dataset.lag))); b.blur(); };
   });
   app.querySelector('#pause').onclick = (e) => { veksle(); e.currentTarget.blur(); };
+
+  // Fullskjerm skjuler nettleserens menyer, så brettet fyller tavla.
+  const hel = app.querySelector('#fullskjerm');
+  const vekslHel = () => (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(() => {});
+  const visHel = () => { hel.textContent = document.fullscreenElement ? 'Lukk fullskjerm' : 'Fullskjerm'; };
+  hel.hidden = !document.fullscreenEnabled;
+  hel.onclick = (e) => { vekslHel(); e.currentTarget.blur(); };
+  document.addEventListener('fullscreenchange', visHel);
+  visHel();
   app.querySelector('#avslutt').onclick = spor;
 
   const taster = (e) => {
@@ -969,6 +979,8 @@ function spill() {
       if (l < lag) oppdater(Okt.registrerBrudd(okt, Date.now(), l));
     } else if (e.key === 'p' || e.key === 'P') {
       veksle();
+    } else if ((e.key === 'f' || e.key === 'F') && document.fullscreenEnabled) {
+      vekslHel();
     } else if (e.key === 'Escape') {
       e.preventDefault();
       spor();
@@ -993,6 +1005,8 @@ function spill() {
     cancelAnimationFrame(flytting);
     document.removeEventListener('keydown', taster);
     document.removeEventListener('visibilitychange', synlig);
+    document.removeEventListener('fullscreenchange', visHel);
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
     vaaken?.release().catch(() => {});
   };
 }

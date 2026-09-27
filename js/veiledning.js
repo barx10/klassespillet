@@ -140,6 +140,7 @@ export function veiledning(klasse) {
             <div><dt><kbd>Pil opp</kbd> <kbd>Page Up</kbd></dt><dd>Brudd på lag 2 på stjernehimmelen</dd></div>
             <div><dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd></dt><dd>Brudd på lag 1, 2 eller 3 på stjernehimmelen</dd></div>
             <div><dt><kbd>P</kbd></dt><dd>Pause og fortsett</dd></div>
+            <div><dt><kbd>F</kbd></dt><dd>Fullskjerm av og på</dd></div>
             <div><dt><kbd>Esc</kbd></dt><dd>Avslutt, med bekreftelse</dd></div>
           </dl>
           <p class="hjelp">Prikkene ved bruddknappen viser hvor mange brudd du har registrert i minuttet som pågår. De er små, så klassen legger ikke merke til dem.</p>
