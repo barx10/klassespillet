@@ -192,8 +192,8 @@ export function lagAnimasjon() {
   return { svg, tegn };
 }
 
-// Når lydeffektene spilles, i millisekunder fra start.
-const FLAGG_OPP = 19200;
+// Når lappen trekkes, i millisekunder fra start. Lydene til brikken kommer
+// når den lander på hvert felt.
 const LAPP_OPP = 23000;
 
 // Avspilleren i veiledningene: tegningen, teksten under og knappene.
@@ -226,7 +226,7 @@ export function lagSpiller(beholder, { redusert = false } = {}) {
   }
 
   const lyd = lagLyd(VARIGHET);
-  const hendelser = [...HOPP.map((h, k) => [h, () => lyd.hopp(k)]), [FLAGG_OPP, lyd.flagg], [LAPP_OPP, lyd.lapp]];
+  const hendelser = [...HOPP.map((h, k) => [h + HOPPTID, k + 1 === MAALFELT ? lyd.maal : () => lyd.hopp(k)]), [LAPP_OPP, lyd.lapp]];
   let dempet = false;
   try { dempet = localStorage.getItem('klassespillet-lyd') === 'av'; } catch {}
   const visLyd = () => {

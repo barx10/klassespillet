@@ -80,7 +80,7 @@ export function lagLyd(varighet) {
     o.stop(start + lengde + 0.05);
   }
 
-  // Hvert hopp er en liten «plopp», én tone høyere for hvert felt.
+  // Hver landing er en liten «plopp», én tone høyere for hvert felt.
   const SKALA = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16];
   function hopp(felt) {
     if (!ctx) return;
@@ -88,8 +88,8 @@ export function lagLyd(varighet) {
     tone(f * 0.7, ctx.currentTime, 0.18, { til: f });
   }
 
-  // Flagget: en kort fanfare som stiger.
-  function flagg() {
+  // Brikken når flagget: en kort fanfare som stiger.
+  function maal() {
     if (!ctx) return;
     const s = ctx.currentTime;
     [523, 659, 784, 1047].forEach((f, i) => tone(f, s + i * 0.11, i === 3 ? 0.6 : 0.2, { type: 'triangle', styrke: 0.8 }));
@@ -117,5 +117,5 @@ export function lagLyd(varighet) {
     tone(1976, s + 0.75, 0.7, { styrke: 0.3 });
   }
 
-  return { spill, pause, demp, hopp, flagg, lapp };
+  return { spill, pause, demp, hopp, maal, lapp };
 }
