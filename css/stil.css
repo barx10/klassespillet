@@ -271,6 +271,8 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
 .landskap .tapt .bilde-prikk { opacity: 0.25; }
 .landskap .bilde-etikett { fill: var(--tekst); font-family: var(--visning); font-size: 40px; font-weight: 700; text-anchor: middle; }
 .landskap .lag-tall { font-size: 32px; font-weight: 800; fill: var(--stjerne); }
+.landskap .bilde-om { fill: var(--tekst); font-family: var(--skrift); font-size: 22px; text-anchor: middle; opacity: 0.75; }
+.landskap .bilde-om-navn { font-family: var(--visning); font-size: 26px; font-weight: 700; }
 
 .landskap .brikke-kropp { transform: translate(0, -44px) scale(1.25); }
 
