@@ -4,6 +4,7 @@
 // Derfor kan den både spilles i appen og tas opp bilde for bilde til video.
 
 import { lagLandskap, punkt } from './landskap.js';
+import { lagLyd } from './lyd.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 export const VARIGHET = 30000;
@@ -191,7 +192,11 @@ export function lagAnimasjon() {
   return { svg, tegn };
 }
 
-// Avspilleren i veiledningene: tegningen, teksten under og knappen.
+// Når lydeffektene spilles, i millisekunder fra start.
+const FLAGG_OPP = 19200;
+const LAPP_OPP = 23000;
+
+// Avspilleren i veiledningene: tegningen, teksten under og knappene.
 // Returnerer en funksjon som stopper animasjonen når siden byttes.
 export function lagSpiller(beholder, { redusert = false } = {}) {
   const { svg, tegn } = lagAnimasjon();
@@ -201,11 +206,13 @@ export function lagSpiller(beholder, { redusert = false } = {}) {
       <figcaption class="anim-tekst" aria-live="polite"></figcaption>
       <div class="anim-knapper">
         <button class="knapp knapp-hoved" type="button" data-anim="spill">Spill av</button>
+        <button class="knapp knapp-stille" type="button" data-anim="lyd" aria-pressed="false">Lyd av</button>
       </div>
     </figure>`;
   beholder.querySelector('.anim-bilde').append(svg);
   const tekst = beholder.querySelector('.anim-tekst');
   const spill = beholder.querySelector('[data-anim=spill]');
+  const lydKnapp = beholder.querySelector('[data-anim=lyd]');
 
   let t = 0, fra = null, ramme = 0, gaar = false;
   const visTekst = () => { tekst.textContent = TEKSTER.findLast(([s]) => s <= t)[1]; };
@@ -218,9 +225,27 @@ export function lagSpiller(beholder, { redusert = false } = {}) {
     return () => {};
   }
 
+  const lyd = lagLyd(VARIGHET);
+  const hendelser = [...HOPP.map((h, k) => [h, () => lyd.hopp(k)]), [FLAGG_OPP, lyd.flagg], [LAPP_OPP, lyd.lapp]];
+  let dempet = false;
+  try { dempet = localStorage.getItem('klassespillet-lyd') === 'av'; } catch {}
+  const visLyd = () => {
+    lydKnapp.textContent = dempet ? 'Lyd på' : 'Lyd av';
+    lydKnapp.setAttribute('aria-pressed', String(dempet));
+  };
+  visLyd();
+  lydKnapp.onclick = () => {
+    dempet = !dempet;
+    lyd.demp(dempet);
+    visLyd();
+    try { localStorage.setItem('klassespillet-lyd', dempet ? 'av' : 'på'); } catch {}
+  };
+
   function steg(naa) {
     if (fra === null) fra = naa - t;
+    const forrige = t;
     t = Math.min(VARIGHET, naa - fra);
+    for (const [n, lag] of hendelser) if (forrige < n && n <= t) lag();
     tegn(t);
     visTekst();
     if (t < VARIGHET) ramme = requestAnimationFrame(steg);
@@ -231,14 +256,17 @@ export function lagSpiller(beholder, { redusert = false } = {}) {
     gaar = true;
     fra = null;
     spill.textContent = 'Pause';
+    lyd.demp(dempet);
+    lyd.spill(t);
     ramme = requestAnimationFrame(steg);
   }
   function stans() {
     gaar = false;
     cancelAnimationFrame(ramme);
+    lyd.pause();
     spill.textContent = t >= VARIGHET ? 'Spill av igjen' : 'Fortsett';
   }
   spill.onclick = () => (gaar ? stans() : start());
   visTekst();
-  return () => cancelAnimationFrame(ramme);
+  return () => { cancelAnimationFrame(ramme); lyd.pause(); };
 }

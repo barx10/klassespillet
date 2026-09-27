@@ -1,0 +1,9 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="css/stil.css"></head>
+<body><div id="b"></div><script type="module">
+const O = window.AudioBufferSourceNode.prototype.start;
+window.logg = [];
+AudioBufferSourceNode.prototype.start = function (...a) { logg.push(['kilde', this.buffer.duration.toFixed(1), ...a.map(x=>+x.toFixed?.(2))]); return O.apply(this, a); };
+const OO = OscillatorNode.prototype.start;
+OscillatorNode.prototype.start = function (...a) { logg.push(['tone', Math.round(this.frequency.value)]); return OO.apply(this, a); };
+import('./js/animasjon.js').then(m => m.lagSpiller(document.getElementById('b')));
+</script></body></html>

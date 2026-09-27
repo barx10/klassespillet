@@ -14,6 +14,7 @@ const FILER = [
   'js/lager.js',
   'js/landskap.js',
   'js/logg.js',
+  'js/lyd.js',
   'js/okt.js',
   'js/om.js',
   'js/opplaering.js',
