@@ -99,7 +99,7 @@ function stjernebilder(antall, intervaller) {
       <g class="bilde-punkt kommer" data-i="${i}" transform="translate(${x} ${y})">
         <circle class="bilde-glod" r="30" />
         <circle class="bilde-ring" r="19" />
-        <circle class="bilde-prikk" r="4.5" />
+        <circle class="bilde-prikk" r="6" />
         <path class="bilde-stjerne" d="${STJERNE}" transform="scale(20)" />
       </g>`).join('');
     return `<g class="stjernebilde" data-lag="${l}">
