@@ -29,6 +29,7 @@ const FILER = [
   'ikoner/ikon-192.png',
   'ikoner/ikon-512.png',
   'ikoner/logo.png',
+  'lyd/musikk.mp3',
 ];
 
 self.addEventListener('install', (e) => {
