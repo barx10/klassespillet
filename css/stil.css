@@ -158,7 +158,9 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
 
 /* Sidene fyller skjermen, og bunnteksten står under dem. */
 #app { flex: 1; display: flex; flex-direction: column; }
-#app > main { flex: 1 0 auto; }
+/* Bredden må settes, ellers gjør margin: auto sidene like brede som innholdet,
+   og mobilen zoomer ut for å få plass til en bred tabell. */
+#app > main { flex: 1 0 auto; width: 100%; min-width: 0; }
 .bunntekst {
   padding: 1rem clamp(1.25rem, 4vw, 3rem);
   font-size: 0.85em;
@@ -455,7 +457,7 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
 .animasjon .anim-sky circle { fill: var(--sky); }
 
 /* ---------- Velkomst ---------- */
-.velkomst { position: relative; min-height: 100vh; display: grid; overflow: hidden; }
+.velkomst { position: relative; min-height: 100vh; min-height: 100dvh; display: grid; overflow: hidden; }
 .velkomst-landskap { position: absolute; inset: 0; }
 .velkomst-landskap .landskap { position: absolute; inset: 0; height: 100%; }
 .velkomst-innhold {
@@ -472,7 +474,7 @@ h1, h2 { font-family: var(--visning); line-height: 1.05; margin: 0; text-wrap: b
   justify-items: center;
   text-align: center;
 }
-.velkomst h1 { font-size: clamp(3.2rem, 11vw, 9rem); font-weight: 800; letter-spacing: -0.04em; }
+.velkomst h1 { font-size: clamp(2.6rem, 11vw, 9rem); font-weight: 800; letter-spacing: -0.04em; }
 .velkomst-ingress { font-size: clamp(1.15rem, 2vw, 1.6rem); max-width: 30ch; margin: 1rem 0 2rem; text-wrap: balance; }
 .velkomst .knapp { font-size: clamp(1.1rem, 1.8vw, 1.5rem); padding: 0.9em 2.6em; }
 .velkomst-fra { margin: 1.5rem 0 0; font-size: 0.85em; color: var(--tekst-svak); }
@@ -661,6 +663,8 @@ textarea { resize: vertical; line-height: 1.5; }
 /* ---------- Spill ---------- */
 .spill {
   height: 100vh;
+  /* På mobil er 100vh høyere enn det synlige, så knappene havnet under adresselinja. */
+  height: 100dvh;
   display: grid;
   grid-template-rows: 1fr auto;
   overflow: hidden;
@@ -670,7 +674,8 @@ textarea { resize: vertical; line-height: 1.5; }
   position: relative;
   min-height: 0;
   overflow: hidden;
-  background: var(--himmel-topp);
+  /* På høye skjermer får landskapet luft over og under: himmel over, gress under. */
+  background: linear-gradient(var(--himmel-topp) 50%, var(--mark) 50%);
 }
 .brett-topp {
   position: absolute;
@@ -1040,6 +1045,7 @@ textarea { resize: vertical; line-height: 1.5; }
 
 .logg-diagram .diagram { padding: 1.25rem 1rem 0.5rem; border-radius: 24px; background: var(--flate); }
 .diagram-forklaring { list-style: none; display: flex; gap: 1.5rem; margin: 0 0 0.5rem 2.5rem; padding: 0; font-size: 0.9em; }
+.diagram-forklaring[hidden] { display: none; }
 .diagram-forklaring li { display: flex; align-items: center; gap: 0.5rem; }
 .diagram-strek { display: inline-block; width: 1.25rem; height: 3px; border-radius: 2px; }
 .diagram-flate { position: relative; }
@@ -1091,7 +1097,7 @@ textarea { resize: vertical; line-height: 1.5; }
   gap: 0 clamp(2rem, 5vw, 4.5rem);
 }
 .veil-topp { grid-column: 1 / -1; margin-bottom: clamp(2rem, 4vw, 3rem); }
-.veil-topp h1 { font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 800; letter-spacing: -0.04em; }
+.veil-topp h1 { font-size: clamp(2.2rem, 7vw, 5.5rem); font-weight: 800; letter-spacing: -0.04em; }
 .veil-topp .skjema-ingress { font-size: 1.15em; max-width: 46ch; margin: 1rem 0 1.5rem; }
 .veil-innhold { align-self: start; position: sticky; top: 2rem; }
 .veil-innhold ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.1rem; border-left: 2px solid var(--kant); }
@@ -1160,6 +1166,7 @@ kbd {
 .veil-kilder { font-size: 0.9em; color: var(--tekst-svak); }
 .veil-kilder li + li { margin-top: 0.5rem; }
 .veil-kilder a { color: var(--tekst); white-space: nowrap; }
+@media (max-width: 760px) { .veil-kilder a { white-space: normal; overflow-wrap: anywhere; } }
 
 /* ---------- Mindre skjermer ---------- */
 @media (max-width: 760px) {
@@ -1167,7 +1174,7 @@ kbd {
   .hjem-landskap { grid-row: 1; -webkit-mask-image: none; mask-image: none; }
   .hjem-innhold { grid-row: 2; padding-top: 1rem; }
   .regler ol { grid-template-columns: 1fr; gap: 0.5rem; }
-  .veiledning { grid-template-columns: 1fr; }
+  .veiledning { grid-template-columns: minmax(0, 1fr); }
   .veil-innhold { position: static; margin-bottom: 2.5rem; }
   .veil-taster > div { grid-template-columns: 1fr; gap: 0.3rem; }
   .resultat { width: auto; right: 1.25rem; }
