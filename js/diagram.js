@@ -50,17 +50,19 @@ export function lagDiagram(beholder, okter) {
   tips.className = 'diagram-tips';
   tips.hidden = true;
   flate.append(tips);
-  if (tilstede.length > 1) beholder.append(forklaring);
-  beholder.append(flate);
+  beholder.append(forklaring, flate);
 
   let svg;
   let valgt = null;
 
   function tegn() {
     svg?.remove();
-    const B = Math.max(300, flate.clientWidth);
+    const B = Math.max(240, flate.clientWidth);
     const H = 300;
-    const m = { v: 48, h: 124, t: 14, b: 40 };
+    // På mobil er det ikke plass til navnene etter linjene. Forklaringen over tar over.
+    const smal = B < 480;
+    forklaring.hidden = tilstede.length < 2 && !smal;
+    const m = { v: 48, h: smal ? 20 : 124, t: 14, b: 40 };
     const bredde = B - m.v - m.h;
     const hoyde = H - m.t - m.b;
     const maks = pentMaks(Math.max(...punkter.map((p) => p.verdi), 1));
@@ -108,7 +110,7 @@ export function lagDiagram(beholder, okter) {
     for (let n = 1; n < etiketter.length; n++) {
       etiketter[n].y = Math.max(etiketter[n].y, etiketter[n - 1].y + 22);
     }
-    for (const e of etiketter) {
+    for (const e of smal ? [] : etiketter) {
       el('text', { x: e.x, y: e.y, class: 'diagram-navn' }, svg).textContent = e.navn;
     }
 
