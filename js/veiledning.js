@@ -98,7 +98,7 @@ export function veiledning(klasse) {
         <section id="spille">
           <h2>Slik spiller du</h2>
           <div class="anim-plass"></div>
-          <p>En økt varer ti minutter, delt i ti minutter som telles hver for seg. Start når klassen har kommet til ro.
+          <p>En økt varer ti minutter som standard, delt i ti minutter som telles hver for seg. I oppsettet kan du velge fra 3 til 20 minutter. Studiene brukte ti. Start når klassen har kommet til ro.
             Forskningen fant ingen tydelig forskjell mellom spillformene. Velg den du klarer å gjennomføre mens du underviser.</p>
           <div class="veil-varianter">
             <div>

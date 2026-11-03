@@ -7,7 +7,7 @@ export const STEG = [
       Det gjør du én gang per klasse. Senere finner du det under «Endre oppsett».</p>
     <p class="hjelp">Skriv aldri elevnavn i appen.</p>`],
   ['Start en økt', `
-    <p>Trykk <strong>Start økt</strong> og gå gjennom sjekklisten. Tavla viser landskapet og reglene, og økta varer i ti minutter.</p>
+    <p>Trykk <strong>Start økt</strong> og gå gjennom sjekklisten. Tavla viser landskapet og reglene, og økta varer så lenge du har valgt i oppsettet, som standard ti minutter.</p>
     <p class="hjelp">Vil du først se hvordan klassen har det uten spill, trykker du «Kartlegg».</p>`],
   ['Registrer brudd', `
     <p>Trykk <strong>Brudd</strong> hver gang noen bryter en regel. Med tastatur eller fjernkontroll bruker du mellomrom, pil ned eller Page Down.

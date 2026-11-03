@@ -319,5 +319,6 @@ Navigasjon etter fase 5: velkomstskjerm hver gang appen åpnes. Topplinje på al
 
 ## 11. Åpne spørsmål
 
-- Skal læreren kunne bruke mobilen som fjernkontroll? Det krever synkronisering mellom enheter og dermed en server. Utsettes.
+- Skal læreren kunne bruke mobilen som fjernkontroll? Det krever synkronisering mellom enheter og dermed en server. Utsettes. Aktuell løsning: skjermen viser en QR-kode, telefonen kobler direkte til skjermen med WebRTC via PeerJS (https://github.com/peers/peerjs, MIT). Det trengs en liten signaleringsserver (`peerjs-server`) som bare formidler koblingsinformasjon og ikke lagrer noe. Den bør kjøres selv, helst i EØS, og ikke over den offentlige gratistjenesten. Noen skolenett kan kreve TURN-server. Serveradressen gjøres konfigurerbar. Må nevnes i personvernteksten. Anslått 3 til 5 dagers arbeid for prototype. Avklares med UiI og skolenes personvernombud.
+- Valgfri spilletid er gjort: 3 til 20 minutter i oppsettet, ti som standard. Brettet får ett felt per minutt langs samme sti, og stjernebildene har 20 stjerner. Målfelt, bruddgrense og stjernekrav skaleres når tiden endres. Tiden er ikke den som er undersøkt i studiene, og det står i oppsettet.
 - Skal loggen kunne deles med kontaktlærer eller rådgiver? I så fall bare som eksportfil.

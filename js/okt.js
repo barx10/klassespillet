@@ -3,6 +3,15 @@
 
 export const NEDTELLING_MS = 3000;
 
+// Spilletiden læreren kan velge, i hele minutter. Ti er tiden i studiene.
+export const MIN_MINUTTER = 3;
+export const MAKS_MINUTTER = 20;
+export const STANDARD_MINUTTER = 10;
+
+const TALLORD = { 3: 'tre', 4: 'fire', 5: 'fem', 6: 'seks', 7: 'sju', 8: 'åtte', 9: 'ni', 10: 'ti', 11: 'elleve', 12: 'tolv' };
+export const minuttTekst = (n) => `${TALLORD[n] ?? n} minutter`;
+export const medStorBokstav = (tekst) => tekst.charAt(0).toUpperCase() + tekst.slice(1);
+
 // type er 'spill' eller 'kartlegging'. sjekkliste er true/false for spill
 // (alt avkrysset eller ikke) og null for kartlegging. Regelsettet kopieres inn,
 // så brettet viser de samme reglene selv om oppsettet endres under økten.
