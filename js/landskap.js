@@ -4,23 +4,67 @@
 
 const NS = 'http://www.w3.org/2000/svg';
 
-// Start (indeks 0) og ti felt. Stien slynger seg i to svinger opp fjellsiden.
+// Stien er tegnet med start og ti hjørnepunkter. Den slynger seg i to svinger
+// opp fjellsiden. Med en annen spilletid legges feltene jevnt langs den samme stien,
+// så ti felt gir nøyaktig disse punktene.
 export const PUNKTER = [
   [150, 822],
   [340, 792], [545, 752], [760, 702], [610, 636], [845, 572],
   [1065, 502], [925, 448], [1130, 372], [1248, 292], [1312, 212],
 ];
+const BASE_FELT = PUNKTER.length - 1;
+export const STANDARD_FELT = BASE_FELT;
 
 // Catmull-Rom gjennom punktene, ett kubisk segment per steg.
-function segment(i) {
+function kontroll(i) {
   const p = (k) => PUNKTER[Math.max(0, Math.min(PUNKTER.length - 1, k))];
   const [p0, p1, p2, p3] = [p(i - 1), p(i), p(i + 1), p(i + 2)];
   const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
   const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+  return [p1, c1, c2, p2];
+}
+
+function segment(i) {
+  const [p1, c1, c2, p2] = kontroll(i);
   return `M${p1} C${c1} ${c2} ${p2}`;
 }
 
 const HELE_STIEN = PUNKTER.slice(0, -1).map((_, i) => segment(i)).join(' ');
+
+// Punktet på stien ved posisjon t (0 til 10, ett heltall per hjørnepunkt).
+function stiPunkt(t) {
+  const i = Math.min(BASE_FELT - 1, Math.floor(t));
+  const u = t - i;
+  const [p1, c1, c2, p2] = kontroll(i);
+  const v = 1 - u;
+  return [0, 1].map((d) =>
+    v ** 3 * p1[d] + 3 * v * v * u * c1[d] + 3 * v * u * u * c2[d] + u ** 3 * p2[d]);
+}
+
+const tPaaSti = (felt, antall) => (felt * BASE_FELT) / antall;
+
+// Start (indeks 0) og ett felt per minutt.
+const feltCache = new Map();
+function felter(antall) {
+  if (!feltCache.has(antall)) {
+    feltCache.set(antall, Array.from({ length: antall + 1 }, (_, j) => stiPunkt(tPaaSti(j, antall))));
+  }
+  return feltCache.get(antall);
+}
+
+// Stien mellom felt j og j + 1, som en linje med tette punkter.
+function delSti(j, antall) {
+  const fra = tPaaSti(j, antall);
+  const til = tPaaSti(j + 1, antall);
+  const trinn = 16;
+  return Array.from({ length: trinn + 1 }, (_, k) => {
+    const [x, y] = stiPunkt(fra + ((til - fra) * k) / trinn);
+    return `${k ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
+  }).join(' ');
+}
+
+// Mindre felt når det er mange, så de ikke overlapper.
+const feltSkala = (antall) => (antall <= STANDARD_FELT ? 1 : Math.max(0.55, STANDARD_FELT / antall));
 
 function tre(x, y, s = 1) {
   const h = 110 * s, b = 38 * s;
@@ -41,20 +85,19 @@ function stjerner() {
   return s;
 }
 
-function felt(i, maalfelt) {
-  const [x, y] = PUNKTER[i];
+function felt(i, maalfelt, [x, y], sk) {
   const maal = i === maalfelt;
   const flagg = maal
-    ? `<g class="flagg" transform="translate(${x + 22} ${y - 40})">
+    ? `<g class="flagg" transform="translate(${x + 22 * sk} ${y - 40 * sk}) scale(${sk})">
         <rect x="0" y="-92" width="6" height="96" rx="3" class="flaggstang" />
         <path d="M6 -90 C 40 -98 58 -78 92 -84 L 92 -44 C 58 -38 40 -58 6 -50 Z" />
       </g>`
     : '';
   return `<g class="felt${maal ? ' felt-maal' : ''}" data-felt="${i}">
     ${flagg}
-    <ellipse class="felt-skygge" cx="${x}" cy="${y + 10}" rx="44" ry="14" />
-    <circle class="felt-stein" cx="${x}" cy="${y}" r="38" />
-    <text class="felt-tall" x="${x}" y="${y + 1}">${i}</text>
+    <ellipse class="felt-skygge" cx="${x}" cy="${y + 10 * sk}" rx="${44 * sk}" ry="${14 * sk}" />
+    <circle class="felt-stein" cx="${x}" cy="${y}" r="${38 * sk}" />
+    <text class="felt-tall" x="${x}" y="${y + 1}"${sk < 1 ? ` style="font-size: ${Math.round(42 * sk)}px"` : ''}>${i}</text>
   </g>`;
 }
 
@@ -89,22 +132,29 @@ const BILDER = [
     navn: 'Karlsvogna',
     om: 'En del av Store bjørn',
     // Alkaid, Mizar, Alioth, Megrez, Dubhe, Merak, Phecda, så bjørnens hode og forbein.
-    stjerner: [[-150, 20], [-100, -5], [-55, -10], [-10, 0], [70, -5], [68, 48], [2, 45], [118, -22], [155, -48], [118, 88]],
-    linjer: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3], [4, 7], [7, 8], [5, 9]],
+    stjerner: [[-150, 20], [-100, -5], [-55, -10], [-10, 0], [70, -5], [68, 48], [2, 45], [118, -22], [155, -48], [118, 88],
+      // Flere stjerner i nærheten, for økter på mer enn ti minutter.
+      [-195, -30], [-150, 75], [-100, 50], [-55, -60], [10, -50], [110, -70], [190, -5], [60, 90], [-30, 88], [-80, 88]],
+    linjer: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3], [4, 7], [7, 8], [5, 9],
+      [0, 10], [2, 13], [3, 14], [7, 15], [8, 16], [5, 17], [6, 18], [18, 19], [1, 12], [0, 11]],
   },
   {
     navn: 'Orion',
     om: 'Jegeren med de tre beltestjernene',
     // Alnitak, Alnilam, Mintaka, Betelgeuse, Bellatrix, Rigel, Saiph, Meissa og sverdet.
-    stjerner: [[-41, 2], [0, -6], [41, -14], [-102, -68], [90, -62], [104, 70], [-80, 76], [-3, -98], [-9, 28], [-6, 50]],
-    linjer: [[0, 1], [1, 2], [3, 0], [4, 2], [2, 5], [0, 6], [7, 3], [7, 4], [1, 8], [8, 9]],
+    stjerner: [[-41, 2], [0, -6], [41, -14], [-102, -68], [90, -62], [104, 70], [-80, 76], [-3, -98], [-9, 28], [-6, 50],
+      [-150, -100], [-60, -95], [60, -95], [140, -40], [150, 20], [60, 85], [-30, 88], [-125, 30], [-140, -20], [-130, 85]],
+    linjer: [[0, 1], [1, 2], [3, 0], [4, 2], [2, 5], [0, 6], [7, 3], [7, 4], [1, 8], [8, 9],
+      [3, 10], [7, 11], [7, 12], [4, 13], [13, 14], [5, 15], [9, 16], [6, 17], [17, 18], [6, 19]],
   },
   {
     navn: 'Svanen',
     om: 'Også kalt Nordkorset',
     // Deneb, Sadr, Delta, Gienah, Eta, Phi, Albireo, så vingespissene.
-    stjerner: [[0, -95], [0, -30], [58, -40], [-58, -18], [8, 18], [14, 52], [20, 88], [108, -58], [-112, -2], [148, -82]],
-    linjer: [[0, 1], [1, 2], [1, 3], [1, 4], [4, 5], [5, 6], [2, 7], [3, 8], [7, 9]],
+    stjerner: [[0, -95], [0, -30], [58, -40], [-58, -18], [8, 18], [14, 52], [20, 88], [108, -58], [-112, -2], [148, -82],
+      [-55, -80], [55, -95], [-150, -45], [-165, 40], [60, 15], [110, 40], [-55, 40], [-40, 85], [85, 88], [190, -40]],
+    linjer: [[0, 1], [1, 2], [1, 3], [1, 4], [4, 5], [5, 6], [2, 7], [3, 8], [7, 9],
+      [0, 10], [0, 11], [8, 12], [8, 13], [4, 14], [14, 15], [5, 16], [6, 17], [6, 18], [9, 19]],
   },
 ];
 const MIDTER = { 2: [[500, 330], [1060, 300]], 3: [[330, 340], [790, 300], [1210, 285]] };
@@ -134,20 +184,22 @@ function stjernebilder(antall, intervaller) {
 
 // Uten brett (kartlegging) vises bare landskapet: ingen sti, felt eller brikke.
 // skyer: bruddgrensen på bruddbrettet. lag: antall lag i lagspillet, som gir nattehimmel.
-export function lagLandskap(maalfelt, { brett = true, skyer: grense = 0, lag = 0, intervaller = 10 } = {}) {
+// intervaller: antall minutter, som gir like mange felt og stjerner per lag.
+export function lagLandskap(maalfelt, { brett = true, skyer: grense = 0, lag = 0, intervaller = STANDARD_FELT } = {}) {
+  const punkter = felter(intervaller);
+  const sk = feltSkala(intervaller);
   const svg = document.createElementNS(NS, 'svg');
   svg.setAttribute('viewBox', '0 0 1600 900');
   svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
   svg.setAttribute('role', 'img');
-  svg.setAttribute('aria-label', brett ? `Fjelltur med ti felt. Målet er felt ${maalfelt}.`
+  svg.setAttribute('aria-label', brett ? `Fjelltur med ${intervaller} felt. Målet er felt ${maalfelt}.`
     : grense ? `Fjellet i skodde. Én sky per brudd, og ved ${grense} brudd er toppen skjult.`
       : lag ? `Nattehimmel med ett stjernebilde per lag.` : 'Fjellandskap');
   svg.classList.add('landskap');
   if (lag) svg.classList.add('natt');
 
-  const segmenter = PUNKTER.slice(0, -1)
-    .map((_, i) => `<path class="sti-gatt" data-segment="${i}" d="${segment(i)}" />`)
-    .join('');
+  const segmenter = Array.from({ length: intervaller }, (_, i) =>
+    `<path class="sti-gatt" data-segment="${i}" d="${delSti(i, intervaller)}" />`).join('');
 
   svg.innerHTML = `
     <defs>
@@ -204,11 +256,11 @@ export function lagLandskap(maalfelt, { brett = true, skyer: grense = 0, lag = 0
     ${segmenter}
 
     <g class="start">
-      <circle cx="${PUNKTER[0][0]}" cy="${PUNKTER[0][1]}" r="14" />
+      <circle cx="${punkter[0][0]}" cy="${punkter[0][1]}" r="14" />
     </g>
-    ${PUNKTER.slice(1).map((_, i) => felt(i + 1, maalfelt)).join('')}
+    ${punkter.slice(1).map((p, i) => felt(i + 1, maalfelt, p, sk)).join('')}
 
-    <g class="brikke" transform="translate(${PUNKTER[0][0]} ${PUNKTER[0][1]})">
+    <g class="brikke" transform="translate(${punkter[0][0]} ${punkter[0][1]})">
       <g class="brikke-kropp">
         <ellipse cx="0" cy="18" rx="34" ry="11" class="brikke-skygge" />
         <path d="M-30 14 C-30 2 -18 -2 -14 -12 C-24 -20 -24 -44 0 -48 C 24 -44 24 -20 14 -12 C 18 -2 30 2 30 14 Z" class="brikke-form" />
@@ -219,7 +271,7 @@ export function lagLandskap(maalfelt, { brett = true, skyer: grense = 0, lag = 0
   return svg;
 }
 
-// Punktet på stien for en posisjon (0 = start, 1–10 = felt).
-export function punkt(felt) {
-  return PUNKTER[felt];
+// Punktet på stien for en posisjon (0 = start, 1 til antall = felt).
+export function punkt(felt, antall = STANDARD_FELT) {
+  return felter(antall)[felt];
 }

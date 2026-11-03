@@ -125,9 +125,9 @@ function hjem() {
   const inn = k.innstillinger;
   const variant = k.variant ?? 'rolig';
   const mal = {
-    rolig: `Ti minutter. Kom til felt ${inn.maalfelt}, så trekker dere klassens valg.`,
-    brudd: `Ti minutter. Hold dere under ${inn.bruddgrense} brudd, så trekker dere klassens valg.`,
-    lag: `Ti minutter i ${inn.antallLag === 3 ? 'tre' : 'to'} lag. Får ett lag minst ${inn.stjernekrav} stjerner, trekker hele klassen klassens valg.`,
+    rolig: `${Okt.medStorBokstav(Okt.minuttTekst(inn.intervaller))}. Kom til felt ${inn.maalfelt}, så trekker dere klassens valg.`,
+    brudd: `${Okt.medStorBokstav(Okt.minuttTekst(inn.intervaller))}. Hold dere under ${inn.bruddgrense} brudd, så trekker dere klassens valg.`,
+    lag: `${Okt.medStorBokstav(Okt.minuttTekst(inn.intervaller))} i ${inn.antallLag === 3 ? 'tre' : 'to'} lag. Får ett lag minst ${inn.stjernekrav} stjerner, trekker hele klassen klassens valg.`,
   }[variant];
   const nye = Logg.trengerNyeForslag(k);
   forHjem(`
@@ -226,7 +226,7 @@ function forHjem(innhold, { brett = true } = {}) {
       <div class="hjem-landskap" aria-hidden="true"></div>
       <section class="hjem-innhold">${innhold}</section>
     </main>`;
-  const bilde = lagLandskap(k?.innstillinger.maalfelt ?? 7, { brett });
+  const bilde = lagLandskap(k?.innstillinger.maalfelt ?? 7, { brett, intervaller: k?.innstillinger.intervaller });
   bilde.setAttribute('preserveAspectRatio', 'xMaxYMid slice');
   app.querySelector('.hjem-landskap').append(bilde);
 }
@@ -303,7 +303,7 @@ function kartleggingStart() {
   forHjem(`
     <form class="sjekkliste">
       <h1 class="sjekkliste-tittel">Kartlegging</h1>
-      <p class="hjem-mal">Ti minutter vanlig undervisning, uten spill. Trykk på brudd-knappen hver gang noen bryter en regel.</p>
+      <p class="hjem-mal">${Okt.medStorBokstav(Okt.minuttTekst(k.innstillinger.intervaller))} vanlig undervisning, uten spill. Trykk på brudd-knappen hver gang noen bryter en regel.</p>
       ${regelsettVelger(k)}
       <p class="hjelp">Klassen ser bare landskapet, ikke brettet eller tellingen. Atferd som varer, teller som nytt brudd hvert 15. sekund.
         Gjør tre til fem kartlegginger på ulike dager, så har du tall å vurdere i loggen.
@@ -329,6 +329,8 @@ function kartleggingStart() {
 // Hva målfeltet betyr: brikken går bare i minutter helt uten brudd.
 const maalfeltHjelp = (felt, minutter) =>
   `Klassen må ha ${felt} av ${minutter} minutter helt uten brudd. Et minutt med ett brudd teller like mye som et minutt med mange.`;
+const stjernekravFra = (minutter) => Math.max(1, Math.min(5, minutter - 1));
+const gyldigTid = (n) => Number.isInteger(n) && n >= Okt.MIN_MINUTTER && n <= Okt.MAKS_MINUTTER;
 const tallValg = (fra, til, valgt) => Array.from({ length: til - fra + 1 }, (_, i) => fra + i)
   .map((n) => `<option ${n === valgt ? 'selected' : ''}>${n}</option>`).join('');
 
@@ -370,13 +372,18 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
         <fieldset class="felt-gruppe">
           <legend>Spillform</legend>
           <p class="hjelp">Forskningen fant ingen tydelig forskjell mellom spillformene. Velg den du klarer å gjennomføre.</p>
+          <label class="felt-rad"><span>Spilletid</span>
+            <input type="number" name="intervaller" class="tid-felt" min="${Okt.MIN_MINUTTER}" max="${Okt.MAKS_MINUTTER}" step="1" inputmode="numeric" value="${inn.intervaller}" />
+            <span class="felt-enhet">minutter</span></label>
+          <p class="hjelp">Fra ${Okt.MIN_MINUTTER} til ${Okt.MAKS_MINUTTER} minutter. Brettet får ett felt eller én stjerne per minutt.
+            Studiene brukte ${Okt.minuttTekst(Okt.STANDARD_MINUTTER)}. Andre lengder avviker fra det som er undersøkt.</p>
           <div class="variant-liste">
             <div class="regelsett-kort variant-kort">
               <label class="avkrysning"><input type="radio" name="variant" value="rolig" ${variant === 'rolig' ? 'checked' : ''} />
                 <span><strong>Fjelltur</strong><span class="hjelp">Hele klassen er ett lag. Brikken går ett felt for hvert minutt uten brudd. Lettest å gjennomføre alene.</span></span></label>
               <div class="variant-felt">
                 <label class="felt-rad"><span>Målfelt</span>
-                  <select name="maalfelt">${tallValg(1, 10, inn.maalfelt)}</select></label>
+                  <select name="maalfelt">${tallValg(1, inn.intervaller, inn.maalfelt)}</select></label>
                 <p class="hjelp maalfelt-hjelp">${maalfeltHjelp(inn.maalfelt, inn.intervaller)}</p>
               </div>
             </div>
@@ -397,7 +404,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
                   <label class="felt-rad"><span>Antall lag</span>
                     <select name="antallLag">${tallValg(2, 3, inn.antallLag)}</select></label>
                   <label class="felt-rad"><span>Stjerner for å vinne</span>
-                    <select name="stjernekrav">${tallValg(5, 10, inn.stjernekrav)}</select></label>
+                    <select name="stjernekrav">${tallValg(stjernekravFra(inn.intervaller), inn.intervaller, inn.stjernekrav)}</select></label>
                 </div>
                 <p class="hjelp">Hele klassen trekker klassens valg når minst ett lag når kravet.
                   Del klassen etter hvor elevene sitter. Appen lagrer ikke hvem som er på hvilket lag. To lag gir bedre oversikt enn tre.</p>
@@ -529,8 +536,27 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
   };
   merkForslag();
   valgFelt.addEventListener('input', merkForslag);
-  form.elements.maalfelt.addEventListener('change', (e) => {
-    form.querySelector('.maalfelt-hjelp').textContent = maalfeltHjelp(Number(e.target.value), inn.intervaller);
+  const valgtTid = () => {
+    const n = Number(form.elements.intervaller.value);
+    return gyldigTid(n) ? n : null;
+  };
+  const oppdaterMaalfeltHjelp = () => {
+    form.querySelector('.maalfelt-hjelp').textContent =
+      maalfeltHjelp(Number(form.elements.maalfelt.value), valgtTid() ?? inn.intervaller);
+  };
+  form.elements.maalfelt.addEventListener('change', oppdaterMaalfeltHjelp);
+  // Ny spilletid: målene skaleres med, så de fortsatt kan nås.
+  let forrigeTid = inn.intervaller;
+  form.elements.intervaller.addEventListener('change', () => {
+    const n = valgtTid();
+    if (n === null) return;
+    const skaler = (verdi, min, maks) => Math.max(min, Math.min(maks, Math.round((Number(verdi) * n) / forrigeTid)));
+    const fraKrav = stjernekravFra(n);
+    form.elements.maalfelt.innerHTML = tallValg(1, n, skaler(form.elements.maalfelt.value, 1, n));
+    form.elements.stjernekrav.innerHTML = tallValg(fraKrav, n, skaler(form.elements.stjernekrav.value, fraKrav, n));
+    form.elements.bruddgrense.innerHTML = tallValg(3, 20, skaler(form.elements.bruddgrense.value, 3, 20));
+    forrigeTid = n;
+    oppdaterMaalfeltHjelp();
   });
   form.querySelector('.forslag-liste').addEventListener('click', (e) => {
     const b = e.target.closest('.forslag-knapp');
@@ -571,6 +597,10 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
     };
 
     if (!navn) return visFeil('Klassen trenger et navn.', form.elements.navn);
+    const tid = Number(f.get('intervaller'));
+    if (!gyldigTid(tid)) {
+      return visFeil(`Spilletiden må være et helt antall minutter fra ${Okt.MIN_MINUTTER} til ${Okt.MAKS_MINUTTER}.`, form.elements.intervaller);
+    }
     if (!valgte.length) return visFeil('Velg minst ett regelsett.', liste.querySelector('[data-bruk]'));
     for (const r of valgte) {
       const i = rader.indexOf(r);
@@ -591,6 +621,7 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
     }
     k.klassensValg = valg;
     k.variant = f.get('variant');
+    inn.intervaller = tid;
     inn.maalfelt = Number(f.get('maalfelt'));
     inn.bruddgrense = Number(f.get('bruddgrense'));
     inn.antallLag = Number(f.get('antallLag'));
@@ -720,7 +751,7 @@ function spill() {
   }
 
   function settBrikke(felt) {
-    const [x, y] = punkt(felt);
+    const [x, y] = punkt(felt, okt.intervaller);
     brikke.setAttribute('transform', `translate(${x} ${y})`);
   }
 
@@ -853,7 +884,7 @@ function spill() {
     const n = okt.brudd.length;
     panel.innerHTML = `
       <h2>Kartlegging ferdig</h2>
-      <p>${n === 1 ? 'Ett brudd' : `${n} brudd`} på ti minutter.</p>
+      <p>${n === 1 ? 'Ett brudd' : `${n} brudd`} på ${Okt.minuttTekst(okt.intervaller)}.</p>
       <button class="knapp knapp-hoved" id="ferdig">Se loggen</button>`;
     const knapp = panel.querySelector('#ferdig');
     knapp.onclick = () => {
