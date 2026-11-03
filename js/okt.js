@@ -10,6 +10,18 @@ export const STANDARD_MINUTTER = 10;
 
 const TALLORD = { 3: 'tre', 4: 'fire', 5: 'fem', 6: 'seks', 7: 'sju', 8: 'åtte', 9: 'ni', 10: 'ti', 11: 'elleve', 12: 'tolv' };
 export const minuttTekst = (n) => `${TALLORD[n] ?? n} minutter`;
+// Variable intervaller: hvert intervall kan vare 1 til 3 minutter, og enkelte kan gi dobbelt poeng.
+// Poengene er det brettet viser, så antall felt eller stjerner er summen av poengene.
+export const MAKS_LENGDE = 3;
+export const BONUSPOENG = 2;
+export const MAKS_POENG = 20;
+
+const vekterFor = (inn) => Array.from({ length: inn.intervaller }, (_, k) => (inn.bonus?.[k] ? BONUSPOENG : 1));
+export const totalPoengFor = (inn) => vekterFor(inn).reduce((a, b) => a + b, 0);
+export const totalMinutterFor = (inn) => (inn.lengder
+  ? inn.lengder.slice(0, inn.intervaller).reduce((a, b) => a + b, 0)
+  : inn.intervaller);
+
 export const medStorBokstav = (tekst) => tekst.charAt(0).toUpperCase() + tekst.slice(1);
 
 // type er 'spill' eller 'kartlegging'. sjekkliste er true/false for spill
@@ -18,7 +30,7 @@ export const medStorBokstav = (tekst) => tekst.charAt(0).toUpperCase() + tekst.s
 // variant er 'rolig' (brikken går per rolige minutt), 'brudd' (hvert brudd teller mot
 // en grense) eller 'lag' (en stjerne per rolige minutt for hvert lag).
 export function nyOkt(klasse, naa = Date.now(), { type = 'spill', sjekkliste = null, regelsett = null } = {}) {
-  const { intervaller, intervallSekunder, maalfelt, bruddgrense = 10, antallLag = 2, stjernekrav = 8 } = klasse.innstillinger;
+  const { intervaller, intervallSekunder, maalfelt, bruddgrense = 10, antallLag = 2, stjernekrav = 8, lengder = null, bonus = null } = klasse.innstillinger;
   const variant = type === 'spill' ? (klasse.variant ?? 'rolig') : null;
   return {
     klasseId: klasse.id,
@@ -31,6 +43,9 @@ export function nyOkt(klasse, naa = Date.now(), { type = 'spill', sjekkliste = n
     start: type === 'spill' ? naa + NEDTELLING_MS : naa,
     intervaller,
     intervallMs: intervallSekunder * 1000,
+    // Bare satt når læreren har valgt variable intervaller eller bonus.
+    ...(lengder ? { lengderMs: lengder.slice(0, intervaller).map((m) => m * intervallSekunder * 1000) } : {}),
+    ...(bonus ? { vekter: vekterFor(klasse.innstillinger) } : {}),
     maalfelt,
     bruddgrense,
     antallLag: variant === 'lag' ? antallLag : 1,
@@ -41,8 +56,13 @@ export function nyOkt(klasse, naa = Date.now(), { type = 'spill', sjekkliste = n
   };
 }
 
+// Økter lagret før variable intervaller fantes, har like lange intervaller og ett poeng hver.
+export const lengderMs = (okt) => okt.lengderMs ?? Array(okt.intervaller).fill(okt.intervallMs);
+export const vekter = (okt) => okt.vekter ?? Array(okt.intervaller).fill(1);
+export const totalPoeng = (okt) => vekter(okt).reduce((a, b) => a + b, 0);
+
 export function varighetMs(okt) {
-  return okt.intervaller * okt.intervallMs;
+  return lengderMs(okt).reduce((a, b) => a + b, 0);
 }
 
 // Spilltid i ms. Negativ under nedtellingen.
@@ -58,7 +78,14 @@ export function erFerdig(okt, naa = Date.now()) {
 // Intervall k dekker [k·intervallMs, (k+1)·intervallMs). Et brudd nøyaktig
 // på grensen hører til det nye minuttet.
 export function intervallFor(okt, t) {
-  return Math.floor(t / okt.intervallMs);
+  if (t < 0) return -1;
+  let slutt = 0;
+  const lengder = lengderMs(okt);
+  for (let k = 0; k < lengder.length; k++) {
+    slutt += lengder[k];
+    if (t < slutt) return k;
+  }
+  return okt.intervaller;
 }
 
 // Økter lagret før lagspill fantes, har bare tiden for hvert brudd.
@@ -99,7 +126,8 @@ export function fullforteIntervaller(okt, naa = Date.now()) {
 export function posisjon(okt, naa = Date.now(), lag = null) {
   const telling = bruddPerIntervall(okt, lag);
   let felt = 0;
-  for (let k = 0; k < fullforteIntervaller(okt, naa); k++) if (telling[k] === 0) felt++;
+  const v = vekter(okt);
+  for (let k = 0; k < fullforteIntervaller(okt, naa); k++) if (telling[k] === 0) felt += v[k];
   return felt;
 }
 
@@ -128,6 +156,8 @@ export function tilLoggpost(okt, klassensValg = null) {
     regelsettNavn: okt.regelsett?.navn ?? null,
     start: new Date(okt.start).toISOString(),
     varighetSekunder: varighetMs(okt) / 1000,
+    ...(okt.lengderMs ? { lengderSekunder: okt.lengderMs.map((ms) => ms / 1000) } : {}),
+    ...(okt.vekter ? { poeng: okt.vekter } : {}),
     intervaller: perLag[0].map((_, k) => ({ brudd: perLag.map((l) => l[k]) })),
     maalNaadd: okt.type === 'kartlegging' ? null : maalNaadd(okt),
     sjekklisteFullfort: okt.sjekkliste ?? null,

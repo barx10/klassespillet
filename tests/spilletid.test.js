@@ -44,3 +44,53 @@ test('minuttTekst', () => {
   assert.equal(minuttTekst(10), 'ti minutter');
   assert.equal(minuttTekst(15), '15 minutter');
 });
+
+import { intervallFor, lengderMs, totalPoeng, tilLoggpost, bruddPerIntervall, fullforteIntervaller, totalPoengFor, totalMinutterFor } from '../js/okt.js';
+
+const klasseMed = (extra) => {
+  const k = nyKlasse();
+  Object.assign(k.innstillinger, extra);
+  return k;
+};
+
+test('variable intervaller: 1, 3 og 2 minutter', () => {
+  const k = klasseMed({ intervaller: 3, lengder: [1, 3, 2], maalfelt: 3, stjernekrav: 3 });
+  const okt = nyOkt(k, 0);
+  assert.deepEqual(lengderMs(okt), [MIN, 3 * MIN, 2 * MIN]);
+  assert.equal(varighetMs(okt), 6 * MIN);
+  assert.equal(intervallFor(okt, 0), 0);
+  assert.equal(intervallFor(okt, MIN - 1), 0);
+  assert.equal(intervallFor(okt, MIN), 1); // grensen hører til det nye intervallet
+  assert.equal(intervallFor(okt, 4 * MIN - 1), 1);
+  assert.equal(intervallFor(okt, 4 * MIN), 2);
+  assert.equal(intervallFor(okt, 6 * MIN), 3);
+  assert.equal(intervallFor(okt, -5), -1);
+  const S = okt.start;
+  assert.equal(fullforteIntervaller(okt, S + 3 * MIN), 1);
+  assert.equal(fullforteIntervaller(okt, S + 4 * MIN), 2);
+  // brudd i det tredje intervallet havner der, ikke i det andre
+  const med = registrerBrudd(okt, S + 4 * MIN + 10);
+  assert.deepEqual(bruddPerIntervall(med), [0, 0, 1]);
+  assert.equal(posisjon(med, S + 6 * MIN), 2);
+});
+
+test('bonusintervaller gir dobbelt poeng', () => {
+  const inn = { intervaller: 4, lengder: null, bonus: [false, true, false, true] };
+  assert.equal(totalPoengFor(inn), 6);
+  assert.equal(totalMinutterFor(inn), 4);
+  const k = klasseMed({ ...inn, maalfelt: 5, stjernekrav: 5 });
+  let okt = nyOkt(k, 0);
+  const S = okt.start;
+  assert.equal(totalPoeng(okt), 6);
+  assert.equal(posisjon(okt, S + 4 * MIN), 6);
+  okt = registrerBrudd(okt, S + 1 * MIN + 5); // bruddet i bonusintervallet koster to poeng
+  assert.equal(posisjon(okt, S + 4 * MIN), 4);
+  const post = tilLoggpost(okt);
+  assert.deepEqual(post.poeng, [1, 2, 1, 2]);
+  assert.equal(post.lengderSekunder, undefined);
+});
+
+test('totalMinutterFor uten variable lengder er antall intervaller', () => {
+  assert.equal(totalMinutterFor({ intervaller: 12, lengder: null, bonus: null }), 12);
+  assert.equal(totalMinutterFor({ intervaller: 3, lengder: [2, 2, 3], bonus: null }), 7);
+});
