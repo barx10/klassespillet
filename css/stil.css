@@ -1189,3 +1189,16 @@ kbd {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Variable intervaller og bonus */
+.tid-sum.feil-tekst { color: var(--varde-rod); font-weight: 700; }
+.intervall-rutenett { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0.5rem 1rem; }
+.intervall-rad { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; padding: 0.5rem 0.75rem; border: 2px solid var(--kant); border-radius: 12px; }
+.intervall-nr { font-weight: 700; min-width: 6.5rem; }
+.intervall-rad select { width: auto; padding: 0.3em 0.5em; }
+.intervall-info {
+  position: absolute; top: 8.5rem; right: 2rem; z-index: 2; margin: 0;
+  padding: 0.35em 0.9em; border-radius: 999px; background: rgb(0 0 0 / 0.35); color: #fff;
+  font-weight: 700; font-size: clamp(1rem, 1.8vw, 1.6rem); white-space: nowrap;
+}
+.intervall-info.bonus { background: var(--sol); color: var(--fjord); }

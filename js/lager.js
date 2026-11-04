@@ -15,6 +15,8 @@ export function nyKlasse() {
     variant: 'rolig',
     innstillinger: {
       intervaller: 10,
+      lengder: null, // minutter per intervall (1 til 3), eller null når alle er like lange
+      bonus: null, // true for intervaller som gir dobbelt poeng, eller null
       intervallSekunder: 60,
       maalfelt: 7,
       bruddgrense: 10,
