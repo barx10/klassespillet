@@ -103,7 +103,7 @@ function bekreftForlat(videre) {
 function tomHjem() {
   forHjem(`
         <h1 class="hjem-klasse tom-tittel">Velkommen</h1>
-        <p class="hjem-mal">Klassen spiller sammen om å følge tre regler i ti minutter. Klarer de det, trekker dere noe elevene selv har foreslått.</p>
+        <p class="hjem-mal">Klassen spiller sammen om å følge tre regler gjennom en økt. Klarer de det, trekker dere noe elevene selv har foreslått.</p>
         <div class="hjem-knapper">
           <button class="knapp knapp-hoved" id="ny-klasse">Sett opp klassen</button>
           <button class="knapp knapp-stille" id="gjennomgang">Slik virker det</button>
@@ -178,7 +178,7 @@ function velkomst() {
       <div class="velkomst-landskap" aria-hidden="true"></div>
       <section class="velkomst-innhold">
         <h1>Klassespillet</h1>
-        <p class="velkomst-ingress">Good Behavior Game på tavla. Ti minutter, tre regler, hele klassen sammen.</p>
+        <p class="velkomst-ingress">Good Behavior Game på tavla. Tre regler, hele klassen sammen.</p>
         <button class="knapp knapp-hoved" id="videre">Start</button>
         <p class="velkomst-fra">© Lærerliv 2026</p>
       </section>
