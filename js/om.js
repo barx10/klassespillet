@@ -8,7 +8,7 @@ export function visOm() {
   dialog.setAttribute('aria-labelledby', 'om-tittel');
   dialog.innerHTML = `
     <h2 id="om-tittel">Om Klassespillet</h2>
-    <p>Klassespillet er et digitalt brett for Good Behavior Game. Klassen spiller sammen om å følge tre regler i ti minutter.
+    <p>Klassespillet er et digitalt brett for Good Behavior Game. Klassen spiller sammen om å følge tre regler gjennom en økt.
       Klarer de det, trekker dere noe fra en liste elevene selv har foreslått. Alt lagres bare i nettleseren på denne maskinen.</p>
     <div class="om-person">
       <img class="om-logo" src="ikoner/logo.png" alt="Lærerliv. Fra klasserom til storsamfunn." width="2560" height="1449" />

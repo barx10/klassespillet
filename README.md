@@ -1,6 +1,6 @@
 # Klassespillet
 
-Good Behavior Game på tavla. Klassen spiller sammen om å følge tre regler i ti minutter. Klarer de det, trekker appen noe fra en liste elevene selv har foreslått.
+Good Behavior Game på tavla. Klassen spiller sammen om å følge tre regler gjennom en økt. Klarer de det, trekker appen noe fra en liste elevene selv har foreslått.
 
 **Bruk appen:** https://barx10.github.io/klassespillet/
 
