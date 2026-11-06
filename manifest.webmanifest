@@ -1,7 +1,7 @@
 {
   "name": "Klassespillet",
   "short_name": "Klassespillet",
-  "description": "Good Behavior Game på tavla. Ti minutter, tre regler, hele klassen sammen.",
+  "description": "Good Behavior Game på tavla. Tre regler, hele klassen sammen.",
   "lang": "nb",
   "start_url": "./",
   "scope": "./",

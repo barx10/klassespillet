@@ -16,7 +16,7 @@ const REGLER = ['Jeg jobber stille.', 'Jeg rekker opp hånden.', 'Jeg sitter på
 export const TEKSTER = [
   [0, 'Klassespillet som hele klassen spiller sammen.'],
   [6000, 'Læreren velger tre regler. De står på tavla hele tiden.'],
-  [12000, 'I ti minutter jobber vi som vanlig. For hvert minutt alle følger reglene, går brikken ett steg opp.'],
+  [12000, 'Så jobber vi som vanlig. For hvert intervall alle følger reglene, går brikken opp.'],
   [19000, 'Når brikken når flagget, trekker vi noe fra listen vi har laget sammen.'],
   [25000, 'Klarer vi det ikke, prøver vi igjen neste gang. Ingen blir pekt ut.'],
 ];

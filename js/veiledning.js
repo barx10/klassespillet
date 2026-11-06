@@ -70,7 +70,7 @@ export function veiledning(klasse) {
     <main class="veiledning">
       <header class="veil-topp">
         <h1>Lærerveiledning</h1>
-        <p class="skjema-ingress">Klassespillet bygger på Good Behavior Game. Klassen spiller sammen om å følge tre regler i ti minutter.
+        <p class="skjema-ingress">Klassespillet bygger på Good Behavior Game. Klassen spiller sammen om å følge tre regler gjennom en økt.
           Når de klarer det, trekker dere noe fra en liste elevene selv har foreslått.</p>
         <div class="hjem-knapper">
           <button class="knapp knapp-stille" id="vis-opplaering">Kort gjennomgang</button>
@@ -98,7 +98,7 @@ export function veiledning(klasse) {
         <section id="spille">
           <h2>Slik spiller du</h2>
           <div class="anim-plass"></div>
-          <p>En økt varer ti minutter som standard, delt i ti minutter som telles hver for seg. I oppsettet kan du velge fra 3 til 20 minutter. Studiene brukte ti. Start når klassen har kommet til ro.
+          <p>En økt varer ti minutter som standard, delt i intervaller. I oppsettet kan du velge fra 3 til 20 minutter, la intervallene vare fra ett til tre minutter og gi enkelte intervaller dobbelt poeng. Studiene brukte ti minutter og like lange intervaller. Start når klassen har kommet til ro.
             Forskningen fant ingen tydelig forskjell mellom spillformene. Velg den du klarer å gjennomføre mens du underviser.</p>
           <div class="veil-varianter">
             <div>
@@ -214,7 +214,7 @@ export function veiledning(klasse) {
 // hva som teller som brudd, går læreren gjennom muntlig med eksempler.
 const ELEV_STEG = [
   ['Reglene', 'Læreren velger reglene vi skal følge. De står nederst på tavla hele tiden, så alle kan se dem.'],
-  ['Ti minutter', 'Vi jobber som vanlig. Læreren følger med og holder telling.'],
+  ['Økta', 'Vi jobber som vanlig. Læreren følger med og holder telling.'],
   ['Målet', 'Før vi starter, forteller læreren hva som skal til for å klare det.'],
   ['Klassens valg', 'Klarer vi det, trekker vi noe fra listen dere har laget. Alle får være med på det som blir trukket.'],
   ['Vi prøver igjen', 'Klarer vi det ikke, prøver vi igjen neste gang. Ingen blir pekt ut, og ingen får skylda.'],
