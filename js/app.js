@@ -593,7 +593,8 @@ function oppsett({ ny = !klasse(), fokus = null } = {}) {
     if (poeng !== poengNaa) {
       const skaler = (verdi, min, maks) => Math.max(min, Math.min(maks, Math.round((Number(verdi) * poeng) / poengNaa)));
       const fraKrav = stjernekravFra(poeng);
-      form.elements.maalfelt.innerHTML = tallValg(1, poeng, skaler(form.elements.maalfelt.value, 1, poeng));
+      // Målfeltet settes til toppen når tiden endres. Læreren kan senke det etterpå.
+      form.elements.maalfelt.innerHTML = tallValg(1, poeng, poeng);
       form.elements.stjernekrav.innerHTML = tallValg(fraKrav, poeng, skaler(form.elements.stjernekrav.value, fraKrav, poeng));
       form.elements.bruddgrense.innerHTML = tallValg(3, 20, skaler(form.elements.bruddgrense.value, 3, 20));
       poengNaa = poeng;
