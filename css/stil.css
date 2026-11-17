@@ -1202,3 +1202,6 @@ kbd {
   font-weight: 700; font-size: clamp(1rem, 1.8vw, 1.6rem); white-space: nowrap;
 }
 .intervall-info.bonus { background: var(--sol); color: var(--fjord); }
+
+.klasse-rad { display: flex; align-items: center; gap: 1rem; }
+.klasse-rad .klasse-valg { flex: 1; }

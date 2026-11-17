@@ -153,11 +153,11 @@ function hjem() {
           </div>` : ''}
         <nav class="hjem-lenker" aria-label="Klassen">
           <button class="lenke" id="endre">Endre oppsett</button>
-          <button class="lenke" id="klasser">${tilstand.klasser.length > 1 ? 'Bytt klasse' : 'Ny klasse'}</button>
+          <button class="lenke" id="klasser">Klasser</button>
         </nav>`, { brett: variant === 'rolig' });
   topplinje(null);
   app.querySelector('#start').onclick = () => vis(sjekkliste);
-  app.querySelector('#klasser').onclick = () => vis(tilstand.klasser.length > 1 ? klasser : () => oppsett({ ny: true }));
+  app.querySelector('#klasser').onclick = () => vis(klasser);
   app.querySelector('#nye-valg')?.addEventListener('click', () => vis(() => oppsett({ fokus: 'klassensValg' })));
   app.querySelector('#valg-ok')?.addEventListener('click', () => {
     k.sisteBelonningskartlegging = Logg.dato(new Date());
@@ -197,16 +197,38 @@ function klasser() {
         <h1>Klasser</h1>
         <ul class="klasse-liste">
           ${tilstand.klasser.map((k) => `
-            <li><button class="klasse-valg${k === klasse() ? ' aktiv' : ''}" data-id="${k.id}">
+            <li class="klasse-rad"><button class="klasse-valg${k === klasse() ? ' aktiv' : ''}" data-id="${k.id}">
               <span class="klasse-navn">${esc(k.navn)}</span>
               <span class="hjelp">${k.okter.length === 1 ? 'Én økt' : `${k.okter.length} økter`} i loggen</span>
-            </button></li>`).join('')}
+            </button>
+            <button class="lenke" type="button" data-slett="${k.id}" aria-label="Slett ${esc(k.navn)}">Slett</button></li>`).join('')}
         </ul>
         <div class="hjem-knapper">
           <button class="knapp knapp-stille" id="ny">Ny klasse</button>
         </div>
       </div>
+      <dialog class="dialog" id="bekreft-slett">
+        <p class="slett-tekst"></p>
+        <form method="dialog" class="hjem-knapper">
+          <button class="knapp knapp-hoved" value="ja">Slett klassen</button>
+          <button class="knapp knapp-stille" value="nei" autofocus>Behold</button>
+        </form>
+      </dialog>
     </main>`;
+  const dialog = app.querySelector('#bekreft-slett');
+  let valgt = null;
+  app.querySelectorAll('[data-slett]').forEach((b) => b.addEventListener('click', () => {
+    valgt = tilstand.klasser.find((x) => x.id === b.dataset.slett);
+    dialog.querySelector('.slett-tekst').textContent = `Slette ${valgt.navn} og hele loggen? Dette kan ikke angres. Last ned CSV fra loggen først om du vil ta vare på tallene.`;
+    dialog.showModal();
+  }));
+  dialog.addEventListener('close', () => {
+    if (dialog.returnValue !== 'ja' || !valgt) return;
+    tilstand.klasser = tilstand.klasser.filter((x) => x !== valgt);
+    if (tilstand.aktivKlasseId === valgt.id) tilstand.aktivKlasseId = tilstand.klasser[0]?.id ?? null;
+    lagre();
+    vis(tilstand.klasser.length ? klasser : hjem);
+  });
   app.querySelectorAll('.klasse-valg').forEach((b) => b.addEventListener('click', () => {
     tilstand.aktivKlasseId = b.dataset.id;
     lagre();
@@ -214,7 +236,7 @@ function klasser() {
   }));
   app.querySelector('#ny').onclick = () => vis(() => oppsett({ ny: true }));
   topplinje(hjem);
-  app.querySelector('.klasse-valg.aktiv').focus();
+  (app.querySelector('.klasse-valg.aktiv') ?? app.querySelector('#ny')).focus();
 }
 
 // Hjem-oppsettet med landskapet til høyre, brukt av skjermene før en økt.
